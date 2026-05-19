@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Pet</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --bg:        #F4F1EC;
+      --surface:   #FFFFFF;
+      --border:    #DEDAD3;
+      --text:      #1A1A18;
+      --muted:     #7A7870;
+      --accent:    #C8472B;
+      --accent2:   #3D6B4F;
+      --accent3:   #E8A020;
+      --nav-h:     56px;
+      --radius:    10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: -1px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      cursor: pointer;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: stretch;
+      height: var(--nav-h);
+    }
+
+    nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 22px;
+      height: 100%;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      border-right: 1px solid var(--border);
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+
+    nav ul li:first-child a { border-left: 1px solid var(--border); }
+
+    nav ul li a:hover  { color: var(--text); background: var(--bg); }
+    nav ul li.active a { color: var(--accent); font-weight: 600; background: #fdf3f0; border-bottom: 2px solid var(--accent); }
+
+    nav ul li a svg { flex-shrink: 0; }
+
+    </style>
+
+</head>
+<body>
+
+  <!-- lbl -->
+  <nav aria-label="Navigasi Utama">
+    <ul>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          HOME
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          INBOX
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          FIND A PET
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          PET COMMUNITY
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          HELP CENTER
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          ANALYTICS
+        </a>
+      </li>
+      <li class="active">
+        <a href="#" aria-current="page">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          REPORT
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- MAIN — kandungan halaman -->
+  <main>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1>Report Pet</h1>
+        <p>Semak dan urus semua laporan haiwan peliharaan</p>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" role="search" aria-label="Tapis laporan">
+      <input type="search" placeholder="Cari nama haiwan atau ID laporan…" aria-label="Cari" />
+      <select aria-label="Tapis mengikut status">
+        <option value="">Semua Status</option>
+        <option value="pending">Pending</option>
+        <option value="progress">In Progress</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+
+    <!-- ── TABLE SECTION ── -->
+    <section class="table-section" aria-label="Senarai Laporan Haiwan">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Report ID</th>
+            <th scope="col">Pet Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">Date Reported</th>
+            <th scope="col">Status</th>
+            <th scope="col">Tindakan</th>
+          </tr>
+        </thead>
+        <tbody id="report-table-body">
+          <!-- Dijana oleh JavaScript -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- FOOTER — hakcipta & pagination-->
+  <footer>
+    <span> Ini kami punya website © 2025 Report Pet · </span>
+    <nav aria-label="Paginasi">
+      <div class="pagination">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">›</button>
+      </div>
+    </nav>
+  </footer>
+
+  <!--SCRIPT — data & render jadual-->
+  <script>
+    const reports = [
+      { id: 'RPT-0011', pet: 'Milo',   location: 'Petaling Jaya',  date: '2025-04-01', status: 'pending'  },
+      { id: 'RPT-0022', pet: 'Luna',   location: 'Cheras',          date: '2025-04-03', status: 'progress' },
+      { id: 'RPT-0033', pet: 'Rocky',  location: 'Shah Alam',       date: '2025-04-05', status: 'resolved' },
+      { id: 'RPT-0044', pet: 'Bella',  location: 'Ampang',          date: '2025-04-07', status: 'pending'  },
+      { id: 'RPT-0055', pet: 'Oreo',   location: 'Subang Jaya',     date: '2025-04-09', status: 'progress' },
+      { id: 'RPT-0066', pet: 'Koko',   location: 'Kepong',          date: '2025-04-10', status: 'resolved' },
+      { id: 'RPT-0077', pet: 'Buddy',  location: 'Puchong',         date: '2025-04-12', status: 'pending'  },
+      { id: 'RPT-0088', pet: 'Coco',   location: 'Damansara',       date: '2025-04-14', status: 'progress' },
+      { id: 'RPT-0099', pet: 'Max',    location: 'Bangsar',         date: '2025-04-15', status: 'resolved' },
+      { id: 'RPT-0100', pet: 'Loki',   location: 'Mont Kiara',      date: '2025-04-17', status: 'pending'  },
+      { id: 'RPT-0111', pet: 'Nala',   location: 'Titiwangsa',      date: '2025-04-18', status: 'progress' },
+    ];
+
+    const statusLabel = { pending: 'Pending', progress: 'In Progress', resolved: 'Resolved' };
+
+    function pinSvg() {
+      return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('report-table-body');
+      tbody.innerHTML = data.map(r => `
+        <tr>
+          <td class="report-id">${r.id}</td>
+          <td class="pet-name">${r.pet}</td>
+          <td>
+            <span style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;">
+              ${pinSvg()} ${r.location}
+            </span>
+          </td>
+          <td class="date">${r.date}</td>
+          <td>
+            <span class="badge ${r.status}">${statusLabel[r.status]}</span>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn-action btn-solve"    onclick="updateStatus('${r.id}','resolved')">Solve</button>
+              <button class="btn-action btn-progress" onclick="updateStatus('${r.id}','progress')">In Progress</button>
+              <button class="btn-action btn-view"     onclick="alert('Melihat laporan ${r.id}')">View</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateStatus(id, status) {
+      const item = reports.find(r => r.id === id);
+      if (item) { item.status = status; renderTable(reports); }
+    }
+
+    // Filter
+    document.querySelector('input[type=search]').addEventListener('input', filterReports);
+    document.querySelector('select').addEventListener('change', filterReports);
+
+    function filterReports() {
+      const q = document.querySelector('input[type=search]').value.toLowerCase();
+      const s = document.querySelector('select').value;
+      const filtered = reports.filter(r =>
+        (r.id.toLowerCase().includes(q) || r.pet.toLowerCase().includes(q)) &&
+        (s === '' || r.status === s)
+      );
+      renderTable(filtered);
+    }
+
+    // Render awal
+    renderTable(reports);
+  </script>
+
+</body>
+</html>

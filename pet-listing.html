@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Listing</title>
+  
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>FureverHome<span>Pet</span></h1>
+    <figure title="Profil Pengguna" role="button" tabindex="0" aria-label="Profil pengguna">
+     
+    </figure>
+  </header>
+
+  <!-- NAVIGASI -->
+  <nav aria-label="Menu Utama">
+    <ul>
+      <li>
+        <a href="#" class="active" aria-current="page">
+          HOME
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          
+          INBOX
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          
+          FIND A PET
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          PET COMMUNITY
+        </a>
+      </li>
+      <li>
+        <a href="#">
+         
+          HELP CENTER
+        </a>
+      </li>
+      <li>
+        <a href="#">
+         
+          ANALYTICS
+        </a>
+      </li>
+      <li>
+        <a href="#">
+        
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- KANDUNGAN UTAMA -->
+  <main>
+
+    <hgroup>
+      <h2>Pet Listing</h2>
+      <p>Senarai haiwan peliharaan yang tersedia untuk dipelihara</p>
+    </hgroup>
+
+    <!-- Tab Filter -->
+    <div class="tab-row" role="group" aria-label="Tapis jenis haiwan">
+      <button class="active" onclick="tapis('semua', this)">Semua</button>
+      <button onclick="tapis('kucing', this)">Kucing</button>
+      <button onclick="tapis('anjing', this)">Anjing</button>
+    </div>
+
+    <!-- Grid Pet -->
+    <section id="senarai-pet" aria-label="Senarai Pet">
+    </section>
+
+  </main>
+
+  <!-- BUTANG TAMBAH -->
+  <button id="btn-tambah" onclick="bukaModal()" aria-label="Tambah pet baru" title="Tambah Pet">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <!-- MODAL TAMBAH PET -->
+  <dialog id="modal-tambah" aria-labelledby="tajuk-modal">
+    <header>
+      <h2 id="tajuk-modal">Tambah Pet Baru</h2>
+      <button type="button" onclick="tutupModal()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </header>
+
+    <form id="form-tambah" novalidate>
+
+      <!-- Jenis & Nama -->
+      <div class="modal-row">
+        <fieldset>
+          <legend>Jenis Haiwan</legend>
+          <select id="jenis" name="jenis" required>
+            <option value="">-- Pilih --</option>
+            <option value="kucing"> Kucing</option>
+            <option value="anjing"> Anjing</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <legend>Nama Pet</legend>
+          <input type="text" id="nama" name="nama" placeholder="Contoh: Mochi" required>
+        </fieldset>
+      </div>
+
+      <!-- Baka & Umur -->
+      <div class="modal-row">
+        <fieldset>
+          <legend>Baka</legend>
+          <input type="text" id="baka" name="baka" placeholder="Contoh: Persian">
+        </fieldset>
+        <fieldset>
+          <legend>Umur (bulan)</legend>
+          <input type="number" id="umur" name="umur" placeholder="Contoh: 6" min="0" max="240">
+        </fieldset>
+      </div>
+
+      <!-- Status -->
+      <fieldset>
+        <legend>Status</legend>
+        <select id="status" name="status">
+          <option value="tersedia"> Tersedia</option>
+          <option value="proses"> Dalam Proses</option>
+          <option value="dipelihara"> Sudah Dipelihara</option>
+        </select>
+      </fieldset>
+
+      <!-- Catatan -->
+      <fieldset>
+        <legend>Catatan</legend>
+        <textarea id="catatan" name="catatan" rows="3" placeholder="Ceritakan sedikit tentang pet ini..."></textarea>
+      </fieldset>
+
+    </form>
+
+    <footer class="modal-footer">
+      <button type="button" class="btn-batal" onclick="tutupModal()">Batal</button>
+      <button type="button" class="btn-simpan" onclick="simpanPet()">Simpan</button>
+    </footer>
+
+  </dialog>
+
+  <!-- TOAST OUTPUT -->
+  <output id="toast" role="status" aria-live="polite"></output>
+
+  <script>
+    // Data pet — kucing dan anjing sahaja
+    let senarai = [
+      { id:1, nama:'Mochi',  jenis:'kucing', baka:'Persian',   umur:8,  status:'tersedia'  },
+      { id:2, nama:'Buddy',  jenis:'anjing', baka:'Beagle',    umur:24, status:'tersedia'  },
+      { id:3, nama:'Luna',   jenis:'kucing', baka:'Ragdoll',   umur:6,  status:'proses'    },
+      { id:4, nama:'Rocky',  jenis:'anjing', baka:'Shih Tzu', umur:18, status:'tersedia'  },
+      { id:5, nama:'Mimi',   jenis:'kucing', baka:'Tabby',     umur:12, status:'dipelihara'},
+      { id:6, nama:'Max',    jenis:'anjing', baka:'Labrador',  umur:36, status:'tersedia'  },
+    ];
+
+    let idSeterusnya = 7;
+    let filterSemasa = 'semua';
+
+    const statusLabel = {
+      tersedia:   { label:'Tersedia',        cls:'tersedia'   },
+      proses:     { label:'Dalam Proses',     cls:'proses'     },
+      dipelihara: { label:'Sudah Dipelihara', cls:'dipelihara' },
+    };
+
+    // Papar grid
+    function paparGrid() {
+      const grid = document.getElementById('senarai-pet');
+      const senaraiBoleh = filterSemasa === 'semua'
+        ? senarai
+        : senarai.filter(p => p.jenis === filterSemasa);
+
+      if (!senaraiBoleh.length) {
+        grid.innerHTML = `<div class="tiada-pet"><p>Tiada pet dalam kategori ini.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = senaraiBoleh.map(p => {
+        const s   = statusLabel[p.status];
+        const emoji = p.jenis === 'kucing' ? '' : '';
+        const umurTeks = p.umur < 12
+          ? `${p.umur} bulan`
+          : `${Math.floor(p.umur/12)} tahun`;
+        const disabled = p.status === 'dipelihara' ? 'disabled' : '';
+
+        return `
+        <article class="kad-pet">
+
+          <figure class="gambar-pet">
+            <mark class="${s.cls}">${s.label}</mark>
+            <span class="emoji" aria-label="${p.jenis}">${emoji}</span>
+          </figure>
+
+          <div class="info-pet">
+            <header>
+              <hgroup>
+                <h3>${p.nama}</h3>
+                <p>${p.baka}</p>
+              </hgroup>
+              <strong>${umurTeks}</strong>
+            </header>
+
+            <ul aria-label="Maklumat pet">
+              <li>${p.jenis.charAt(0).toUpperCase()+p.jenis.slice(1)}</li>
+              <li>${p.baka}</li>
+              <li>${umurTeks}</li>
+            </ul>
+
+            <div class="aksi-pet">
+              <button class="btn-pelihara" ${disabled}
+                onclick="mohonPelihara(${p.id})">
+                ${p.status === 'dipelihara' ? 'Sudah Dipelihara' : 'Pelihara'}
+              </button>
+              <button class="btn-info" aria-label="Maklumat lanjut ${p.nama}"
+                onclick="lihatInfo(${p.id})">
+                <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </article>`;
+      }).join('');
+    }
+
+    // Filter
+    function tapis(nilai, btn) {
+      filterSemasa = nilai;
+      document.querySelectorAll('.tab-row button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      paparGrid();
+    }
+
+    // Buka / tutup modal
+    function bukaModal() {
+      document.getElementById('modal-tambah').showModal();
+    }
+
+    function tutupModal() {
+      document.getElementById('modal-tambah').close();
+      document.getElementById('form-tambah').reset();
+    }
+
+    // Simpan pet baru
+    function simpanPet() {
+      const jenis  = document.getElementById('jenis').value;
+      const nama   = document.getElementById('nama').value.trim();
+      const baka   = document.getElementById('baka').value.trim() || 'Tidak dinyatakan';
+      const umur   = parseInt(document.getElementById('umur').value) || 0;
+      const status = document.getElementById('status').value;
+
+      if (!jenis || !nama) {
+        tunjukToast('⚠️ Sila isi jenis dan nama pet!');
+        return;
+      }
+
+      senarai.push({ id: idSeterusnya++, nama, jenis, baka, umur, status });
+      tutupModal();
+      paparGrid();
+      tunjukToast('✅ Pet berjaya ditambah!');
+    }
+
+    // Mohon pelihara
+    function mohonPelihara(id) {
+      const pet = senarai.find(p => p.id === id);
+      if (!pet || pet.status === 'dipelihara') return;
+      pet.status = 'proses';
+      paparGrid();
+      tunjukToast(`🐾 Permohonan untuk ${pet.nama} dihantar!`);
+    }
+
+    // Lihat info
+    function lihatInfo(id) {
+      const pet = senarai.find(p => p.id === id);
+      if (pet) tunjukToast(`ℹ️ ${pet.nama} — ${pet.baka}, ${pet.umur} bulan`);
+    }
+
+    // Toast
+    let timerToast;
+    function tunjukToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(timerToast);
+      timerToast = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    // Tutup modal bila klik luar
+    document.getElementById('modal-tambah').addEventListener('click', function(e) {
+      if (e.target === this) tutupModal();
+    });
+
+    // Init
+    paparGrid();
+  </script>
+
+</body>
+</html>
