@@ -1,0 +1,158 @@
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!--Logo-->
+    <div class="bar">
+        <div class="logo">
+            <img src="image/icons/logo.png" alt="Logo">
+            <span>Furever Pet Home</span>
+        </div>
+
+        <div class="bar">
+            <div class="login">
+                <a href="Login.html">Log In</a>
+            </div>
+        </div>
+
+        <!--Navigation-->
+        <div class="nav">
+            <a href="HomePage.html" class="active">Home</a>
+            <a href="Inbox.html">Inbox</a>
+            <a href="FindPet.html">Find A Pet</a>
+            <a href="PetCommunity.html">Pet Community</a>
+            <a href="RegisterPage.html">Help Center</a>
+            <a href="Analytics.html">Analytics</a>
+            <a href="Report.html">Report</a>
+        </div>
+    </div>
+
+    <!-- First Body: Introduction -->
+    <section class="first-body">
+        <h1>Find Your Furever Friend</h1>
+        <p class="intro">
+            Discover your perfect companion and give a loving home to a stray pet in need.
+        </p>
+        <div class="cta-row">
+            <p>For <strong>Dogs</strong> & <strong>Cats</strong> Adoption</p>
+            <a href="#second-body" class="button">Start Your Adoption Journey</a>
+        </div>
+    </section>
+
+
+    <!-- Seconf Body: About Us-->
+    <section class="second-body">
+        <h1>About Us</h1>
+        <p class="about">A compassionate digital hub uniting shelters, NGOs, and residents of Bandar Klang,
+        turning stray challenges into adoption opportunities and building a cleaner, safer
+        and kinder city for both pets and people.</p>
+    </section>
+
+    <!-- Third Body: Features Lists-->
+    <section class="third-body">
+        <h1>Explore Our Features</h1>
+        <p class="paragraph">Discover our comprehensive services designed to support pet adoption and care.</p>
+        <div class="services">
+            <div class="service">
+
+                <!--Adopt Pet-->
+                <img src = "image/pets/adopt-pet.jpg" alt="Adopt a Pet">
+                <div class="service-content">
+                    <h2>Pet Adoption</h2>
+                    <p>Browse available pets from shelters and NGOs.</p>
+                </div>
+                <a class="AdoptBtn" href="PetListingsPage.php">Adopt Now</a>
+            </div>
+            <div class="service">
+
+                <!--Report Animal-->
+                <img src = "image/pets/report.jpg" alt="report animal">
+                <div class="service-content">
+                    <h2>Report Animal</h2>
+                    <p>Help keep Bandar Klang safe and clean.</p>
+                </div>
+                <a class="ReportBtn" href="ReportAnimalPage.php">Report Now</a>
+            </div>
+            <div class="service">
+
+                <!--Community-->
+                <img src = "image/pets/community.jpg" alt="community board">
+                <div class="service-content">
+                    <h2>Connect With Us</h2>
+                    <p>Stay updated with events and announcements.</p>
+                </div>
+                <a class="CommunityBtn" href="CommunityBoardPage.php">Connect Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fourth Body: Feedbacks-->
+    <section class="fourth-body">
+        <h1>Tale From Our Past Adopters</h1>
+        <div class="slider">
+            <div class="slides">
+                <div class="slides-card">
+                    <img src="image/pets/sarah.jpg" alt="Sarah L">
+                    <h4>Sarah L</h4>
+                    <p>"Furever Pet Home helped me find my perfect companion. The process was so easy and fulfilling!"</p>
+                </div>
+            </div>
+            <div class="slides">
+                <div class="slides-card">
+                    <img src="image/pets/amalia.jpg" alt="Amalia Hitler">
+                    <h4>Amalia Hitler</h4>
+                    <p>"The support from Furever Pet Home didn't end when we brought our new pet home. They continued to provide guidance and resources!"</p>
+                </div>
+            </div>
+            <div class="slides">
+                <div class="slides-card">
+                    <img src="image/pets/john.jpg" alt="John Doe">
+                    <h4>John Doe</h4>
+                    <p>"Adopting through Furever Pet Home was a wonderful experience. The staff was knowledgeable and caring."</p>
+                </div>
+            </div>
+
+            <!-- prev next buttons -->
+            <div class="slider-controls">
+                <button class="prev" onclick="prevSlide()">&#10094;</button>
+                <button class="next" onclick="nextSlide()">&#10095;</button>
+            </div>       
+        </div>
+    </section>
+
+    <!--Footer-->
+    <footer>
+    <div class="footer-top">
+        <div class="logo">
+            <img src="image/icons/logo.png" alt="Furever Pet Home Logo">
+            Furever Pet Home
+        </div>
+
+        <div class="footer-mid">
+            <p>41700 Bandar Klang, Selangor, Malaysia</p>
+            <p><a href="mailto:infor@FureverPetHome.com">infor@FureverPetHome.com</a></p>
+            <p>+60 123-456-7890</p>
+        </div>
+
+        <div class="footer-links">
+            <p><strong>Follow Us</strong></p>
+            <p>
+                <a href="https://www.facebook.com/FureverPetHome"><img src="image/icons/facebook.png" alt="Facebook">Facebook</a>
+                <a href="https://www.instagram.com/FureverPetHome"><img src="image/icons/instagram.png" alt="Instagram">Instagram</a>
+                <a href="https://www.x.com/FureverPetHome"><img src="image/icons/x.png" alt="Twitter">X</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
+    </div>
+</footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
