@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pet Community</title>
+  <link rel="stylesheet" href="petcommunityngo.css">
+</head>
+
+<body>
+
+<!-- navigation bar -->
+<div class="navbar">
+  <a href="home.html">HOME</a>
+  <a href="inbox.html">INBOX</a>
+  <a href="findapet.html">FIND A PET</a>
+  <a class="active" href="petcommunity.html">PET COMMUNITY</a>
+  <a href="helpcenter.html">HELP CENTER</a>
+  <a href="analytics">ANALYTICS</a>
+  <a href="report">REPORT</a>
+</div>
+
+<!-- board post -->
+<div class="container" id="postList">
+
+  <div class="post">
+    <img src="" alt="image">
+    
+    <div class="post-content">
+      <h3>Lost Cat</h3>
+      <p>My cat went missing near the park.</p>
+
+      <div class="post-actions">
+        <button onclick="comment()">Comment</button>
+        <button onclick="deletePost(this)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- button comment delete add -->
+<button class="add-btn" onclick="goToAddPage()">Add</button>
+
+<script src="petcommunityngo.js"></script>
+
+<!--Footer-->
+    <footer>
+    <div class="footer-top">
+        <div class="logo">
+            <img src="image/icons/logo.png" alt="Furever Pet Home Logo">
+            Furever Pet Home
+        </div>
+
+        <div class="footer-mid">
+            <p>41700 Bandar Klang, Selangor, Malaysia</p>
+            <p><a href="mailto:infor@FureverPetHome.com">infor@FureverPetHome.com</a></p>
+            <p>+60 123-456-7890</p>
+        </div>
+
+        <div class="footer-links">
+            <p><strong>Follow Us</strong></p>
+            <p>
+                <a href="https://www.facebook.com/FureverPetHome"><img src="image/icons/facebook.png" alt="Facebook">Facebook</a>
+                <a href="https://www.instagram.com/FureverPetHome"><img src="image/icons/instagram.png" alt="Instagram">Instagram</a>
+                <a href="https://www.x.com/FureverPetHome"><img src="image/icons/x.png" alt="Twitter">X</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
+    </div>
+  </footer>
+
+</body>
+</html>
