@@ -87,7 +87,7 @@ section {
   min-height: 70vh;
 
   /*image background*/
-  background-image: url('/../image/pets/catndog.jpg');
+  background-image: url('../image/pets/catndog.jpg');
   background-size: cover; /*cover the entire area*/
   background-position: center; /*center the image*/
   background-repeat: no-repeat; /*prevent repetition*/
