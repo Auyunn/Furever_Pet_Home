@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <title> Find A Pet </title>
+        <meta name = "viewport" content="width=device-width, initial-scale=1.0">
+        <!--for now mesti save file ni dalam folder yang sama baru style dia muncul untuk testing-->
+        <link rel="stylesheet" href="petcommunity.css">
+    </head>
+
+    <body>
+        <!--top header-->
+        <header class="top-header">
+            <div class="logo">LOGO</div>
+            <div class="profile-circle"></div>
+        </header>
+        
+        <!--navigation bar-->
+        <nav class="nav-bar">
+            <a href="home.html">HOME</a>
+            <a href="inbox.html">INBOX</a>
+            <a class="active" href="petcommunity.html">FIND A PET</a>
+            <a href="community.html">PET COMMUNITY</a>
+            <a href="help.html">HELP CENTER</a>
+            <a href="analytics.html">ANALYTICS</a>
+            <a href="report.html">REPORT</a>
+        </nav>
+
+        <!--search-->
+        <section class="search-section">
+            <select>
+                <option>Select Pet</option>
+                <option>Dog</option>
+                <option>Cat</option>
+            </select>
+
+            <select>
+                <option>Select Shelter</option>
+                <option>Shelter A</option>
+                <option>Shelter B</option>
+            </select>
+
+            <button class="search-btn">SEARCH</button>
+        </section>
+
+        <!--pet list-->
+        <section class="pet-grid">
+
+            <div class="pet-card">
+                <div class="pet-image">Image</div>
+                <p class="pet-name">Molly</p>
+                <button>DETAILS</button>
+            </div>
+
+            <div class="pet-card">
+                <div class="pet-image">Image</div>
+                <p class="pet-name">Oyen</p>
+                <button>DETAILS</button>
+            </div>
+
+            <div class="pet-card">
+                <div class="pet-image">Image</div>
+                <p class="pet-name">Garfield</p>
+                <button>DETAILS</button>
+            </div>
+
+        </section>
+        
+    </body>
+</html>
