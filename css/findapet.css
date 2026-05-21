@@ -1,0 +1,106 @@
+body 
+{
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e5e5e5;
+}
+
+/*header*/
+.top-header 
+{
+  height: 50px;
+  background: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo 
+{
+  width: 30px;
+  height: 30px;
+  background: #bbb;
+}
+
+.profile-circle 
+{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #333;
+}
+
+/*navigation bar*/
+.nav-bar 
+{
+  display: flex;
+  background: #d0d0d0;
+}
+
+.nav-bar a 
+{
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  color: black;
+  border-right: 1px solid #aaa;
+}
+
+.nav-bar a.active 
+{
+  background: #999;
+  font-weight: bold;
+}
+
+/*search*/
+.search-section 
+{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.search-section select,
+.search-btn 
+{
+  padding: 10px;
+  width: 180px;
+}
+
+/*pet grid*/
+.pet-grid 
+{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  padding: 0 40px 40px;
+}
+
+.pet-card 
+{
+  background: #ddd;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #aaa;
+}
+
+.pet-image 
+{
+  height: 120px;
+  border: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.pet-name 
+{
+  margin: 10px 0;
+}
+
+.pet-card button 
+{
+  padding: 8px 16px;
+  border-radius: 15px;
+}
