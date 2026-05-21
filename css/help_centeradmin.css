@@ -1,0 +1,455 @@
+ body{
+            /*font type*/
+            font-family: arial;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff8ea, #fdf0d8);
+        }
+/*-----------------------header---------------------------------------------*/
+        .header{
+            display: flex;
+            justify-content: space-between; /* space between logo and profile */
+            align-items: center; 
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            background: #fdf0d8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.0.5);
+    
+        }
+
+        .logo{
+            font-weight: bold;
+            font-size: 18px;
+            color: 8b5e34;;
+        }
+        .profile{
+            width: 40px;
+            height: 40px;
+            background: #d4a96a;
+            border-radius: 50%;
+        }
+        
+ /*------------------------bar navigation--------------------------------------------*/
+        .navigation
+        {
+            display: flex;
+            width: 100%;
+            background: #e8c98a;
+            
+        }
+
+        .navigation a{
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            background: #e8c98a;
+            color: black;
+            border-right: 1px solid #ccc;
+        }
+        .navigation a:hover{
+            background:#e8c98a ;
+        }
+        .navigation a.active{
+            color: #333; font-weight: bold; background:#c9a050; border-bottom: 3px solid #333;
+        }       
+
+/*-----------------------content---------------------------------------------*/
+        .main{
+            max-width: 960px;
+            margin: 24px auto;
+            padding: 20px;
+        }
+
+/*-----------------------footer---------------------------------------------*/
+        .breadcrumb{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+
+        .crumb{
+            color: #999;
+            cursor: pointer;
+        }
+
+        .crumb:hover{
+            text-decoration: underline;
+            color: #999;
+        }
+
+        .crumb-current{
+            color: #111;
+        }
+
+/*--tab---*/
+.tabs{
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.tab{
+    padding: 8px 16px;
+    background: #e6e6e6;
+    color: black;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    transition: 0.2s;
+}
+.tab:hover{
+    background: white;
+}
+.tab.active{
+    background: #c9a050;
+    font-weight: bold;
+    color:white;
+    border-color: #c9a050;
+    font-weight: bold;
+}
+
+/*view board*/
+.view-notice{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color:#888;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 18px;
+}
+
+.section-header{
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    margin-bottom:14px;
+}
+
+.section-title{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.count-pill{
+    font-size: 12px;
+    padding: 2px 6px;
+    background: #e6e6e6;
+    color: #555;
+    border-radius: 20px;
+}
+
+.empty-state{
+    text-align: center;
+    color: #999;
+    padding: 40px 0;
+    font-size: 14px;
+    background: white;        
+    border: 1px dashed #ddd; 
+    border-radius: 8px;
+}
+
+.empty-state .empty-icon{
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.empty-state p{
+    margin-top:6px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+/*----- cart -----*/
+.card-list{
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+}
+ .card{
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+ }
+
+ .card:hover{
+    border-color: #999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+ }
+
+ .card-thumb{
+    width: 120px;
+    min-height: 300px;
+    background: #f0f0f0;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 30px;
+ }
+
+ .card-body {
+    flex: 1;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+ 
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+ 
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #222;
+}
+ 
+.card-meta {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+ 
+.card-preview {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+}
+ 
+.card-actions {
+    margin-top: 10px;
+}
+/* ===================== BADGE ===================== */
+.badge {
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 20px;
+}
+ 
+.badge-live {
+    background: #d4edda;
+    color: #276733;
+}
+ 
+.badge-draft {
+    background: #fff3cd;
+    color: #856404;
+}
+ 
+/* ===================== BUTTONS ===================== */
+.btn-view {
+    padding: 6px 16px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+ 
+.btn-view:hover {
+    background: #f0f0f0;
+}
+ 
+.btn-back {
+    padding: 7px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: background 0.12s;
+    white-space: nowrap;
+}
+ 
+.btn-back:hover {
+    background: #f0f0f0;
+    color: #111;
+}
+ 
+/* ===================== FULL VIEW ===================== */
+.view-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+ 
+.view-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+ 
+.view-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+ 
+.icon-box {
+    width: 44px;
+    height: 44px;
+    background: #d4edda;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+ 
+.view-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 5px;
+}
+ 
+.view-meta {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+ 
+.view-notice-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #888;
+    padding: 8px 24px;
+    background: #fffbe6;
+    border-bottom: 1px solid #f0e68c;
+}
+ 
+.view-body {
+    padding: 24px;
+}
+ 
+.section-label {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+ 
+.body-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+ 
+/* ===================== RULE ITEMS ===================== */
+.rule-item {
+    display: flex;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    background: #fafafa;
+    margin-bottom: 8px;
+}
+ 
+.rule-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+ 
+.rule-icon.ok {
+    background: #d4edda;
+    color: #276733;
+}
+ 
+.rule-icon.no {
+    background: #f8d7da;
+    color: #842029;
+}
+ 
+.rule-text {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.55;
+}
+ 
+.divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+} 
+
+/* ===================== META GRID ===================== */
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+ 
+.meta-item {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 10px 14px;
+}
+ 
+.meta-label {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.meta-value {
+    font-size: 13px;
+    color: #222;
+    font-weight: bold;
+}
+/* ===================== LOADING ===================== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #aaa;
+    font-size: 13px;
+}
+ 
+/* ===================== PANEL ===================== */
+.panel {
+    display: none;
+}
+ 
+.panel.active {
+    display: block;
+}
+ 
