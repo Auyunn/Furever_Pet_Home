@@ -70,7 +70,7 @@
             </div>
 
             <!--New Residents-->
-            <div class="New Residents">
+            <div class="New-Residents">
                 <h2>New Residents</h2>
                 <p>
                     <?php 
@@ -83,7 +83,7 @@
             </div>
 
             <!--New NGOs-->
-            <div class="New NGOs">
+            <div class="New-NGOs">
                 <h2>New NGOs</h2>
                 <p><?php echo $new_ngo['OrgName'] ?? 'No data'; ?></p> <!--get from database the current registered NGO -->
                 <a href="ngo_count.html">View NGOs</a>
@@ -97,7 +97,7 @@
             </div>
 
             <!--Community Board-->
-            <div class="Community Board">
+            <div class="Community-Board">
                 <h2>Community Board</h2>
                 <p><?php echo $new_post['Title'] ?? 'No data'; ?></p> <!--get from database the current post -->
                 <a href="pet_communityadmin.html">View Posts</a>
@@ -111,7 +111,7 @@
             </div>
 
             <!--Help Center-->
-            <div class="Help Center">
+            <div class="Help-Center">
                 <h2>Help Center</h2>
                 <p><?php echo $new_faq['Question'] ?? 'No data'; ?></p><!--get from database the current help article -->
                 <a href="help_center.html">View Help Articles</a>
