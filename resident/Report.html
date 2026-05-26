@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tambah Laporan Baru - Pet Community">
+  <title>Add Report - Pet Community</title>
+
+</head>
+<body>
+
+  <!-- Tajuk halaman -->
+  <h1 class="page-title">REPORT</h1>
+
+  <div class="wrapper">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <figure class="logo-box" aria-label="Logo"></figure>
+      <figure class="profile-circle" aria-label="Profil Pengguna"></figure>
+    </header>
+
+    <!-- Navigation -->
+    <nav aria-label="Menu Utama">
+      <a href="HomePage.html">HOME</a>
+      <a href="resident/inbox.php">INBOX</a>
+      <a href="resident/findapet.html"> FIND A PET</a>
+      <a href="resident/pet_community.html">PET COMMUNITY</a>
+      <a href="resident/help_center.html">HELP CENTER</a>
+      <a href="Analytics.html">ANALYTICS</a>
+      <a href="Report.html" class="active">REPORT</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+
+      <!-- Kotak Gambar Upload -->
+      <figure class="image-upload" aria-label="Muat Naik Gambar">
+        <input type="file" accept="image/*" aria-label="Pilih Gambar">
+      </figure>
+
+      <!-- Form -->
+      <section class="form-section">
+        <fieldset>
+          <legend></legend>
+
+          <div>
+            <label for="reportName">Name</label>
+            <input type="text" id="reportName" name="reportName" placeholder="Masukkan nama" required>
+          </div>
+
+          <div>
+            <label for="reportDesc">Description</label>
+            <textarea id="reportDesc" name="reportDesc" placeholder="Masukkan penerangan..." required></textarea>
+          </div>
+
+          <div>
+            <label for="reportLocation">Location</label>
+            <input type="text" id="reportLocation" name="reportLocation" placeholder="Masukkan lokasi" required>
+          </div>
+
+        </fieldset>
+
+        <!-- Butang Tindakan -->
+        <div class="action-buttons">
+          <button type="button" class="btn-attach">Attach from</button>
+          <button type="button" class="btn-begin">Find Begin</button>
+          <button type="button" class="btn-cancel" onclick="window.location.href='report.html'">Cancel</button>
+          <button type="button" class="btn-more">&#8942;</button>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer aria-label="Footer"></footer>
+
+  </div>
+
+</body>
+</html>
