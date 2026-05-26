@@ -83,13 +83,13 @@
 
         <!--Navigation-->
         <div class="nav">
-            <a href="HomePage.html" class="active">Home</a>
-            <a href="Inbox.html">Inbox</a>
-            <a href="FindPet.html">Find A Pet</a>
-            <a href="PetCommunity.html">Pet Community</a>
-            <a href="RegisterPage.html">Help Center</a>
-            <a href="Analytics.html">Analytics</a>
-            <a href="Report.html">Report</a>
+            <a href="HomePage.html" class="active">HOME</a>
+            <a href="Inbox.html">INBOX</a>
+            <a href="FindPet.html">FIND A PET</a>
+            <a href="PetCommunity.html">PET COMMUNITY</a>
+            <a href="RegisterPage.html">HELP CENTER</a>
+            <a href="Analytics.html">ANALYTICS</a>
+            <a href="Report.html">REPORT</a>
         </div>
     </div>
 
