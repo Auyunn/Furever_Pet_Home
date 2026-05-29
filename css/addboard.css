@@ -1,5 +1,5 @@
 body {
-  padding-top: var(--navbar-height); /* ✅ ensures content starts below navbar */
+  padding-top: var(--navbar-height); /* ✅ elak overlap dengan navbar */
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   margin: 0;
