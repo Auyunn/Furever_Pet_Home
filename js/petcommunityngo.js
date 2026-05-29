@@ -31,7 +31,7 @@ function escapeHtml(str) {
 }
 
 function viewPost(postId) {
-  alert("Viewing post " + postId);
+  alert("Editing post " + postId);
 }
 
 function deletePost(postId) {
@@ -42,5 +42,5 @@ function deletePost(postId) {
 }
 
 function goToAddPage() {
-  window.location.href = "addboard.html";
+  window.location.href = 'addboard.html';        
 }
