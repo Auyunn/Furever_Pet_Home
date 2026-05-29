@@ -7,10 +7,14 @@ body {
 
 /* Add Post Layout */
 .add-container {
+  margin-top: var(--navbar-height); /* ✅ tambahan untuk pastikan form turun bawah navbar */
   display: flex;
   gap: 40px;
   padding: 40px;
   align-items: flex-start;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* Image preview */
