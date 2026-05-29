@@ -1,36 +1,32 @@
-// pergi ke add page
-function goToAddPage() 
-{
+// Go to add page
+function goToAddPage() {
   window.location.href = "addboard.html";
 }
 
-// back page
-function goBack() 
-{
+// Back page
+function goBack() {
   window.location.href = "petcommunity.html";
 }
 
-// delete board
-function deletePost(btn) 
-{
+// Delete board
+function deletePost(btn) {
   btn.closest(".post").remove();
 }
 
-// button comment
-function comment() 
-{
+// Button comment
+function comment() {
   alert("Comment feature coming soon!");
 }
 
-// add board
-function addPost(event) 
-{
+// Add board
+function addPost(event) {
   event.preventDefault();
 
   let title = document.getElementById("title").value;
   let desc = document.getElementById("desc").value;
+  let enableComment = document.getElementById("enableComment").checked;
 
-  let post = { title, desc };
+  let post = { title, desc, enableComment };
 
   let posts = JSON.parse(localStorage.getItem("posts")) || [];
   posts.push(post);
@@ -39,15 +35,21 @@ function addPost(event)
   alert("Post added!");
   window.location.href = "petcommunity.html";
 }
-window.onload = function () 
-{
+
+// Preview image
+function previewImage(event) {
+  const preview = document.getElementById('previewImg');
+  preview.src = URL.createObjectURL(event.target.files[0]);
+}
+
+// Load posts into Pet Community
+window.onload = function () {
   let posts = JSON.parse(localStorage.getItem("posts")) || [];
   let container = document.getElementById("postList");
 
   if (!container) return;
 
-  posts.forEach(p => 
-    {
+  posts.forEach(p => {
     let div = document.createElement("div");
     div.className = "post";
 
