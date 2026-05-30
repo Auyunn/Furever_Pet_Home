@@ -25,6 +25,7 @@
             height: 60px;
             border-radius: 10px;
             object-fit:cover; /*Prevent image from streching(damahe)*/
+            flex-shrink: 0;
         }
         
         .content{
@@ -35,7 +36,7 @@
         }
 
         .content-title{
-            font-family: 'Playfair Dispaly',serif;
+            font-family: 'Playfair Display',serif;
             font-size: 2rem;
             color: var(--deep-brown, #825540);
             margin-bottom: 25px;
@@ -63,7 +64,8 @@
             cursor: pointer;
             padding: 10px;
             border-radius: 50%;
-            transition: background 0.2s, transform 0.2;
+            transition: background 0.2s, transform 0.2s;
+            flex-shrink: 0;
         }
         /* Make the icon comment have effect smooth*/
         .comment:hover {
@@ -86,17 +88,28 @@
             margin-bottom: 8px;
         }
 
-        .item{
-            font-size: 13px;
+        .comment-item{
+            background:rgba(130,85,64,0.04);
+            padding: 8px 10px;
             margin-bottom: 8px;
+            border-radius: 10px;
+            border-left: 3px solid rgba(130,85,64,0.2);
+        }
+        .comment-item:hover{
+            background:rgba(130,85,64,0.08);
         }
 
         .author{
             font-weight: bold;
+            font-size:3px;
+            color: var(--deep-brown, #825540);
+            margin-bottom: 2px;
         }
 
         .comment-text{
             color:#444;
+            font-size: 13px;
+            margin-bottom: 3px;
         }
 
         .comment-time{
@@ -107,6 +120,7 @@
         .comment-input-row{
             display: flex;
             gap: 6px;
+            margin-top: 8px;
         }
         
         .comment-input{
@@ -117,10 +131,11 @@
             font-family: arial, sans-serif;
             font-size: 13px;
             outline: none;
+            transition: border-color 0.2s;
         }
         
         .comment-input:focus{
-            border-color: #888;
+            border-color: var(--deep-brown,#825540);
         }
         
         .comment-send{
@@ -132,9 +147,29 @@
             height: 30px;
             cursor: pointer;
             font-size: 13px;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.2s;
         }
         
         .comment-send:hover{
             background: #000;
+            transform:scale(1.1);
+        }
+
+        .login-btn{
+            padding: 6px 18px;
+            background: var(--deep-brown,#825540);
+            color:white;
+            border:none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: "DM Sans", sans-serif;
+            transition: background 0.2s transform 0.2s;
+        }
+
+        .login-btn:hover{
+            background: var(--rose,#c97d7d);
+            transform: scale(1.05);
         }
 
