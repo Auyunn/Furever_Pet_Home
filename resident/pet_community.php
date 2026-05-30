@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+include '../db_connect.php';
+
+//Submit Comment use POST
+if(isset($POST['submit_comment'])){
+    if(!isset($_SESSION['ResidentID'])){
+        header("Location: login.php");
+        exit();
+    }
+}
+
+//filtered user- provide data before system process
+$board_id =mysqli_real_escape_string($conn, $_POST['board_id']);
+$content = mysqli_real_escape_string($conn, trim($_POST['content']));
+$resident_id =$_SESSION['ResidentID'];
+$date = date('Y-m-d H:i:s');
+
+//Avoid duplicate commentID  from  deleted rows
+$result_max = mysqli_query($conn,"SELECT MAX(CAST(SUBSTRING(CommentID,4)AS UNSIGNED)) AS maxNum FROM comment");
+$row_max = mysqli_fetch_array($result_max);
+$next_num= ($row_max['maxNum']!==NULL)?$row_max($row_max['maxNum'])+ 1:1;
+$comment_id="COM".str_pad($next_num,2,"0", STR_PAD_LEFT);
+
+//insert new comment into table comment
+$query_insert = "INSERT INTO comment (CommentID, ResidentID, BoardID, Content, Date, ReplyID)
+                VALUES('$comment_id','$resident_id,'$board_id','$content','$date')"
+?>
 <html>
 <head>
     <title> Pet Community</title>
