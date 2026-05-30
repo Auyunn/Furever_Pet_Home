@@ -28,6 +28,16 @@ let currentSlide = 0;
 
 
 //====|Resident|====
+//====== PET COMMUNITY ===============
+function toggleComment(boardId) {
+    var panel = document.getElementById('panel-'+ boardId);
+   if(panel.style.display == 'none' || panel.style.display ==''){
+    panel.style.display='block';
+   }else{
+    panel.style.display='none';
+   }
+}
+
 //====INBOX RESIDENT====
     //Expanse Arrow
     function toggleGroup(id) {

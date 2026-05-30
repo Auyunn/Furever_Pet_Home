@@ -166,7 +166,7 @@ $result_board = mysqli_query($conn, $query_board);
 
     <?php endif; ?>
 
-    <script src="../js/pet_community.js"></script>
+    <script src="../js/script.js"></script>
     <footer>
             <div class="footer-grid">
             <div>
