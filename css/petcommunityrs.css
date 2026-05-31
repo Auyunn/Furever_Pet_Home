@@ -1,23 +1,28 @@
 /*------------------------ main warpper -------------------------------------------*/
         .wrapper{
             margin:auto;
-            width: 80%;
-            padding: 20px;
+            width: 100%;
+            padding: 20px 4rem;
             margin-top:140px;
-            max-width: 800px;/*readable on wider screen*/
+            box-sizing: border-box;
+            max-width: 1200px;
         }
 
 /*------------------------ content -------------------------------------------*/
 
         .box{
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             background: rgba(250,246,240,0.9);
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 16px;
             border: 1px solid rgba(130,85,64,0.15); /* brown color for border line*/
-            box-shadow: 0 6px 18px rgba(130,85,64,0.04)/*shadow*/
+            box-shadow: 0 6px 18px rgba(130,85,64,0.04);/*shadow*/
+            flex-direction: row;
+            width: 100%;
+            box-sizing: border-box;
+            height: auto;
         }
 
         .img{
@@ -32,7 +37,11 @@
             margin-left: 20px;
             font-size: 14px;
             flex: 1;
-            color: var(--deep-brown) /*Applies your color theme for text*/
+            color: var(--deep-brown); /*Applies your color theme for text*/
+            display:flex;
+            flex-direction: column;
+            gap: 8px;
+
         }
 
         .content-title{
@@ -66,6 +75,7 @@
             border-radius: 50%;
             transition: background 0.2s, transform 0.2s;
             flex-shrink: 0;
+            align-self:flex-start;
         }
         /* Make the icon comment have effect smooth*/
         .comment:hover {
@@ -101,7 +111,7 @@
 
         .author{
             font-weight: bold;
-            font-size:3px;
+            font-size:13px;
             color: var(--deep-brown, #825540);
             margin-bottom: 2px;
         }
@@ -140,7 +150,7 @@
         
         .comment-send{
             background: #333;
-            color: white;
+            color:white;
             border: none;
             border-radius: 50%;
             width: 30px;
@@ -165,7 +175,7 @@
             cursor: pointer;
             font-size: 13px;
             font-family: "DM Sans", sans-serif;
-            transition: background 0.2s transform 0.2s;
+            transition: background 0.2s,transform 0.2s;
         }
 
         .login-btn:hover{

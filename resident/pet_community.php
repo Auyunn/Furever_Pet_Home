@@ -9,29 +9,29 @@ if(isset($_POST['submit_comment'])){
         header("Location: login.php");
         exit();
     }
-}
+    //filtered user- provide data before system process
+    $board_id =mysqli_real_escape_string($conn, $_POST['board_id']);
+    $content = mysqli_real_escape_string($conn, trim($_POST['content']));
+    $resident_id =$_SESSION['ResidentID'];
+    $date = date('Y-m-d H:i:s');
 
-//filtered user- provide data before system process
-$board_id =mysqli_real_escape_string($conn, $_POST['board_id']);
-$content = mysqli_real_escape_string($conn, trim($_POST['content']));
-$resident_id =$_SESSION['ResidentID'];
-$date = date('Y-m-d H:i:s');
+    //Avoid duplicate commentID  from  deleted rows
+    $result_max = mysqli_query($conn,"SELECT MAX(CAST(SUBSTRING(CommentID,4)AS UNSIGNED)) AS maxNum FROM comment");
+    $row_max = mysqli_fetch_array($result_max);
+    $next_num= ($row_max['maxNum']!==NULL)?$row_max['maxNum']+ 1:1;
+    $comment_id="COM".str_pad($next_num,2,"0", STR_PAD_LEFT);
 
-//Avoid duplicate commentID  from  deleted rows
-$result_max = mysqli_query($conn,"SELECT MAX(CAST(SUBSTRING(CommentID,4)AS UNSIGNED)) AS maxNum FROM comment");
-$row_max = mysqli_fetch_array($result_max);
-$next_num= ($row_max['maxNum']!==NULL)?$row_max['maxNum']+ 1:1;
-$comment_id="COM".str_pad($next_num,2,"0", STR_PAD_LEFT);
+    //insert new comment into table comment
+    $query_insert = "INSERT INTO comment (CommentID, ResidentID, BoardID, Content, Date, ReplyID)
+                    VALUES('$comment_id','$resident_id','$board_id','$content','$date', NULL)";
+    //if fail, prompt message error from MYSQL 
+    if(mysqli_query($conn, $query_insert)){
+        header("Location:pet_community.php");
+        exit();
+    }else{
+        echo"Update has error: ". mysqli_error($conn);
+    }
 
-//insert new comment into table comment
-$query_insert = "INSERT INTO comment (CommentID, ResidentID, BoardID, Content, Date, ReplyID)
-                VALUES('$comment_id','$resident_id,'$board_id','$content','$date', NULL)";
-//if fail, prompt message error from MYSQL 
-if(mysqli_query($conn, $query_insert)){
-    header("Location:pet_community.php");
-    exit();
-}else{
-    echo"Update has error: ". mysqli_error($conn);
 }
 
 //status user login
@@ -54,56 +54,56 @@ $result_board = mysqli_query($conn, $query_board);
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+<nav class="navbar" id="navbar">
         <!--logo and profile-->
-        <div class ="navbar-top">
-            <a href="#" class="nav-logo">
+    <div class ="navbar-top">
+        <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
-            </a>
-            <div class="nav-right">
-                <?php if($is_logged_in): ?>
-                    <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-                    <div class="avatar" title="My Profile" >AT</div>
-                <?php else: ?>
-                    <button class="login-btn" onclick="window.location.href= 'login.php';">Login</button>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!---Tab Navigation-->
-        <div class="nav-links">
+        </a>
+        <div class="nav-right">
             <?php if($is_logged_in): ?>
-                <a href="../HomePage(registed).html" class="nav-tab">🏠 Home</a>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="avatar" title="My Profile" >AT</div>
             <?php else: ?>
-                <a href="../HomePage(unregistered).html" class="nav-tab">🏠 Home</a>
+                <button class="login-btn" onclick="window.location.href= 'login.php';">Login</button>
             <?php endif; ?>
+        </div>
+    </div>
+
+    <!---Tab Navigation-->
+    <div class="nav-links">
+        <?php if($is_logged_in): ?>
+            <a href="../HomePage(registed).html" class="nav-tab">🏠 Home</a>
+        <?php else: ?>
+            <a href="../HomePage(unregistered).html" class="nav-tab">🏠 Home</a>
+        <?php endif; ?>
             <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
-            <a href="findapet.html" class="nav-tab">🔍 Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> 🐾Pet Community</a>
+            <a href="../findapet.html" class="nav-tab">🔍 Find A Pet</a>
+            <a href="pet_community.php" class="nav-tab"> 🐾Pet Community</a>
             <a href="help_center.php" class="nav-tab">❓ Help Center</a>
             <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
             <a href="Report.html" class="nav-tab">🚨 Report</a>
         </div>
-    </nav>
+</nav>
 
     <!-- Structure of the content section-->
-    <div class= "wrapper">
-        <h3 class="content-title"> Pet Community</h3>
+<div class= "wrapper">
+    <h3 class="content-title"> Pet Community</h3>
         <!--- to calculate how many row-->
-        <?php if($row=mysqli_num_rows($result_board)> 0):?>
-            <?php while($post = mysqli_fetch_assoc($result_board)) : ?>
-                <?php 
-                $board_id=$post['BoardID'];
-                //Use join to display the resident name 
-                $query_comment = "SELECT c.CommentID, c.Content, c.Date,r.Name AS ResidentName
-                                    FROM comment c
-                                    LEFT JOIN resident r ON c.ResidentID = r.ResidentID
-                                    WHERE c.BoardID = '$board_id'
-                                    AND c.ReplyID IS NULL
-                                    ORDER BY c.Date ASC";
-                $result_comment = mysqli_query($conn, $query_comment);
-                $comment_count = mysqli_num_rows($result_comment);
+    <?php if($row=mysqli_num_rows($result_board)> 0):?>
+        <?php while($post = mysqli_fetch_assoc($result_board)) : ?>
+            <?php 
+            $board_id=$post['BoardID'];
+            //Use join to display the resident name 
+            $query_comment = "SELECT c.CommentID, c.Content, c.Date,CONCAT(r.FirstName,' ', r.LastName) AS ResidentName
+                                FROM comment c
+                                LEFT JOIN resident r ON c.ResidentID = r.ResidentID
+                                WHERE c.BoardID = '$board_id'
+                                AND c.ReplyID IS NULL
+                                ORDER BY c.Date ASC";
+            $result_comment = mysqli_query($conn, $query_comment);
+            $comment_count = mysqli_num_rows($result_comment);
             ?>
         
             <div class="box">
@@ -117,6 +117,7 @@ $result_board = mysqli_query($conn, $query_board);
                         📅<?php echo date('d M Y', strtotime($post['Date']));?>
                         &nbsp; |&nbsp; 🏢 <?php echo htmlspecialchars($post['OrgName']?? $post['OrgID']); ?>
                     </small>
+
                     <!-- comment panel -->
                     <div class="panel" id="panel-<?php echo $board_id;?>">
                         <div class="list">
@@ -132,8 +133,6 @@ $result_board = mysqli_query($conn, $query_board);
                                         <div class="comment-time">
                                             <?php echo date('d M Y, h:i A',strtotime($comment['Date']));?>
                                         </div>
-                                        <input type="text" class="comment-input" id="input-1" placeholder="Write a comment…">
-                                        <button class="comment-send" onclick="submitComment(1)">➤</button>
                                     </div>
                                 <?php endwhile; ?>
                             <?php else: ?>
@@ -141,23 +140,24 @@ $result_board = mysqli_query($conn, $query_board);
                             <?php endif; ?>
                         </div>
 
-                    <?php if ($is_logged_in): ?>
-                        <form action="pet_community.php" method ="POST" class="comment-input-row">
-                            <input type="hidden" name="board_id" value="<?php echo $board_id;?>">
-                            <input type="text" name="content" class="comment-input" placeholder="Write your comment"required>
-                            <button type="submit" name="submit_comment" class="comment-sent">➤</button>
-                        </form>
-                    <?php else: ?>
-                        <div class ="comment-input-row">
-                            <input type="text" class="comment-input" placeholder="Please login to write a comment"style="background:#e9ecef; color:#6c757d; cursor:not-allowed;"
-                                            disabled>
-                            <button type="button" class="comment-send" style="background:white;cursor: not-allowed; " disable></button>
-                        </div>
-                    <?php endif; ?>
-                </div> 
-            </div>
+                        <?php if ($is_logged_in): ?>
+                            <form action="pet_community.php" method ="POST" class="comment-input-row">
+                                <input type="hidden" name="board_id" value="<?php echo $board_id;?>">
+                                <input type="text" name="content" class="comment-input" placeholder="Write your comment"required>
+                                <button type="submit" name="submit_comment" class="comment-send"> ➤ </button>
+                            </form>
+                        <?php else: ?>
+                            <div class ="comment-input-row">
+                                <input type="text" class="comment-input" placeholder="Please login to write a comment"style="background:#e9ecef; color:#6c757d; cursor:not-allowed;"
+                                                disabled>
+                                <button type="button" class="comment-send" style="background:#cccccc;cursor: not-allowed; " disable> ➤</button>
+                            </div>
+                        <?php endif; ?>
+                    </div> 
+                </div>
             <div class="comment" onclick="toggleComment('<?php echo $board_id; ?>')">💬 </div>
         </div>
+
         <?php endwhile; ?>
     <?php else:?>
         <div class ="box" style="justify-content: center;">
@@ -165,7 +165,7 @@ $result_board = mysqli_query($conn, $query_board);
         </div>
 
     <?php endif; ?>
-
+    </div>
     <script src="../js/script.js"></script>
     <footer>
             <div class="footer-grid">
@@ -206,7 +206,7 @@ $result_board = mysqli_query($conn, $query_board);
             <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
             <span>Made with ❤️ for Bandar Klang</span>
             </div>
-        </footer>
+    </footer>
 
 </body>
 </html>
