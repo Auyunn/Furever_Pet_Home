@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2026 at 04:28 AM
+-- Generation Time: Jun 01, 2026 at 11:51 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `LastName` varchar(100) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `NumberPhone` varchar(15) NOT NULL,
-  `Password` varchar(50) NOT NULL
+  `Password` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -172,7 +172,7 @@ INSERT INTO `community_board` (`BoardID`, `OrgID`, `Title`, `Content`, `Photo`, 
 --
 
 CREATE TABLE `faq` (
-  `FaqID` int(11) NOT NULL,
+  `FaqID` int(10) NOT NULL,
   `OrgID` varchar(10) NOT NULL,
   `Question` varchar(255) NOT NULL,
   `Description` text DEFAULT NULL
@@ -206,7 +206,7 @@ INSERT INTO `faq` (`FaqID`, `OrgID`, `Question`, `Description`) VALUES
 --
 
 CREATE TABLE `guidelines` (
-  `GuidelineID` int(11) NOT NULL,
+  `GuidelineID` int(10) NOT NULL,
   `OrgID` varchar(10) NOT NULL,
   `Title` varchar(100) NOT NULL,
   `PetType` enum('Dog','Cat') NOT NULL,
@@ -285,7 +285,7 @@ CREATE TABLE `organization` (
   `NumberPhone` varchar(15) NOT NULL,
   `OrgAddress` varchar(255) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(12) NOT NULL,
   `Description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -402,7 +402,7 @@ CREATE TABLE `resident` (
   `LastName` varchar(20) NOT NULL,
   `NumberPhone` varchar(11) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(12) NOT NULL,
   `Address` varchar(255) DEFAULT NULL,
   `Status` tinyint(1) DEFAULT 1,
   `Salary` decimal(10,2) DEFAULT 0.00
@@ -520,13 +520,13 @@ ALTER TABLE `resident`
 -- AUTO_INCREMENT for table `faq`
 --
 ALTER TABLE `faq`
-  MODIFY `FaqID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `FaqID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `guidelines`
 --
 ALTER TABLE `guidelines`
-  MODIFY `GuidelineID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `GuidelineID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
