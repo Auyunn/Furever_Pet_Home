@@ -28,55 +28,139 @@ let currentSlide = 0;
 
 
 //====|Resident|====
-//====== PET COMMUNITY ===============
-function toggleComment(boardId) {
-    var panel = document.getElementById('panel-'+ boardId);
-   if(panel.style.display == 'none' || panel.style.display ==''){
-    panel.style.display='block';
-   }else{
-    panel.style.display='none';
-   }
-}
-
 //====INBOX RESIDENT====
-    //Expanse Arrow
-    function toggleGroup(id) {
-    const items = document.getElementById(id);
+//==== INBOX RESIDENT ====
+function toggleGroup(id) {
+
+    const panel = document.getElementById(id);
     const arrow = document.getElementById('arrow-' + id);
 
-    if (items.style.display === "none") {
-        items.style.display = 'flex';
-        arrow.textContent = '▾';
-    } else {
-        items.style.display = 'none';
-        arrow.textContent = '▸';
-    }
+    const isHidden = panel.style.display === 'none';
+
+    panel.style.display = isHidden ? 'flex' : 'none';
+
+    arrow.textContent = isHidden ? '▾' : '▸';
+}
+
+function getStatusInfo(status) {
+
+    if (!status) {
+        return {
+            label: '',
+            cls: ''
+        };
     }
 
-    const statusColor = {
-    "Approved": "green",
-    "Rejected": "red",
-    "Pending": "orange",
-    "In Progress": "blue"
+    const map = {
+
+        'Approve': {
+            label: 'Diluluskan',
+            cls: 'approve',
+            dot: '●'
+        },
+
+        'Reject': {
+            label: 'Ditolak',
+            cls: 'reject',
+            dot: '●'
+        },
+
+        'Pending': {
+            label: 'Dalam Semakan',
+            cls: 'pending',
+            dot: '●'
+        },
+
+        'In Progress': {
+            label: 'Sedang Diurus',
+            cls: 'in-progress',
+            dot: '●'
+        },
+
+        'Resolve': {
+            label: 'Selesai',
+            cls: 'resolve',
+            dot: '●'
+        }
     };
 
-    function openNotif(event, index, group) {
+    return map[status] || {
+        label: status,
+        cls: 'pending',
+        dot: '●'
+    };
+}
+
+function formatDateTime(dtStr) {
+
+    if (!dtStr) return '';
+
+    const d = new Date(dtStr);
+
+    return d.toLocaleString('ms-MY', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function openNotif(event, index, group) {
+
     document.querySelectorAll('.notif-item')
-        .forEach(item => item.classList.remove('active'));
+        .forEach(el => el.classList.remove('active'));
 
-    event.currentTarget.classList.add('active');
+    const clickedItem =
+        document.getElementById('item-' + group + '-' + index);
 
-    const data = window.notifData[group][index];
-
-    document.getElementById('notif-content').innerHTML = `
-        <div class="content-title">${data.Title}</div>
-        <div class="content-time">${data.CreatedAt}</div>
-        <div class="content-status" style="color:${statusColor[data.Status]}; font-weight:700; margin-bottom:16px;">
-        ● ${data.Status.toUpperCase()}
-        </div>
-        <div class="content-body">${data.Message}</div>
-    `;
+    if (clickedItem) {
+        clickedItem.classList.add('active');
     }
+
+    const notif = window.notifData[group][index];
+
+    if (!notif) return;
+
+    const status = getStatusInfo(notif.Status);
+
+    const panel =
+        document.getElementById('notif-content');
+
+    panel.innerHTML = `
+        <div class="content-wrapper">
+
+            <div class="content-type-badge">
+                ${notif.Type || ''}
+            </div>
+
+            <h2 class="content-title">
+                ${notif.Title || ''}
+            </h2>
+
+            <div class="content-time">
+                ${formatDateTime(notif.DateTime)}
+            </div>
+
+            <div class="content-status ${status.cls}">
+                ${status.dot} ${status.label}
+            </div>
+
+            <hr class="content-divider">
+
+            <div class="content-body">
+                ${notif.Message || ''}
+            </div>
+
+        </div>
+    `;
+}
+
+//====RESIDENT HELP CENTER====
+//==== RESIDENT HELP CENTER ALERT ====
+if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
+    alert("Sorry, no results found for your search. Please try again with different keywords or try contacting our customer service.");
+}
 
 //====|NGO|====
 //====INBOX NGOS====
