@@ -1,202 +1,293 @@
-
 <?php
     session_start();
 
-    $resident_id = $_SESSION['resident_id'] ?? null; 
+    $resident_id = $_SESSION['resident_id'] ?? 'R0001'; 
+    /*if (!isset($_SESSION['resident_id'])) {
+            die("Not logged in");
+        }
+
+        $resident_id = $_SESSION['resident_id'];*/
 
     $conn = new mysqli("localhost", "root", "", "Furever_Pet_Home");
 
-    if($conn->connect_error)
-        {
-            die("DB connection failed: " . $conn->connect_error);
-        }
+    if($conn->connect_error) {
+        die("DB connection failed: " . $conn->connect_error);
+    }
 
-    //query notification
     $sql = "
-        SELECT InboxID, Title, Message, Status, CreatedAt
-        FROM inbox
-        WHERE ResidentID = ?
-        ORDER BY CreatedAt DESC
+    SELECT 
+        i.InboxID, 
+        i.Title, 
+        i.Message, 
+        i.Status, 
+        i.Type,
+        i.DateTime
+    FROM inbox i
+    LEFT JOIN adopt_application a ON i.AdoptionID = a.AdoptionID
+    LEFT JOIN report r ON i.ReportID = r.ReportID
+    WHERE 
+        (a.ResidentID = ? OR r.ResidentID = ?)
+        OR (i.AdoptionID IS NULL AND i.ReportID IS NULL)
+    ORDER BY i.DateTime DESC
     ";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $resident_id);
+    $stmt->bind_param("ss", $resident_id, $resident_id); 
     $stmt->execute();
     $result = $stmt->get_result();
 
-    //day
     $today = [];
     $yesterday = [];
     $week = [];
+    $month = [];
+    $year = [];
 
-    while($row = $result->fetch_assoc())
-        {
-            $date = date("Y-m-d", strtotime($row['CreatedAt']));
-            if ($date == date('Y-m-d'))
-                {
-                    $today[] = $row;
-                }
-            elseif($date == date("Y-m-d", strtotime("-1 day"))) 
-                {
-                    $yesterday[] = $row;
+    $current_time = time();
+    $today_date = date('Y-m-d', $current_time);
+    $yesterday_date = date('Y-m-d', strtotime('-1 day', $current_time));
+    $one_week_ago = strtotime('-7 days', $current_time);
+    $current_month = date('Y-m', $current_time);
+    $current_year = date('Y', $current_time);
 
-                }
-            else
-                {
-                    $week[] = $row;
-                }
-        }
+    while($row = $result->fetch_assoc()) {
 
-       $stmt->close();
+    $notif_time = strtotime($row['DateTime']);
+    if (!$notif_time) continue;
 
-                 
+    $notif_date  = date('Y-m-d', $notif_time);
+    $notif_month = date('Y-m', $notif_time);
+    $notif_year  = date('Y', $notif_time);
+
+    // TODAY
+    if ($notif_date === $today_date) {
+        $today[] = $row;
+        continue;
+    }
+
+    // YESTERDAY
+    if ($notif_date === $yesterday_date) {
+        $yesterday[] = $row;
+        continue;
+    }
+
+    // THIS WEEK
+    if ($notif_time >= $one_week_ago) {
+        $week[] = $row;
+        continue;
+    }
+
+        // YEAR FIRST (IMPORTANT)
+    if ($notif_year === $current_year) {
+        $year[] = $row;
+    }
+
+    // MONTH FILTER (subset of year)
+    if ($notif_month === $current_month) {
+        $month[] = $row;
+    }
+    }
+    $stmt->close();
 ?>
-
 <!Doctype html>
-<html lang = "en">
+<html lang="en">
     <head>
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Resident Inbox</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
+        <script src="../js/script.js" defer></script>
+
     </head>
-    <script>
-        window.notifData = {
-            today: <?= json_encode($today)?>,
-            yesterday: <?= json_encode($yesterday) ?>,
-            week: <?= json_encode($week) ?>
-        };
-    </script>
+
     <body>
-        <!--Logo-->
-    <div class="bar">
-        <div class="logo">
-            <img src="..\image\icons\logo.png" alt="Logo">
+        <!-- LOGO and LOGIN -->
+        <nav class="navbar" id="navbar">
+        <div class ="navbar-top">
+            <a href="#" class="nav-logo">
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
-        </div>
-
-        <div class="bar">
-            <div class="login">
-                <a href="Profile.html">Profile</a>
+            </a>
+            <div class="nav-right">
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
             </div>
         </div>
 
-        <!--Navigation-->
-        <div class="nav">
-            <a href="HomePage.html" class="active">HOME</a>
-            <a href="Inbox.html">INBOX</a>
-            <a href="FindPet.html">FIND A PET</a>
-            <a href="PetCommunity.html">PET COMMUNITY</a>
-            <a href="RegisterPage.html">HELP CENTER</a>
-            <a href="Analytics.html">ANALYTICS</a>
-            <a href="Report.html">REPORT</a>
+        <!-- NAVIGATION -->
+        <div class="nav-links">
+            <a href="../HomePage(registed).html" class="nav-tab">🏠 Home</a>
+            <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
+            <a href="findapet.html" class="nav-tab">🔍 Find A Pet</a>
+            <a href="pet_community.html" class="nav-tab"> 🐾Pet Community</a>
+            <a href="help_center.php" class="nav-tab">❓ Help Center</a>
+            <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+            <a href="Report.html" class="nav-tab">🚨 Report</a>
         </div>
-    </div>
+               
+        </nav>
 
-    <!--Notifications-->
-    <div class="notif-container">
+        <!--Notifications-->
+        <div class="notif-container">
 
-        <!--Left: Notification List-->
-        <div class="notif-list">
+            <!--Left: Notification List-->
+            <div class="notif-list">
 
-            <!--Today-->
-            <div class="notif-group">
-                <div class="notif-group-header" onclick="toggleGroup('today')">
-                    <span>Today</span>
-                    <span class="arrow" id="arrow-today">▾</span>
-                </div>
-
-                <div class="notif-items" id="today">
-                    <?php foreach ($today as $i=>$n): ?>
-                    <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'today')">
-                        <div class="notif-icon">🐾</div>
-                        <div class="notif-info">
-                            <div class="notif-title"><?= htmlspecialchars($n['Title']) ?></div>
-                            <div class="notif-preview"><?= htmlspecialchars($n['Message']) ?></div>
-                        </div>
+                <!--Today-->
+                <div class="notif-group">
+                    <div class="notif-group-header" onclick="toggleGroup('today')">
+                        <span>Today (<?= count($today) ?>)</span>
+                        <span class="arrow" id="arrow-today">▾</span>
                     </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-
-            <!--Yesterday-->
-            <div class="notif-group">
-                <div class="notif-group-header" onclick="toggleGroup('yesterday')">
-                    <span>Yesterday</span>
-                    <span class="arrow" id="arrow-yesterday">▾</span>
-                </div>
-                <div class="notif-items" id="yesterday">
-                    <?php foreach($yesterday as $i=>$n): ?>
-                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'yesterday')">
-                            <div class="notif-icon">🐕</div>
+                    <div class="notif-items" id="today">
+                        <?php foreach ($today as $i=>$n): ?>
+                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'today')" id="item-today-<?= $i ?>">
+                            <div class="notif-icon">🐾</div>
                             <div class="notif-info">
-                                <div class="notif-title"><?= htmlspecialchars($n['Title'])?></div>
-                                <div class="notif-preview"><?= htmlspecialchars($n['Message'])?></div>
-                     </div>
+                                <div class="notif-title"><?= htmlspecialchars($n['Title']) ?></div>
+                                <div class="notif-preview"><?= htmlspecialchars($n['Message']) ?></div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-            <!--This Week-->
-            <div class="notif-group">
-                <div class="notif-group-header" onclick="toggleGroup('week')">
-                    <span>This Week</span>
-                    <span class="arrow" id="arrow-week">▸</span>
                 </div>
 
-                <div class="notif-items" id="week" style="display:none;">
-                    <?php foreach ($week as $i=>$n): ?>
-                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'week')">
+                <!--Yesterday-->
+                <div class="notif-group">
+                    <div class="notif-group-header" onclick="toggleGroup('yesterday')">
+                        <span>Yesterday (<?= count($yesterday) ?>)</span>
+                        <span class="arrow" id="arrow-yesterday">▾</span>
+                    </div>
+                    <div class="notif-items" id="yesterday">
+                        <?php foreach($yesterday as $i=>$n): ?>
+                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'yesterday')" id="item-yesterday-<?= $i ?>">
                             <div class="notif-icon">🐕</div>
                             <div class="notif-info">
                                 <div class="notif-title"><?= htmlspecialchars($n['Title'])?></div>
                                 <div class="notif-preview"><?= htmlspecialchars($n['Message'])?></div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
+
+                <!--This Week-->
+                <div class="notif-group">
+                    <div class="notif-group-header" onclick="toggleGroup('week')">
+                        <span>This Week (<?= count($week) ?>)</span>
+                        <span class="arrow" id="arrow-week">▸</span>
+                    </div>
+                    <div class="notif-items" id="week" style="display:none;">
+                        <?php foreach ($week as $i=>$n): ?>
+                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'week')" id="item-week-<?= $i ?>">
+                            <div class="notif-icon">🐕</div>
+                            <div class="notif-info">
+                                <div class="notif-title"><?= htmlspecialchars($n['Title'])?></div>
+                                <div class="notif-preview"><?= htmlspecialchars($n['Message'])?></div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!--This Month-->
+                <div class="notif-group">
+                    <div class="notif-group-header" onclick="toggleGroup('month')">
+                        <span>This Month (<?= count($month) ?>)</span>
+                        <span class="arrow" id="arrow-month">▸</span>
+                    </div>
+                    <div class="notif-items" id="month" style="display:none;">
+                        <?php foreach ($month as $i=>$n): ?>
+                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'month')" id="item-month-<?= $i ?>">
+                            <div class="notif-icon">🐕</div>
+                            <div class="notif-info">
+                                <div class="notif-title"><?= htmlspecialchars($n['Title'])?></div>
+                                <div class="notif-preview"><?= htmlspecialchars($n['Message'])?></div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!--This Year-->
+                <div class="notif-group" >
+                    <div class="notif-group-header" onclick="toggleGroup('year')">
+                        <span>This Year (<?= count($year) ?>)</span>
+                        <span class="arrow" id="arrow-year">▸</span>
+                    </div>
+                    <div class="notif-items" id="year" style="display:none;">
+                        <?php foreach ($year as $i=>$n): ?>
+                        <div class="notif-item" onclick="openNotif(event, <?= $i ?>, 'year')" id="item-year-<?= $i ?>" >
+                            <div class="notif-icon">🐾</div>
+                            <div class="notif-info" >
+                                <div class="notif-title"><?= htmlspecialchars($n['Title'])?></div>
+                                <div class="notif-preview"><?= htmlspecialchars($n['Message'])?></div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Right: Content-->
+            
+            <div class="notif-content" id="notif-content">
+                <div class="content-empty">Select a notification to view</div>
             </div>
 
         </div>
-        <!--End-->
 
-        <!--Right: Content-->
-        <div class="notif-content" id="notif-content">
-            <div class="content-empty">Select a notification to view</div>
-        </div>
+        <!--Footer-->
+        <footer>
+            <div class="footer-grid">
+            <div>
+                <div style="font-size:2rem;">🐾</div>
+                <div class="footer-brand-name">Furever Pet Home</div>
+                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+            </div>
+            <div>
+                <p class="footer-col-title">Platform</p>
+                <ul class="footer-links-list">
+                <li><a href="#">Find A Pet</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Community Board</a></li>
+                <li><a href="#">Analytics</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Account</p>
+                <ul class="footer-links-list">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">My Applications</a></li>
+                <li><a href="#">Favourites</a></li>
+                <li><a href="#">Inbox</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Contact</p>
+                <ul class="footer-links-list">
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
+                </ul>
+            </div>
+            </div>
+            <div class="footer-bottom">
+            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+            <span>Made with ❤️ for Bandar Klang</span>
+            </div>
+        </footer>
+        <script>
+        window.notifData = {
+            today: <?= json_encode($today) ?>,
+            yesterday: <?= json_encode($yesterday) ?>,
+            week: <?= json_encode($week) ?>,
+            month: <?= json_encode($month) ?>,
+            year: <?= json_encode($year) ?>
+        };
+        </script>
 
-    </div>
 
-    <!--Footer-->
-    <footer>
-    <div class="footer-top">
-        <div class="logo">
-            <img src="..\image\icons\logo.png" alt="Furever Pet Home Logo">
-            Furever Pet Home
-        </div>
-
-        <div class="footer-mid">
-            <p>41700 Bandar Klang, Selangor, Malaysia</p>
-            <p><a href="mailto:infor@FureverPetHome.com">infor@FureverPetHome.com</a></p>
-            <p>+60 123-456-7890</p>
-        </div>
-
-        <div class="footer-links">
-            <p><strong>Follow Us</strong></p>
-            <p>
-                <a href="https://www.facebook.com/FureverPetHome"><img src="..\image\icons\facebook.png" alt="Facebook">Facebook</a>
-                <a href="https://www.instagram.com/FureverPetHome"><img src="..\image\icons\instagram.png" alt="Instagram">Instagram</a>
-                <a href="https://www.x.com/FureverPetHome"><img src="..\image\icons\x.png" alt="Twitter">X</a>
-            </p>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
-    </div>
-    </footer>
-    <script src="js/script.js"></script>
     </body>
 </html>
-
