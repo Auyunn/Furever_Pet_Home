@@ -7,30 +7,32 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!--Logo-->
-    <div class="bar">
-        <div class="logo">
-            <img src="/Furever_Pet_Home/image/icons/logo.png" alt="Logo">
+    <!-- Navigation Bar -->
+        
+    <nav class="navbar" id="navbar">
+        <!--logo and profile-->
+        <div class ="navbar-top">
+            <a href="#" class="nav-logo">
+            <img src="image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
-        </div>
-
-        <div class="bar">
+            </a>
             <div class="login">
-                <a href="Login.html">Log In</a>
+                <a href="Login.html">Log In</a> 
             </div>
+
         </div>
 
-        <!--Navigation-->
-        <div class="nav">
-            <a href="HomePage.html" class="active">Home</a>
-            <a href="resident/inbox.php">Inbox</a>
-            <a href="resident/findapet.html">Find A Pet</a>
-            <a href="resident/pet_community.html">Pet Community</a>
-            <a href="resident/help_center.html">Help Center</a>
-            <a href="Analytics.html">Analytics</a>
-            <a href="Report.html">Report</a>
+        <!---Tab Navigation-->
+        <div class="nav-links">
+            <a href="HomePage(unregistered).html" class="nav-tab">🏠 Home</a>
+            <a href="login.html" class="nav-tab">✉️ Inbox</a>
+            <a href="login.html" class="nav-tab">🔍 Find A Pet</a>
+            <a href="login.html" class="nav-tab"> 🐾Pet Community</a>
+            <a href="resident/help_center.php" class="nav-tab">❓ Help Center</a>
+            <a href="Analytics.html" class="nav-tab">📊 Analytics</a>
+            <a href="login.html" class="nav-tab">🚨 Report</a>
         </div>
-    </div>
+        </nav>
 
     <!-- First Body: Introduction -->
     <section class="first-body">
@@ -127,32 +129,45 @@
 
     <!--Footer-->
     <footer>
-    <div class="footer-top">
-        <div class="logo">
-            <img src="image/icons/logo.png" alt="Furever Pet Home Logo">
-            Furever Pet Home
-        </div>
-
-        <div class="footer-mid">
-            <p>41700 Bandar Klang, Selangor, Malaysia</p>
-            <p><a href="mailto:infor@FureverPetHome.com">infor@FureverPetHome.com</a></p>
-            <p>+60 123-456-7890</p>
-        </div>
-
-        <div class="footer-links">
-            <p><strong>Follow Us</strong></p>
-            <p>
-                <a href="https://www.facebook.com/FureverPetHome"><img src="image/icons/facebook.png" alt="Facebook">Facebook</a>
-                <a href="https://www.instagram.com/FureverPetHome"><img src="image/icons/instagram.png" alt="Instagram">Instagram</a>
-                <a href="https://www.x.com/FureverPetHome"><img src="image/icons/x.png" alt="Twitter">X</a>
-            </p>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
-    </div>
-</footer>
+            <div class="footer-grid">
+            <div>
+                <div style="font-size:2rem;">🐾</div>
+                <div class="footer-brand-name">Furever Pet Home</div>
+                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+            </div>
+            <div>
+                <p class="footer-col-title">Platform</p>
+                <ul class="footer-links-list">
+                <li><a href="#">Find A Pet</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Community Board</a></li>
+                <li><a href="#">Analytics</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Account</p>
+                <ul class="footer-links-list">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">My Applications</a></li>
+                <li><a href="#">Favourites</a></li>
+                <li><a href="#">Inbox</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Contact</p>
+                <ul class="footer-links-list">
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
+                </ul>
+            </div>
+            </div>
+            <div class="footer-bottom">
+            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+            <span>Made with ❤️ for Bandar Klang</span>
+            </div>
+        </footer>
     <script src="js/script.js"></script>
 </body>
 </html>
