@@ -156,6 +156,16 @@ function openNotif(event, index, group) {
     `;
 }
 
+//====== PET COMMUNITY ===============
+function toggleComment(boardId) {
+    var panel = document.getElementById('panel-'+ boardId);
+   if(panel.style.display == 'none' || panel.style.display ==''){
+    panel.style.display='block';
+   }else{
+    panel.style.display='none';
+   }
+}
+
 //====RESIDENT HELP CENTER====
 //==== RESIDENT HELP CENTER ALERT ====
 if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
