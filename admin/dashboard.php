@@ -44,130 +44,166 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="header">
-                <h1> Furever Pet Home </h1>
+    <!-- Header -->
+    <nav class="navbar" id="navbar">
+            <!--logo and profile-->
+            <div class ="navbar-top">
+                <a href="#" class="nav-logo">
+                <img src="../image/icons/logo.png" alt="Furever Pet Home">
+                <span>Furever Pet Home</span>
+                </a>
+                <div class="nav-right">
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+                </div>
             </div>
 
-            <!--Navigation-->
-            <div class="nav">
-                <a href="HomePage.html" class="active">HOME</a>
-                <a href="Inbox.html">INBOX</a>
-                <a href="FindPet.html">FIND A PET</a>
-                <a href="PetCommunity.html">PET COMMUNITY</a>
-                <a href="RegisterPage.html">HELP CENTER</a>
-                <a href="Analytics.html">ANALYTICS</a>
-                <a href="Report.html">REPORT</a>
+            <!---Tab Navigation-->
+            <div class="nav-links">
+                <a href="dashboard.php" class="nav-tab">🏠 Dashboard</a>
+                <a href=" " class="nav-tab">✉️ Users/NGOs</a>
+                <a href=" " class="nav-tab">🚨Report</a>
+                <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+                <a href="pet_communityadmin.html" class="nav-tab"> 🐾 Pet Community</a>
+                <a href="help_center.html" class="nav-tab">❓ Help Center</a>
             </div>
+    </nav>
 
-            <!--Overview-->
-            <div class="Overview">
-                <h2>Overview</h2>
-                <h3>Total Users: <?php echo $resident_count; ?></h3>
-                <h3>Total NGOs: <?php echo $ngo_count; ?></h3>
-                <h3>Reports: <?php echo $report_count; ?></h3>
-                <h3>Adoption: <?php echo $adopt_count; ?></h3>
-            </div>
 
-            <!--New Residents-->
-            <div class="New-Residents">
-                <h2>New Residents</h2>
-                <p>
-                    <?php 
-                    echo $new_resident 
-                    ? $new_resident['FirstName'].' '.$new_resident['LastName'] 
-                    : 'No data'; 
-                    ?>
-                </p> <!--get from database the current registered user -->
-                <a href="user_count.html">View Residents</a>
-            </div>
+<div class="dashboard-container">
 
-            <!--New NGOs-->
-            <div class="New-NGOs">
-                <h2>New NGOs</h2>
-                <p><?php echo $new_ngo['OrgName'] ?? 'No data'; ?></p> <!--get from database the current registered NGO -->
-                <a href="ngo_count.html">View NGOs</a>
-            </div>
+    <div class="dashboard-title">
+        <h1>Admin Dashboard</h1>
+        <p>Monitor residents, NGOs, reports and platform activity.</p>
+    </div>
 
-            <!--Reports-->
-            <div class="Reports">
-                <h2>Reports</h2>
-                <p><?php echo $new_report['PetName'] ?? 'No data'; ?></p> <!--get from database the current report -->
-                <a href="report.html">View Reports</a>
-            </div>
+    <!-- OVERVIEW -->
+    <div class="dashboard-overview">
 
-            <!--Community Board-->
-            <div class="Community-Board">
-                <h2>Community Board</h2>
-                <p><?php echo $new_post['Title'] ?? 'No data'; ?></p> <!--get from database the current post -->
-                <a href="pet_communityadmin.html">View Posts</a>
-            </div>
+        <div class="overview-card">
+            <div class="overview-label">Total Residents</div>
+            <div class="overview-value"><?php echo $resident_count; ?></div>
+            <div class="overview-sub">Registered users</div>
+        </div>
 
-            <!--Guideline-->
-            <div class="Guidelines">
-                <h2>Guidelines</h2>
-                <p><?php echo $new_guide['Title'] ?? 'No data'; ?></p> <!--get from database the current guideline -->
-                <a href="guideline.html">View Guidelines</a>
-            </div>
+        <div class="overview-card">
+            <div class="overview-label">Total NGOs</div>
+            <div class="overview-value"><?php echo $ngo_count; ?></div>
+            <div class="overview-sub">Partner organizations</div>
+        </div>
 
-            <!--Help Center-->
-            <div class="Help-Center">
-                <h2>Help Center</h2>
-                <p><?php echo $new_faq['Question'] ?? 'No data'; ?></p><!--get from database the current help article -->
-                <a href="help_center.html">View Help Articles</a>
-            </div>
+        <div class="overview-card">
+            <div class="overview-label">Reports</div>
+            <div class="overview-value"><?php echo $report_count; ?></div>
+            <div class="overview-sub">Submitted reports</div>
+        </div>
 
+        <div class="overview-card">
+            <div class="overview-label">Adoptions</div>
+            <div class="overview-value"><?php echo $adopt_count; ?></div>
+            <div class="overview-sub">Applications received</div>
+        </div>
+
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <h2>New Resident</h2>
+            <p>
+                <?php
+                echo $new_resident
+                ? $new_resident['FirstName'].' '.$new_resident['LastName']
+                : 'No data';
+                ?>
+            </p>
+            <a href="user_count.html" class="dashboard-btn btn-resident">
+                View Residents
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>New NGO</h2>
+            <p><?php echo $new_ngo['OrgName'] ?? 'No data'; ?></p>
+            <a href="ngo_count.html" class="dashboard-btn btn-ngo">
+                View NGOs
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Latest Report</h2>
+            <p><?php echo $new_report['PetName'] ?? 'No data'; ?></p>
+            <a href="report.html" class="dashboard-btn btn-report">
+                View Reports
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Community Board</h2>
+            <p><?php echo $new_post['Title'] ?? 'No data'; ?></p>
+            <a href="pet_communityadmin.html" class="dashboard-btn btn-community">
+                View Posts
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Guidelines</h2>
+            <p><?php echo $new_guide['Title'] ?? 'No data'; ?></p>
+            <a href="guideline.html" class="dashboard-btn btn-guideline">
+                View Guidelines
+            </a>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Help Center</h2>
+            <p><?php echo $new_faq['Question'] ?? 'No data'; ?></p>
+            <a href="help_center.html" class="dashboard-btn btn-help">
+                View Help Articles
+            </a>
+        </div>
+
+    </div>
+
+</div>
         <!--Footer-->
         <footer>
-
-            <div class="footer-top">
-
-                <div class="logo">
-                    <img src="../image/icons/logo.png" alt="Furever Pet Home Logo">
-                    Furever Pet Home
-                </div>
-
-                <div class="footer-mid">
-                    <p>41700 Bandar Klang, Selangor, Malaysia</p>
-
-                    <p>
-                        <a href="mailto:infor@FureverPetHome.com">
-                            infor@FureverPetHome.com
-                        </a>
-                    </p>
-
-                    <p>+60 123-456-7890</p>
-                </div>
-
-                <div class="footer-links">
-
-                    <p><strong>Follow Us</strong></p>
-
-                    <p>
-                        <a href="https://www.facebook.com/FureverPetHome">
-                            <img src="../image/icons/facebook.png" alt="Facebook">
-                            Facebook
-                        </a>
-
-                        <a href="https://www.instagram.com/FureverPetHome">
-                            <img src="../image/icons/instagram.png" alt="Instagram">
-                            Instagram
-                        </a>
-
-                        <a href="https://www.x.com/FureverPetHome">
-                            <img src="../image/icons/x.png" alt="Twitter">
-                            X
-                        </a>
-                    </p>
-
-                </div>
-
+            <div class="footer-grid">
+            <div>
+                <div style="font-size:2rem;">🐾</div>
+                <div class="footer-brand-name">Furever Pet Home</div>
+                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
             </div>
-
+            <div>
+                <p class="footer-col-title">Platform</p>
+                <ul class="footer-links-list">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Analytics</a></li>
+                <li><a href="#">Pet Community</a></li>
+                <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Account</p>
+                <ul class="footer-links-list">
+                <li><a href="#">My Profile</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Contact</p>
+                <ul class="footer-links-list">
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
+                </ul>
+            </div>
+            </div>
             <div class="footer-bottom">
-                <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
+            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+            <span>Made with ❤️ for Bandar Klang</span>
             </div>
-
         </footer>
     </body>
         <script src="../js/script.js"></script>
