@@ -1,81 +1,98 @@
 <?php
-    //start session
-    session_start();
-    $org_id = $_SESSION['orgID'] ?? null; 
+session_start();
 
-    $conn = new mysqli("localhost", "root", "", "furever_pet_home");
+$conn = new mysqli("localhost", "root", "", "furever_pet_home");
+if ($conn->connect_error) {
+    die("connection failed: " . $conn->connect_error);
+}
 
-    if($conn->connect_error)
-    {
-        die("connection failed." . $conn->connect_error);
-    }
+/* =========================
+   TEST AS NGO (TEMPORARY SIMULATION)
+========================= */
+if (!isset($_SESSION['orgID'])) {
+    $_SESSION['orgID'] = "ORG01"; 
+}
 
-    //allowed filter, accept filter via GET param
-    $allowed = array('today', 'yesterday', 'this_week');
+$org_id = $_SESSION['orgID'];
 
-    $filter = isset($_GET['filter']) ? strtolower($_GET['filter']) : 'today';
+if (!$org_id) {
+    die("Unauthorized: NGO not logged in.");
+}
 
-    if(!in_array($filter, $allowed))
-    {
-        $filter = 'today';
-    }
+/* =========================
+   FILTER VALIDATION
+========================= */
+$allowed = ['today', 'yesterday', 'this_week', 'this_month', 'this_year'];
 
-    //build sql to restrict ngo pet
-    $where = "";
-    $param = array(); //to bind value
-    $types = ""; //type string for bind
+$filter = $_GET['filter'] ?? 'today';
+$filter = strtolower($filter);
 
-    //show pet owned by ngo (requested)
-    if($org_id)
-    {
-        $where .= " AND p.OrgID = ?";
-        $param[] = $org_id;
-        $types .= "s";
-    }
+if (!in_array($filter, $allowed)) {
+    $filter = 'today';
+}
 
-    //filter date
-    if($filter === 'yesterday')
-    {
-        $where .= " AND DATE(a.RequestDate)= DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
-    }
-    elseif($filter === 'this_week')
-    {
-        //week, monday start
-        $where .= " AND YEARWEEK(a.RequestDate, 1)= YEARWEEK(CURDATE(), 1)";
-    }
-    else
-    {
-        $where .= " AND DATE(a.RequestDate)= CURDATE()";
-    }
+/* =========================
+   BUILD QUERY
+========================= */
+$where = " WHERE p.OrgID = ? ";
+$params = [$org_id];
+$types = "s";
 
-    //query
-    $sql = "
-    SELECT 
-        a.AdoptionID, 
-        a.Status, 
-        a.RequestDate, 
-        p.PetID, 
-        p.PetName, 
-        r.ResidentID, 
-        r.FirstName, 
-        r.LastName
-    FROM adopt_application a
-    JOIN pet p ON a.PetID = p.PetID
-    JOIN resident r ON a.ResidentID = r.ResidentID
-    WHERE 1=1 $where
-    ORDER BY a.RequestDate DESC
-    ";
+/* =========================
+   DATE FILTER
+========================= */
+switch ($filter) {
 
-    //bind param only if have any
-    $stmt = $conn->prepare($sql);
+    case 'yesterday':
+        $where .= " AND DATE(a.RequestDate) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+        break;
 
-    if($types != "")
-    {
-        call_user_func_array(array($stmt, 'bind_param'), array_merge(array($types), $param));
-    }
+    case 'this_week':
+        $where .= " AND YEARWEEK(a.RequestDate, 1) = YEARWEEK(CURDATE(), 1)";
+        break;
 
-    $stmt->execute();
-    $result = $stmt->get_result();
+    case 'this_month':
+        $where .= " AND MONTH(a.RequestDate) = MONTH(CURDATE())
+                    AND YEAR(a.RequestDate) = YEAR(CURDATE())";
+        break;
+
+    case 'this_year':
+        $where .= " AND YEAR(a.RequestDate) = YEAR(CURDATE())";
+        break;
+
+    default:
+        $where .= " AND DATE(a.RequestDate) = CURDATE()";
+}
+
+/* =========================
+   SQL QUERY
+========================= */
+$sql = "
+SELECT 
+    a.AdoptionID,
+    a.Status,
+    a.RequestDate,
+    p.PetID,
+    p.PetName,
+    r.ResidentID,
+    r.FirstName,
+    r.LastName
+FROM adopt_application a
+JOIN pet p ON a.PetID = p.PetID
+JOIN resident r ON a.ResidentID = r.ResidentID
+$where
+ORDER BY a.RequestDate DESC
+";
+
+$stmt = $conn->prepare($sql);
+
+/* =========================
+   BIND PARAM (SAFE)
+========================= */
+$stmt->bind_param($types, ...$params);
+
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -90,32 +107,33 @@
 
 <body>
 
-<!--Logo-->
-<div class="bar">
+        <!-- LOGO and LOGIN -->
+        <nav class="navbar" id="navbar">
+        <div class ="navbar-top">
+            <a href="#" class="nav-logo">
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <span>Furever Pet Home</span>
+            </a>
+            <div class="nav-right">
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+            </div>
+        </div>
 
-    <div class="logo">
-        <img src="../image/icons/logo.png" alt="Logo">
-        <span>Furever Pet Home</span>
-    </div>
+        <!-- NAVIGATION -->
+        <div class="nav-links">
+            <a href="../HomePage(registed).html" class="nav-tab">🏠 Home</a>
+            <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
+            <a href="findapet.html" class="nav-tab">🔍 Find A Pet</a>
+            <a href="pet_community.html" class="nav-tab"> 🐾Pet Community</a>
+            <a href="help_center.php" class="nav-tab">❓ Help Center</a>
+            <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+            <a href="Report.html" class="nav-tab">🚨 Report</a>
+        </div>
+               
+        </nav>
 
-    <div class="login">
-        <a href="Profile.html">Profile</a>
-    </div>
 
-    <!--Navigation-->
-    <div class="nav">
-        <a href="HomePage.html" class="active">HOME</a>
-        <a href="Inbox.html">INBOX</a>
-        <a href="FindPet.html">FIND A PET</a>
-        <a href="PetCommunity.html">PET COMMUNITY</a>
-        <a href="RegisterPage.html">HELP CENTER</a>
-        <a href="Analytics.html">ANALYTICS</a>
-        <a href="Report.html">REPORT</a>
-    </div>
-
-</div>
-
-<!--Filter box-->
 <div class="filter-box">
     <label for="filter">Show:</label>
 
@@ -133,10 +151,18 @@
             This Week
         </option>
 
+        <option value="this_month" <?php echo ($filter=='this_month') ? 'selected' : ''; ?>>
+            This Month
+        </option>
+
+        <option value="this_year"  <?php echo ($filter == 'this_year') ? 'selected' : ''; ?>>
+            This Year
+        </option>
+
     </select>
 </div>
 
-<div class="ngo-inbox-container">
+<div class="ngo-inbox-container" >
 
     <div class="inbox-table-wrap">
 
@@ -154,7 +180,6 @@
             </thead>
 
             <tbody>
-
 
             <?php while($row = $result->fetch_assoc()) { 
 
@@ -225,12 +250,7 @@
                             View
                         </button>
 
-                        
-
                     </td>
-
-
-
 
                 </tr>
 
@@ -240,13 +260,11 @@
 
         </table>
 
-            <!-- RIGHT: DETAILS -->
             <div class="inbox-right" id="side-panel">
                 <div id="panel-content" class="panel-empty">
                     Click "View" on a request to see details here.
                 </div>
             </div>
-
 
     </div>
 
@@ -254,70 +272,56 @@
 
 <div class="inbox-container">
 
-    <!-- LEFT: TABLE -->
     <div class="inbox-left">
         <div class="inbox-table-wrap">
 
             <table class="inbox-table">
-                ...
-            </table>
+                </table>
 
         </div>
     </div>
 
 </div>
-<!--Footer-->
-<footer>
-
-    <div class="footer-top">
-
-        <div class="logo">
-            <img src="../image/icons/logo.png" alt="Furever Pet Home Logo">
-            Furever Pet Home
-        </div>
-
-        <div class="footer-mid">
-            <p>41700 Bandar Klang, Selangor, Malaysia</p>
-
-            <p>
-                <a href="mailto:infor@FureverPetHome.com">
-                    infor@FureverPetHome.com
-                </a>
-            </p>
-
-            <p>+60 123-456-7890</p>
-        </div>
-
-        <div class="footer-links">
-
-            <p><strong>Follow Us</strong></p>
-
-            <p>
-                <a href="https://www.facebook.com/FureverPetHome">
-                    <img src="../image/icons/facebook.png" alt="Facebook">
-                    Facebook
-                </a>
-
-                <a href="https://www.instagram.com/FureverPetHome">
-                    <img src="../image/icons/instagram.png" alt="Instagram">
-                    Instagram
-                </a>
-
-                <a href="https://www.x.com/FureverPetHome">
-                    <img src="../image/icons/x.png" alt="Twitter">
-                    X
-                </a>
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2026 FureverHome | Urban Pet Adoption & Community Management</p>
-    </div>
-
-</footer>
+ <footer>
+            <div class="footer-grid">
+            <div>
+                <div style="font-size:2rem;">🐾</div>
+                <div class="footer-brand-name">Furever Pet Home</div>
+                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+            </div>
+            <div>
+                <p class="footer-col-title">Platform</p>
+                <ul class="footer-links-list">
+                <li><a href="#">Find A Pet</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Community Board</a></li>
+                <li><a href="#">Analytics</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Account</p>
+                <ul class="footer-links-list">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">My Applications</a></li>
+                <li><a href="#">Favourites</a></li>
+                <li><a href="#">Inbox</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-col-title">Contact</p>
+                <ul class="footer-links-list">
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
+                </ul>
+            </div>
+            </div>
+            <div class="footer-bottom">
+            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+            <span>Made with ❤️ for Bandar Klang</span>
+            </div>
+        </footer>
 
 <script src="../js/script.js"></script>
 
