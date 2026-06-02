@@ -42,7 +42,7 @@ $requestDate = isset($row['RequestDate']) ? date("d/m/Y H:i", strtotime($row['Re
 
 
 <div class="applicant-details" data-current-id="<?= e($row['AdoptionID']) ?>">
-    <button onclick="closePanel()" style="float:right;margin:4px;">× Close</button>
+    <button class = "close-btn" onclick="closePanel()" style="float:right; margin:4px;">× Close</button>
     <h3>Applicant Details</h3>
     <p><strong>Request ID:</strong> <?= e($row['AdoptionID']) ?></p>
     <p><strong>Request Date:</strong> <?= e($requestDate) ?></p>
