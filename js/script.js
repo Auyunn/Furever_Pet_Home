@@ -208,36 +208,42 @@ if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
         panel.dataset.currentId = '';
     }
 
-    window.updateStatus = function(adoptionID, newStatus)
-    {
-        fetch('updateStatus.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: adoptionID, status: newStatus })
-        })
-        .then(r => {
-            if (!r.ok) throw new Error('Network response not ok');
-            return r.json();
-        })
-        .then(data => {
-            if (!data.ok) {
-                alert('Update failed: ' + (data.error || 'unknown'));
-                return;
-            }
 
-            // JANGAN row.remove() -- NGO still nampak row untuk Undo
-            window.updateRowBadge(adoptionID, newStatus);
-
-            const panel = document.getElementById('panel-content');
-            if (panel && panel.dataset.currentId === String(adoptionID)) {
-                window.viewApp(adoptionID);
-            }
-        })
-        .catch(e => {
-            console.error(e);
-            alert('Network error');
-        });
+window.rejectWithReason = function(adoptionID) {
+    let reason = prompt("Please enter a reason for rejection:");
+    if (reason !== null && reason.trim() !== "") {
+        window.updateStatus(adoptionID, 'Rejected', reason.trim());
     }
+}
+
+window.updateStatus = function(adoptionID, newStatus, reason = null) 
+{
+    fetch('updateStatus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: adoptionID, status: newStatus, reason: reason })
+    })
+    .then(r => {
+        if (!r.ok) throw new Error('Network response not ok');
+        return r.json();
+    })
+    .then(data => {
+        if (!data.ok) {
+            alert('Update failed: ' + (data.error || 'unknown'));
+            return;
+        }
+        window.updateRowBadge(adoptionID, newStatus);
+        const panel = document.getElementById('panel-content');
+        if (panel && panel.dataset.currentId === String(adoptionID)) {
+            window.viewApp(adoptionID);
+        }
+    })
+    .catch(e => {
+        console.error(e);
+        alert('Network error');
+    });
+}
+
 
     window.updateRowBadge = function(adoptionID, newStatus)
     {

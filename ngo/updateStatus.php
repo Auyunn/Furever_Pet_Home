@@ -12,6 +12,7 @@
     $input = json_decode(file_get_contents('php://input'), true);
     $id     = $input['id']     ?? null;
     $status = $input['status'] ?? null;
+    $reason = $input['reason'] ?? null;
 
     if (!$id || !$status) {
         http_response_code(400);
@@ -28,16 +29,12 @@
 
     try {
         $conn->begin_transaction();
+         $hide_pet = false; // default
 
-        $update = $conn->prepare("UPDATE adopt_application SET Status = ? WHERE AdoptionID = ?");
-        $update->bind_param("ss", $status, $id);
+        $update = $conn->prepare("UPDATE adopt_application SET Status = ?, Reason = ? WHERE AdoptionID = ?");
+        $update->bind_param("sss", $status, $reason, $id);
         if (!$update->execute()) throw new Exception($update->error);
         $update->close();
-
-    // tukar return value -- tak perlu hide_pet flag
-        $conn->commit();
-        echo json_encode(['ok' => true]);
-        exit;
 
         if ($status === 'Approved') {
             $set = $conn->prepare("
@@ -62,10 +59,10 @@
             if (!$rejectOthers->execute()) throw new Exception($rejectOthers->error);
             $rejectOthers->close();
         }
-
-        $conn->commit();
-        echo json_encode(['ok' => true, 'hide_pet' => $hide_pet]);
-        exit;
+    
+    $conn->commit();
+    echo json_encode(['ok' => true, 'hide_pet' => $hide_pet]);
+    exit;
 
     } catch (Exception $e) {
         $conn->rollback();

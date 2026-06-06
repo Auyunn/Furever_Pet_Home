@@ -6,9 +6,6 @@ if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
-/* =========================
-   TEST AS NGO (TEMPORARY SIMULATION)
-========================= */
 if (!isset($_SESSION['orgID'])) {
     $_SESSION['orgID'] = "ORG01"; 
 }
@@ -19,9 +16,6 @@ if (!$org_id) {
     die("Unauthorized: NGO not logged in.");
 }
 
-/* =========================
-   FILTER VALIDATION
-========================= */
 $allowed = ['today', 'yesterday', 'this_week', 'this_month', 'this_year'];
 
 $filter = $_GET['filter'] ?? 'today';
@@ -31,16 +25,10 @@ if (!in_array($filter, $allowed)) {
     $filter = 'today';
 }
 
-/* =========================
-   BUILD QUERY
-========================= */
 $where = " WHERE p.OrgID = ? ";
 $params = [$org_id];
 $types = "s";
 
-/* =========================
-   DATE FILTER
-========================= */
 switch ($filter) {
 
     case 'yesterday':
@@ -64,9 +52,6 @@ switch ($filter) {
         $where .= " AND DATE(a.RequestDate) = CURDATE()";
 }
 
-/* =========================
-   SQL QUERY
-========================= */
 $sql = "
 SELECT 
     a.AdoptionID,
@@ -85,12 +70,7 @@ ORDER BY a.RequestDate DESC
 ";
 
 $stmt = $conn->prepare($sql);
-
-/* =========================
-   BIND PARAM (SAFE)
-========================= */
 $stmt->bind_param($types, ...$params);
-
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -241,7 +221,7 @@ $result = $stmt->get_result();
                         </button>
 
                         <button class="btn-reject"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Rejected')">
+                            onclick="rejectWithReason('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Rejected')">
                             Reject
                         </button>
 
