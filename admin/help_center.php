@@ -3,10 +3,10 @@ session_start();
 include('../db_connect.php');
 
 //================ FETCH GUIDELINE DATA ============
-$guideline ="SELECT g.GuidelineID, g.Title, g.PetType, g.Description, g.Budget, o.OrgName AS OrganizationName
+$guideline ="SELECT g.GuidelineID, g.Title, g.PetType, g.Description, g.Budget, o.OrgName
             FROM guidelines g
             LEFT JOIN organization o ON g.OrgID= o.OrgID
-            ORDER BY g.GuidelineID ACS";
+            ORDER BY g.GuidelineID ASC";
 
 $result_guideline= mysqli_query($conn, $guideline);
 $total_guideline = mysqli_num_rows($result_guideline);
@@ -111,11 +111,11 @@ $total_faq = mysqli_num_rows($result_faq);
                         By: <?php echo htmlspecialchars($org_name);?>
                     </div>
 
-                    <div class="card-prew">
+                    <div class="card-preview">
                         <?php echo htmlspecialchars($row_guideline['Description']);?>
                     </div>
                     <div class="card-action">
-                        <button class="btn-view" onclick="viewGuideline(<?php echo $data_json; ?>"> View </button>
+                        <button class="btn-view" onclick="viewGuideline(<?php echo $data_json; ?>)"> View </button>
                     </div>
 
                 </div>
@@ -166,7 +166,7 @@ $total_faq = mysqli_num_rows($result_faq);
                     </div>
 
                     <div class="card-action">
-                        <button class="btn-view" onclick="viewFaq(<?php echo $data_json; ?>"> View </button>
+                        <button class="btn-view" onclick="viewFaq(<?php echo $data_json; ?>)"> View </button>
                     </div>
 
                 </div>

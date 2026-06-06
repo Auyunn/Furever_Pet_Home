@@ -25,12 +25,12 @@ function viewGuideline(data){
     updateBreadcrumb('Guideline',data.Title);
 
     var Information = '';
-    if(data.Budget || data.PetType || data.Organization){
+    if(data.Budget || data.PetType || data.OrgName){
         Information = `
         <div class= "meta-grid" style="margin-top: 16px;">
             <div class="meta-item">
                 <div class="meta-label">Organization</div>
-                <div class="meta-value">${escapeHTML(data.OrganizationName) || 'Unknown'}</div>
+                <div class="meta-value">${escapeHTML(data.OrgName) || 'Unknown'}</div>
             </div>
 
              <div class="meta-item">
@@ -49,11 +49,10 @@ function viewGuideline(data){
     document.getElementById('view-content').innerHTML=`
         <div class="view-header">
             <div class="view-header-left">
-                <div class= "icon-box">${escapeHTML(data.PetType)}</div>
                 <div>
                     <div class = "view-title">${escapeHTML(data.Title)}</div>
                     <div class="view-meta">
-                        ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrganizationName)|| 'Unknown'}
+                        ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrgName)|| 'Unknown'}
                     </div>
                 </div>
             </div>
@@ -78,7 +77,7 @@ function viewFaq(data){
             <div>
                 <div class = "view-title">${escapeHTML(data.Question)}</div>
                 <div class="view-meta">
-                    By: ${escapeHTML(data.OrganizationName) || 'Unknown'}
+                    By: ${escapeHTML(data.OrgName) || 'Unknown'}
                 </div>
             </div>
         </div>
@@ -101,7 +100,7 @@ function goBack(){
     document.getElementById('tabs').style.display = 'flex';
 
     var activeTab =  document.querySelector('.tab.active');
-    var tabName = activeTab ? activeTav.textContent.trim().toLowerCase() : 'guideline';
+    var tabName = activeTab ? activeTab.textContent.trim().toLowerCase() : 'guideline';
     document.getElementById('panel-' + tabName).classList.add('active');
 }
 
