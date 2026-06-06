@@ -76,22 +76,28 @@ CREATE TABLE `adopt_application` (
 -- Dumping data for table `adopt_application`
 --
 
-INSERT INTO `adopt_application` (`AdoptionID`, `ResidentID`, `PetID`, `Status`, `Reason`, `RequestDate`) VALUES
-('ADOP01', 'R0001', 'PET01', 'Approved', 'Mempunyai laman rumah pagar luas di Bayu Perdana untuk anjing bermain.', '2026-05-10 10:00:00'),
-('ADOP02', 'R0002', 'PET02', 'Approved', 'Ingin mencari teman kucing di rumah kondominium.', '2026-05-11 11:30:00'),
-('ADOP03', 'R0003', 'PET03', 'Pending', 'Sangat menyukai kucing baka parsi campuran.', '2026-05-20 09:15:00'),
-('ADOP04', 'R0004', 'PET04', 'Rejected', 'Gaji mencukupi tetapi waktu bekerja luar terlalu lama.', '2026-05-12 14:00:00'),
-('ADOP05', 'R0005', 'PET05', 'Submit', 'Anak-anak mahukan kucing peneman di rumah kampung.', '2026-05-23 16:45:00'),
-('ADOP06', 'R0006', 'PET06', 'Approved', 'Membela anjing untuk keselamatan banglo di Botanic.', '2026-05-14 08:00:00'),
-('ADOP07', 'R0007', 'PET07', 'Pending', 'Pernah membela kucing tabby sebelum ini.', '2026-05-22 12:00:00'),
-('ADOP08', 'R0008', 'PET08', 'Approved', 'Isteri saya seorang suri rumah dan boleh menjaga pet.', '2026-05-15 15:20:00'),
-('ADOP09', 'R0009', 'PET09', 'Rejected', 'Kawasan rumah terbuka, tidak sesuai untuk syarat pelepasan anjing.', '2026-05-16 10:10:00'),
-('ADOP10', 'R0010', 'PET10', 'Approved', 'Sangat berminat memelihara kucing baka tiga warna (calico).', '2026-05-17 11:00:00'),
-('ADOP11', 'R0011', 'PET11', 'Submit', 'Mencari kucing indoor untuk dipelihara sepenuhnya.', '2026-05-23 13:00:00'),
-('ADOP12', 'R0012', 'PET12', 'Pending', 'Menyediakan kawasan khas berteduh luar rumah yang selesa.', '2026-05-21 17:30:00'),
-('ADOP13', 'R0013', 'PET13', 'Submit', 'Peminat setia kucing berstokin putih (tuxedo).', '2026-05-23 14:15:00'),
-('ADOP14', 'R0014', 'PET14', 'Approved', 'Rumah sedia dipasang jaring keselamatan tingkap.', '2026-05-19 16:00:00'),
-('ADOP15', 'R0015', 'PET15', 'Pending', 'Mahu membawa kawan baru untuk anjing sedia ada di rumah.', '2026-05-22 18:00:00');
+INSERT INTO `adopt_application`
+(`AdoptionID`,`ResidentID`,`PetID`,`Status`,`Reason`,`RequestDate`)
+VALUES
+('ADOP01','R0001','PET01','Approved',NULL,'2026-05-10 10:00:00'),
+('ADOP02','R0002','PET02','Approved',NULL,'2026-05-11 11:30:00'),
+('ADOP03','R0003','PET03','Pending',NULL,'2026-05-20 09:15:00'),
+('ADOP04','R0004','PET04','Rejected',
+'Pemohon mempunyai komitmen kerja yang tinggi dan masa penjagaan haiwan adalah terhad.',
+'2026-05-12 14:00:00'),
+('ADOP05','R0005','PET05','Submit',NULL,'2026-05-23 16:45:00'),
+('ADOP06','R0006','PET06','Approved',NULL,'2026-05-14 08:00:00'),
+('ADOP07','R0007','PET07','Pending',NULL,'2026-05-22 12:00:00'),
+('ADOP08','R0008','PET08','Approved',NULL,'2026-05-15 15:20:00'),
+('ADOP09','R0009','PET09','Rejected',
+'Kawasan kediaman yang dinyatakan tidak memenuhi keperluan keselamatan untuk penempatan anjing.',
+'2026-05-16 10:10:00'),
+('ADOP10','R0010','PET10','Approved',NULL,'2026-05-17 11:00:00'),
+('ADOP11','R0011','PET11','Submit',NULL,'2026-05-23 13:00:00'),
+('ADOP12','R0012','PET12','Pending',NULL,'2026-05-21 17:30:00'),
+('ADOP13','R0013','PET13','Submit',NULL,'2026-05-23 14:15:00'),
+('ADOP14','R0014','PET14','Approved',NULL,'2026-05-19 16:00:00'),
+('ADOP15','R0015','PET15','Pending',NULL,'2026-05-22 18:00:00');
 
 -- --------------------------------------------------------
 
