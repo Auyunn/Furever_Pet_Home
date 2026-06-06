@@ -1,65 +1,130 @@
-let currentTab = "guideline";
+/*Tab Switch*/
 
-function statusHelp(status){
-   return `<span class="badge badge-${status}">${status === "live" ? "Live" : "Draft"}</span>`;
+function switchTab(tabName,button){
+
+    // Make sure all tab button and panel deactivate
+    document.querySelectorAll('.panel').forEach(function(panel){
+        panel.classList.remove('active');
+    });
+    document.querySelectorAll('.tab').forEach(function(tab){
+        tab.classList.remove('active');
+    });
+
+    // Selected tab and panel
+    document.getElementById('panel-' + tabName).classList.add('active');
+    button.classList.add('active');
+
+    //Show tab navigation
+    document.getElementById('breadcrumb').style.display ='none';
+    document.getElementById('tabs').style.display = 'flex';
 }
 
-function contentCard(data, containerId,countId, isGuideline){
-    document.getElementById(countId).textContent = data.length + " entries";
-    const content= document.getElementById(containerId);
+// -------------- VIEW DETAIL -----------------
+function viewGuideline(data){
 
-    if(data.length === 0){
-        content.innerHTML = `
-        <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
-        <strong> No found</strong>
-        <p> There are no data loaded yet. Please check back later.</p>
+    updateBreadcrumb('Guideline',data.Title);
+
+    var Information = '';
+    if(data.Budget || data.PetType || data.Organization){
+        Information = `
+        <div class= "meta-grid" style="margin-top: 16px;">
+            <div class="meta-item">
+                <div class="meta-label">Organization</div>
+                <div class="meta-value">${escapeHTML(data.OrganizationName) || 'Unknown'}</div>
+            </div>
+
+             <div class="meta-item">
+                <div class="meta-label">Pet Type</div>
+                <div class="meta-value">${escapeHTML(data.PetType)}</div>
+            </div>
+
+             <div class="meta-item">
+                <div class="meta-label">Budget</div>
+                <div class="meta-value">${data.Budget? 'RM ' + parseFloat(data.Budget).toFixed(2) : 'N/A'}
+                </div>
+            </div>
         </div>`;
-        return;
     }
 
-     content.innerHTML = data.map(entry => `
-        <div class="card">
-            <div class="card-thumb">${entry.icon ?? "📄"}</div>
-            <div class="card-body">
+    document.getElementById('view-content').innerHTML=`
+        <div class="view-header">
+            <div class="view-header-left">
+                <div class= "icon-box">${escapeHTML(data.PetType)}</div>
                 <div>
-                    <div class="card-top">
-                        <span class="card-title">${entry.title}</span>
-                        ${statusHelp(entry.status)}
+                    <div class = "view-title">${escapeHTML(data.Title)}</div>
+                    <div class="view-meta">
+                        ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrganizationName)|| 'Unknown'}
                     </div>
-                    <div class="card-meta">
-                        ${isGuideline ? "Section: " + entry.section : "Category: " + entry.category}
-                        &nbsp;·&nbsp; Updated ${entry.updated}
-                    </div>
-                    <div class="card-preview">${entry.preview}</div>
                 </div>
-                <div class="card-actions">
-                    <button class="btn-view" onclick="openView(${entry.id}, ${isGuideline})">👁 View</button>
+            </div>
+            <button class = "btn-back" onclick="goBack()"> Back </button>
+        </div>
+        <div class="view-body">
+            <div class = "section-label"> Details </div>
+            <div class ="body-text">${escapeHTML(data.Description)}</div>
+        </div>
+    `;
+
+    showDetailPanel();
+}
+
+function viewFaq(data){
+
+    updateBreadcrumb('FAQ',data.Question);
+
+    document.getElementById('view-content').innerHTML = `
+        <div class= "view-header">
+        <div class="view-header-left">
+            <div>
+                <div class = "view-title">${escapeHTML(data.Question)}</div>
+                <div class="view-meta">
+                    By: ${escapeHTML(data.OrganizationName) || 'Unknown'}
                 </div>
             </div>
         </div>
-    `).join("");
+         <button class = "btn-back" onclick="goBack()"> Back </button>
+        </div>
+
+        <div class = "view-body">
+            <div class = "section-label"> Answer </div>
+            <div class="body-text">${escapeHTML(data.Description)}</div>
+        </div>
+    `;
+    showDetailPanel();
 }
 
-/*open view* -- tak buat lagi tunggu php*/
 
-/* ---- go back ---- */
-function goBack() {
-    document.getElementById("tabs").style.display = "flex";
-    document.getElementById("panel-view").classList.remove("active");
-    document.getElementById("breadcrumb").style.display = "none";
-    document.getElementById("panel-" + currentTab).classList.add("active");
+function goBack(){
+    document.getElementById('breadcrumb').style.display = 'none';
+    document.getElementById('panel-view').classList.remove('active');
+
+    document.getElementById('tabs').style.display = 'flex';
+
+    var activeTab =  document.querySelector('.tab.active');
+    var tabName = activeTab ? activeTav.textContent.trim().toLowerCase() : 'guideline';
+    document.getElementById('panel-' + tabName).classList.add('active');
 }
 
-/* switch tab */
-function switchTab(tab, el) {
-    currentTab = tab;
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    el.classList.add("active");
-    document.getElementById("panel-guideline").classList.remove("active");
-    document.getElementById("panel-faq").classList.remove("active");
-    document.getElementById("panel-" + tab).classList.add("active");
+function updateBreadcrumb(tabName,itemName){
+    document.getElementById('breadcrumb').style.display = 'flex';
+    document.getElementById('breadcrumb-tab').textContent =  tabName;
+    document.getElementById('breadcrumb-title').textContent =  itemName;
 }
 
-contentCard([], "guideline-cards", "guideline-count", true);
-contentCard([], "faq-cards", "faq-count", false);
+function showDetailPanel(){
+     document.getElementById('tabs').style.display = 'none';
+     document.querySelectorAll ('.panel').forEach(function(panel){
+        panel.classList.remove('active');
+     });
+     document.getElementById('panel-view').classList.add('active');
+}
+
+function escapeHTML(text){
+     if (!text) return '';
+    return String(text)
+        .replace(/&/g,  '&amp;')
+        .replace(/</g,  '&lt;')
+        .replace(/>/g,  '&gt;')
+        .replace(/"/g,  '&quot;')
+        .replace(/'/g,  '&#039;');
+}
