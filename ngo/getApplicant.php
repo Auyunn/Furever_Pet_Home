@@ -62,9 +62,14 @@ $requestDate = isset($row['RequestDate']) ? date("d/m/Y H:i", strtotime($row['Re
     <p><strong>Status:</strong> <?= e($row['Status']) ?></p>
     <p><strong>Reason:</strong><br><?= nl2br(e($row['Reason'])) ?></p>
 
-    <div style="margin-top:12px">
-        <button class="btn-approve" onclick="updateStatus('<?= e($row['AdoptionID']) ?>','Approved')">Approve</button>
-        <button class="btn-reject" onclick="updateStatus('<?= e($row['AdoptionID']) ?>','Rejected')">Reject</button>
-    </div>
+    <button class="btn-approve"
+        onclick="updateStatus('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Approved')">
+        Approve
+    </button>
+
+    <button class="btn-reject"
+        onclick="rejectWithReason('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Rejected')">
+        Reject
+    </button>
 </div>
 
