@@ -1,14 +1,11 @@
 <?php
 
 
-    // Sila pastikan path sambungan pangkalan data anda betul
     include("../db_connect.php");
 
-    // Ambil input carian jika ada
     $search = $_GET['search'] ?? '';
 
     if ($search !== '') {
-        // SQL SEARCH BY KEYWORDS: Mencari sebarang soalan yang mengandungi kata kunci input
         $sql = "SELECT Question, Description FROM faq WHERE Question LIKE ?";
         $stmt = $conn->prepare($sql);
         $like = "%$search%";
@@ -16,10 +13,10 @@
         $stmt->execute();
         $result = $stmt->get_result();
         
-        // Flag TRUE jika tiada rekod sepadan ditemui dalam database
+        
         $no_match = ($result->num_rows === 0) ? true : false;
     } else {
-        // LANDED PAGE DEFAULT: Hanya panggil 4 FAQ teratas sahaja
+        
         $sql = "SELECT Question, Description FROM faq LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
