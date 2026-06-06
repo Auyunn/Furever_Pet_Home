@@ -78,12 +78,12 @@ $result_board = mysqli_query($conn, $query_board);
         <?php else: ?>
             <a href="../HomePage(unregistered).html" class="nav-tab">🏠 Home</a>
         <?php endif; ?>
-            <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
-            <a href="../findapet.html" class="nav-tab">🔍 Find A Pet</a>
-            <a href="pet_community.php" class="nav-tab"> 🐾Pet Community</a>
-            <a href="help_center.php" class="nav-tab">❓ Help Center</a>
-            <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
-            <a href="Report.html" class="nav-tab">🚨 Report</a>
+            <a href="inbox.php" class="nav-tab"> Inbox</a>
+            <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
+            <a href="pet_community.php" class="nav-tab"> Pet Community</a>
+            <a href="help_center.php" class="nav-tab"> Help Center</a>
+            <a href="../Analytics.html" class="nav-tab"> Analytics</a>
+            <a href="Report.html" class="nav-tab"> Report</a>
         </div>
 </nav>
 
