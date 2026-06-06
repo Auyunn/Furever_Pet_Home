@@ -6,7 +6,7 @@
     $search = $_GET['search'] ?? '';
 
     if ($search !== '') {
-        $sql = "SELECT Question, Description FROM faq WHERE Question LIKE ?";
+        $sql = "SELECT Title, Description FROM guidelines WHERE Title LIKE ?";
         $stmt = $conn->prepare($sql);
         $like = "%$search%";
         $stmt->bind_param("s", $like);
@@ -17,7 +17,7 @@
         $no_match = ($result->num_rows === 0) ? true : false;
     } else {
         
-        $sql = "SELECT Question, Description FROM faq LIMIT 4";
+        $sql = "SELECT Title, Description FROM guidelines LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -62,35 +62,35 @@
                
         </nav>
 
-         <section class="sub-navbar">
+        <section class="sub-navbar">
 
         <button class = "guidelines-btn" onclick="window.location.href='guidelines.php';">Guidelines</button>
         <button class = "faq-btn" onclick="window.location.href='help_center.php';">FAQ</button>
 
         </section>
-
+        
     <div class="search-container">
-        <form method="GET" action="help_center.php">
+        <form method="GET" action="guidelines.php">
             <input type="text" name="search" placeholder="Cari soalan anda di sini..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
     </div>
 
     <div class="help-center">
-        <h2><?php echo ($search !== '') ? 'Hasil Carian FAQ' : 'Soalan Lazim (FAQ)'; ?></h2>
+        <h2><?php echo ($search !== '') ? 'Hasil Carian Guidelines' : 'Guidelines'; ?></h2>
 
-        <ul class="faq-list">
+        <ul class="guidelines-list">
             <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
-                    echo "<li class='faq-item'>";
-                    echo "<strong class='faq-question'>Q: " . htmlspecialchars($row['Question']) . "</strong>";
-                    echo "<p class='faq-answer'>A: " . htmlspecialchars($row['Description']) . "</p>";
+                    echo "<li class='guidelines-item'>";
+                    echo "<strong class='guidelines-title'>Q: " . htmlspecialchars($row['Title']) . "</strong>";
+                    echo "<p class='guidelines-description'>A: " . htmlspecialchars($row['Description']) . "</p>";
                     echo "</li>";
                 }
             } else {
-                echo "<li class='faq-item' style='border-left: 4px solid var(--rose);'>";
-                echo "<p class='faq-answer'>Tiada maklumat FAQ ditemui bagi kata kunci ini.</p>";
+                echo "<li class='guidelines-item' style='border-left: 4px solid var(--rose);'>";
+                echo "<p class='guidelines-description'>Tiada maklumat Guidelines ditemui bagi kata kunci ini.</p>";
                 echo "</li>";
             }
             ?>

@@ -586,7 +586,6 @@ body {
   margin: 3rem auto 2rem auto;
   padding: 0 1rem;
   text-align: center;
-  margin-top: 17vh;
 }
 
 .search-container form {
@@ -618,6 +617,39 @@ body {
   background: var(--amber);
 }
 
+.sub-navbar {
+  margin-top: 120px;
+  display: flex;
+  gap: 15px; 
+  justify-content: center; 
+}
+
+.guidelines-btn, .faq-btn {
+  padding: 0.75rem 1.75rem; 
+  background: #ffffff; 
+  color: var(--deep-brown);
+  border: 2px solid var(--deep-brown); /*border outline*/
+  border-radius: 30px; 
+  cursor: pointer;
+  font-weight: 600; 
+  font-size: 0.95rem;
+  letter-spacing: 0.5px; /* Letter spacing for readability */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease; 
+}
+
+.guidelines-btn:hover, .faq-btn:hover {
+  background: var(--deep-brown); 
+  color: #ffffff; =
+  transform: translateY(-2px); /* button position when hovered */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.guidelines-btn:active, .faq-btn:active {
+  transform: translateY(1px); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 /* ── HELP CENTER / FAQ DISPLAY ── */
 .help-center {
   max-width: 800px;
@@ -636,11 +668,11 @@ body {
   text-align: center;
 }
 
-.faq-list {
+.faq-list, .guidelines-list {
   list-style: none;
 }
 
-.faq-item {
+.faq-item, .guidelines-item {
   background: #fff;
   padding: 1.2rem;
   border-radius: 12px;
@@ -649,14 +681,14 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-.faq-question {
+.faq-question, .guidelines-title {
   display: block;
   font-size: 1.05rem;
   color: var(--deep-brown);
   margin-bottom: 0.5rem;
 }
 
-.faq-answer {
+.faq-answer, .guidelines-description {
   font-size: 0.95rem;
   color: #555;
   line-height: 1.6;
