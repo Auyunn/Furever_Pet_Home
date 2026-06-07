@@ -19,7 +19,6 @@ function showTable(tableId) {
 // Edit account
 function editAccount(accountId) {
   alert("Editing account: " + accountId);
-  // kemudian boleh tambah modal atau form untuk edit
 }
 
 // Delete account row
@@ -34,7 +33,6 @@ function deleteAccount(accountId) {
 // Save account changes
 function saveAccount(accountId) {
   alert("Saving changes for: " + accountId);
-  // kemudian boleh sambung ke backend (PHP/MySQL atau API)
 }
 
 // Redirect ke Add Account page
