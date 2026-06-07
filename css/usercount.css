@@ -1,6 +1,6 @@
 /* Pastikan content turun bawah navbar */
 body {
-  padding-top: 80px; /* adjust ikut tinggi navbar */
+  padding-top: 100px; /* adjust ikut tinggi navbar */
 }
 
 /* Kotak Tab Users | NGOs di belah kiri */
