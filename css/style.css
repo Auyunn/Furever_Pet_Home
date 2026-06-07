@@ -640,7 +640,7 @@ body {
 
 .guidelines-btn:hover, .faq-btn:hover {
   background: var(--deep-brown); 
-  color: #ffffff; =
+  color: #ffffff; 
   transform: translateY(-2px); /* button position when hovered */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
 }
