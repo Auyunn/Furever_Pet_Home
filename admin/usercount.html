@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin - Users/NGOs</title>
-  <!-- Global design system -->
   <link rel="stylesheet" href="../css/base.css">
-  <!-- Page-specific styles -->
-  <link rel="stylesheet" href="../css/residentcount.css">
+  <link rel="stylesheet" href="../css/usecount.css">
 </head>
 <body>
 
@@ -32,48 +30,82 @@
   </div>
 </nav>
 
-<!-- Tab Buttons -->
-<div class="tab-buttons">
-  <button onclick="showTable('residents')">Users</button>
-  <button onclick="showTable('ngos')">NGOs</button>
+<!-- Toggle Box -->
+<div class="tab-box">
+  <button class="tab-btn active" onclick="showTable('residents')">Users</button>
+  <button class="tab-btn" onclick="showTable('ngos')">NGOs</button>
 </div>
 
-<!-- Residents Section -->
-<div id="residents" class="community-grid">
-  <div class="community-card" id="resident-1">
-    <div class="community-content">
-      <h3>John Doe</h3>
-      <p>📱 +60 12-3456789</p>
-      <p>📧 john@gmail.com</p>
-      <p>Status: Active</p>
-    </div>
-    <div class="community-actions">
-      <button onclick="editAccount('resident-1')">✏️</button>
-      <button onclick="deleteAccount('resident-1')">🗑️</button>
-      <button class="save-btn" onclick="saveAccount('resident-1')">💾</button>
-    </div>
-  </div>
+<!-- Residents Table -->
+<div id="residents" class="table-section">
+  <h2>Resident List</h2>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Operation</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="resident-1">
+        <td>John Doe</td>
+        <td>+60 12-3456789</td>
+        <td>john@gmail.com</td>
+        <td>Active</td>
+        <td>
+          <button onclick="editAccount('resident-1')">✏️</button>
+          <button onclick="deleteAccount('resident-1')">🗑️</button>
+        </td>
+        <td><button class="save-btn" onclick="saveAccount('resident-1')">💾 Save</button></td>
+      </tr>
+      <tr id="resident-2">
+        <td>Jane Smith</td>
+        <td>+60 13-9876543</td>
+        <td>jane@gmail.com</td>
+        <td>Inactive</td>
+        <td>
+          <button onclick="editAccount('resident-2')">✏️</button>
+          <button onclick="deleteAccount('resident-2')">🗑️</button>
+        </td>
+        <td><button class="save-btn" onclick="saveAccount('resident-2')">💾 Save</button></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<!-- NGOs Section -->
-<div id="ngos" class="community-grid" style="display:none;">
-  <div class="community-card" id="ngo-1">
-    <div class="community-content">
-      <h3>Animal Care NGO</h3>
-      <p>📱 +60 19-8765432</p>
-      <p>📧 ngo@gmail.com</p>
-      <p>Status: Inactive</p>
-    </div>
-    <div class="community-actions">
-      <button onclick="editAccount('ngo-1')">✏️</button>
-      <button onclick="deleteAccount('ngo-1')">🗑️</button>
-      <button class="save-btn" onclick="saveAccount('ngo-1')">💾</button>
-    </div>
-  </div>
+<!-- NGOs Table -->
+<div id="ngos" class="table-section" style="display:none;">
+  <h2>NGO List</h2>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Organization Name</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Operation</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="ngo-1">
+        <td>Animal Care NGO</td>
+        <td>+60 19-8765432</td>
+        <td>ngo@gmail.com</td>
+        <td>Active</td>
+        <td>
+          <button onclick="editAccount('ngo-1')">✏️</button>
+          <button onclick="deleteAccount('ngo-1')">🗑️</button>
+        </td>
+        <td><button class="save-btn" onclick="saveAccount('ngo-1')">💾 Save</button></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-
-<!-- Floating Add Button -->
-<button class="add-btn" onclick="goToAddPage()">+</button>
 
 <!-- Footer -->
 <footer>
@@ -115,6 +147,6 @@
   </div>
 </footer>
 
-<script src="../js/residentcount.js"></script>
+<script src="../js/usercount.js"></script>
 </body>
 </html>
