@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Users/NGOs</title>
+  <!-- Global design system -->
+  <link rel="stylesheet" href="../css/base.css">
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="../css/residentcount.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-top">
+    <a href="#" class="nav-logo">
+      <img src="../image/icons/logo.png" alt="Furever Pet Home">
+      <span>Furever Pet Home</span>
+    </a>
+    <div class="nav-right">
+      <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+      <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="dashboard.php" class="nav-tab">🏠 Dashboard</a>
+    <a href="admin.html" class="nav-tab active">✉️ Users/NGOs</a>
+    <a href="report.html" class="nav-tab">🚨 Report</a>
+    <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+    <a href="pet_communityadmin.html" class="nav-tab">🐾 Pet Community</a>
+    <a href="help_center.html" class="nav-tab">❓ Help Center</a>
+  </div>
+</nav>
+
+<!-- Tab Buttons -->
+<div class="tab-buttons">
+  <button onclick="showTable('residents')">Users</button>
+  <button onclick="showTable('ngos')">NGOs</button>
+</div>
+
+<!-- Residents Section -->
+<div id="residents" class="community-grid">
+  <div class="community-card" id="resident-1">
+    <div class="community-content">
+      <h3>John Doe</h3>
+      <p>📱 +60 12-3456789</p>
+      <p>📧 john@gmail.com</p>
+      <p>Status: Active</p>
+    </div>
+    <div class="community-actions">
+      <button onclick="editAccount('resident-1')">✏️</button>
+      <button onclick="deleteAccount('resident-1')">🗑️</button>
+      <button class="save-btn" onclick="saveAccount('resident-1')">💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- NGOs Section -->
+<div id="ngos" class="community-grid" style="display:none;">
+  <div class="community-card" id="ngo-1">
+    <div class="community-content">
+      <h3>Animal Care NGO</h3>
+      <p>📱 +60 19-8765432</p>
+      <p>📧 ngo@gmail.com</p>
+      <p>Status: Inactive</p>
+    </div>
+    <div class="community-actions">
+      <button onclick="editAccount('ngo-1')">✏️</button>
+      <button onclick="deleteAccount('ngo-1')">🗑️</button>
+      <button class="save-btn" onclick="saveAccount('ngo-1')">💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Add Button -->
+<button class="add-btn" onclick="goToAddPage()">+</button>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div style="font-size:2rem;">🐾</div>
+      <div class="footer-brand-name">Furever Pet Home</div>
+      <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Platform</p>
+      <ul class="footer-links-list">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Report Animal</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Pet Community</a></li>
+        <li><a href="#">Help Center</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Account</p>
+      <ul class="footer-links-list">
+        <li><a href="#">My Profile</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Contact</p>
+      <ul class="footer-links-list">
+        <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+        <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+        <li><a href="#">+60 123-456-7890</a></li>
+        <li><a href="#">Facebook · Instagram · X</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>©️ 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+    <span>Made with ❤️ for Bandar Klang</span>
+  </div>
+</footer>
+
+<script src="../js/residentcount.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+/* Fix overlap with navbar */
+body {
+  padding-top: var(--navbar-height);
+}
+
+/* Horizontal card layout */
+.community-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 40px;
+}
+
+.community-card {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.community-content {
+  flex: 1;
+}
+
+.community-content h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.community-content p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+/* Action buttons */
+.community-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.community-actions button {
+  border: none;
+  background: #e6e6e6;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.community-actions button:hover {
+  background: #fff;
+}
+
+/* Save button highlight */
+.community-actions .save-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.community-actions .save-btn:hover {
+  background: #45a049;
+}
+
+/* Floating Add Button */
+.add-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.add-btn:hover {
+  background: #e65c00;
+}
