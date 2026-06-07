@@ -12,10 +12,9 @@ function showTable(tableId) {
   }
 }
 
-// Edit account (placeholder for modal or inline editing)
+// Edit account
 function editAccount(accountId) {
   alert("Editing account: " + accountId);
-  // Later: open a modal or inline form for editing
 }
 
 // Delete account row
@@ -30,10 +29,4 @@ function deleteAccount(accountId) {
 // Save account changes
 function saveAccount(accountId) {
   alert("Saving changes for: " + accountId);
-  // Later: send AJAX request to backend (PHP/MySQL or C# API)
-}
-
-// Redirect to Add Account page
-function goToAddPage() {
-  window.location.href = 'add_account.html';
 }

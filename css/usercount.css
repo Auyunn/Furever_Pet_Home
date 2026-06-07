@@ -1,3 +1,35 @@
+/* Tab Box */
+.tab-box {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  background: #f5f5f5;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 30px;
+  border: none;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.tab-btn:hover {
+  background: #eee;
+}
+
+.tab-btn.active {
+  text-decoration: underline;
+  font-weight: 600;
+  background: #ddd;
+}
+
 /* Table Layout */
 .table-section {
   padding: 20px 40px;
@@ -46,36 +78,4 @@
 
 .save-btn:hover {
   background: #45a049;
-}
-
-/* Tab Box */
-.tab-box {
-  display: flex;
-  justify-content: center;
-  margin: 20px auto;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  width: fit-content;
-  background: #f5f5f5;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 10px 30px;
-  border: none;
-  background: #fff;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.tab-btn:hover {
-  background: #eee;
-}
-
-.tab-btn.active {
-  text-decoration: underline;
-  font-weight: 600;
-  background: #ddd;
 }
