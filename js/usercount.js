@@ -1,9 +1,13 @@
-// Toggle between Users and NGOs tables
+// Toggle antara Users dan NGOs tables
 function showTable(tableId) {
-  document.getElementById('residents').style.display = (tableId === 'residents') ? 'block' : 'none';
-  document.getElementById('ngos').style.display = (tableId === 'ngos') ? 'block' : 'none';
+  // sembunyikan kedua-dua section dulu
+  document.getElementById('residents').style.display = 'none';
+  document.getElementById('ngos').style.display = 'none';
 
-  // update active button styling
+  // tunjuk section yang dipilih
+  document.getElementById(tableId).style.display = 'block';
+
+  // update gaya active pada button
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   if (tableId === 'residents') {
     document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
@@ -15,6 +19,7 @@ function showTable(tableId) {
 // Edit account
 function editAccount(accountId) {
   alert("Editing account: " + accountId);
+  // kemudian boleh tambah modal atau form untuk edit
 }
 
 // Delete account row
@@ -29,4 +34,10 @@ function deleteAccount(accountId) {
 // Save account changes
 function saveAccount(accountId) {
   alert("Saving changes for: " + accountId);
+  // kemudian boleh sambung ke backend (PHP/MySQL atau API)
+}
+
+// Redirect ke Add Account page
+function goToAddPage() {
+  window.location.href = 'add_account.html';
 }
