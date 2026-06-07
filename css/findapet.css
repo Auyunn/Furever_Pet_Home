@@ -1,56 +1,136 @@
-/*search*/
-/* search */
+/* ===========================
+   SEARCH SECTION
+   =========================== */
 .search-section {
   display: flex;
   justify-content: center;
-  align-items: center;   /* vertically align items */
-  gap: 15px;             /* spacing between dropdowns and button */
+  align-items: center;   /* align dropdowns & button vertically */
+  gap: 15px;             /* spacing between elements */
   margin: 30px 0;
 }
 
 .search-section select {
   padding: 10px;
-  width: 180px;          /* keep dropdowns wide */
+  width: 180px;          /* dropdown width */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #fff;
 }
 
 .search-section .search-btn {
-  padding: 10px 20px;    /* make button smaller than dropdowns */
-  width: auto;           /* let button size adjust naturally */
-  cursor: pointer;       /* pointer cursor for button */
-  border-radius: 5px;    /* optional: rounded corners */
+  padding: 10px 20px;    /* button size */
+  width: auto;           /* auto width */
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #eee;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-/*pet grid*/
-.pet-grid 
-{
+.search-section .search-btn:hover {
+  background-color: #ddd; /* hover effect */
+}
+
+/* ===========================
+   PET GRID
+   =========================== */
+.pet-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   padding: 0 40px 40px;
 }
 
-.pet-card 
-{
-  background: #ddd;
+.pet-card {
+  background: #f9f9f9;
   padding: 20px;
   text-align: center;
   border: 1px solid #aaa;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
 }
 
-.pet-image 
-{
+.pet-card:hover {
+  transform: translateY(-5px); /* subtle hover lift */
+}
+
+.pet-image {
   height: 120px;
-  border: 2px solid black;
+  border: 2px solid #333;
+  margin-bottom: 10px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.pet-name {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.pet-card button {
+  padding: 8px 16px;
+  border-radius: 15px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pet-card button:hover {
+  background-color: #555;
+}
+
+/* ===========================
+   FOOTER
+   =========================== */
+footer {
+  background-color: #222;
+  color: #eee;
+  padding: 40px 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.footer-col-title {
+  font-weight: bold;
   margin-bottom: 10px;
 }
 
-.pet-name 
-{
-  margin: 10px 0;
+.footer-links-list {
+  list-style: none;
+  padding: 0;
 }
 
-.pet-card button 
-{
-  padding: 8px 16px;
-  border-radius: 15px;
+.footer-links-list li {
+  margin-bottom: 8px;
+}
+
+.footer-links-list a {
+  color: #eee;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links-list a:hover {
+  color: #ffcc00; /* highlight on hover */
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  border-top: 1px solid #444;
+  padding-top: 10px;
 }
