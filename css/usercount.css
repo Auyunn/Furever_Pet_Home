@@ -1,20 +1,20 @@
 /* Pastikan content turun bawah navbar */
 body {
-  padding-top: 80px; /* adjust ikut tinggi navbar, contoh 80px */
+  padding-top: 80px; /* adjust ikut tinggi navbar */
 }
 
-/* Kotak Tab Users | NGOs */
+/* Kotak Tab Users | NGOs di belah kiri */
 .tab-box {
   display: flex;
-  justify-content: center;
-  margin: 20px auto;
+  justify-content: flex-start; /* ubah dari center ke kiri */
+  margin: 20px 40px;           /* bagi margin kiri supaya ada ruang */
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
   width: fit-content;
   background: #f5f5f5;
   position: relative;
-  z-index: 1; /* pastikan nampak atas, bukan di belakang navbar */
+  z-index: 1;
 }
 
 .tab-btn {
@@ -58,7 +58,7 @@ body {
 }
 
 .admin-table th {
-  background: var(--warm-tan, #f0e0c0); /* fallback warna */
+  background: var(--warm-tan, #f0e0c0);
   color: var(--deep-brown, #4b2e2e);
   font-weight: 600;
 }
