@@ -62,12 +62,16 @@
 
 .tab-btn {
   flex: 1;
-  padding: 10px 20px;
+  padding: 10px 30px;
   border: none;
   background: #fff;
   color: #333;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.tab-btn:hover {
+  background: #eee;
 }
 
 .tab-btn.active {
