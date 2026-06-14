@@ -1,59 +1,31 @@
-        body{
-            /*font type*/
-            font-family: arial;
-            margin: 0;
-            background: #f5f5f5;
-        }
+
 /*-----------------------header---------------------------------------------*/
-        .header{
-            display: flex;
-            justify-content: space-between; /* space between logo and profile */
-            align-items: center; 
-            padding: 10px 20px;
-    
+        .page-header{
+           margin-top:var (--navbar-height,108px);
+            padding: 2.5rem 3rem 0.5rem;
         }
 
-        .logo{
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .profile{
-            width: 40px;
-            height: 40px;
-            background: black;
-            border-radius: 50%;
-        }
-        
- /*------------------------bar navigation--------------------------------------------*/
-        .navigation
-        {
-            display: flex;
-            width: 100%;
-            background: grey
-            
+        .page-title{
+            font-family:'DM Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--deep-brown, #825540);
+            margin: 0;
         }
 
-        .navigation a{
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            text-decoration: none;
-            background: #e6e6e6;
-            color: black;
-            border-right: 1px solid #ccc;
-        }
-        .navigation a:hover{
-            background: white;
-        }
-        .active{
-            color: #999;
-            font-weight: bold;
-        }       
 /*------------------------ main warpper -------------------------------------------*/
         .wrapper{
             margin:auto;
             width: 80%;
-            padding: 20px;
+            padding: 20px 0 60px;
+        }
+
+        .empty-state{
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            font-size: 1rem;
         }
 
 /*------------------------ content -------------------------------------------*/
@@ -62,43 +34,103 @@
             display: flex;
             align-items: center;
             background: white;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(130,85,64,0.1);
+            gap: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .img-wrapper{
+            flex-shrink: 0;
+            width: 100px;
+            height:80px;
+            border-radius:10px;
+            overflow: hidden;
+            background:#f0ece8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .img{
-            width : 45px;
-            height: 45px;
-            border-radius: 10px;
-
+            width : 100%;
+            height: 100%;
+            object-fit:cover;
         }
-        
+
         .content{
-            margin-left: 20px;
-            font-size: 14px;
-            flex: 1;
+            flex:1;
+            min-width:0;
+        }
+        .content h4{
+            margin: 0 0 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--deep-brown,#825540);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .org-name{
+            font-size: 0.82rem;
+            color: var(--amber,#d084c6);
+            margin: 2px 0;
+            font-weight: 500;
 
         }
 
-        .content p{
-            margin: 5px;
+        .date{
+            font-size:0.78rem;
+            color:#aaa;
+            margin: 2p 0;
         }
+
+        .post-preview{
+            font-size:0.85rem;
+            color: #666;
+            margin : 4px 0 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+/*------------------------ BUTTON ----------------*/
+        .actions{
+            display:flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
 
 /*----button------------------*/
 
         .actions{
             display: flex;
-            gap: 10px;
-            font-size: 18px;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0;
         }
 
-        .view, .delete{
+        .btn-view, .btn-delete{
             cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            padding: 6px;
+            border-radius: 8px;
         }
 
-        .view:hover, .delete:hover{
-            opacity: 0.7;
+        .btn-view:hover{
+            background: rgba(130,85,64,0.1);
+        }
+
+        .btn-delete:hover{
+            background: rgba(204,0,0,0.1);
         }
 
 /*------ View -------*/
@@ -121,38 +153,43 @@
 
         .modal{
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
+            border-radius: 14px;
+            width: 520px;
+            max-height: 80vh;
             max-width: 90%;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
         }
 
         .modal-header{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            padding: 18px 24px;
+            border-bottom: 1px solid #f0ece8;
         }
 
         .modal-header h3{
             margin: 0;
-            font-size: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--deep-brown, #825540);
         }
         .modal-close{
             cursor: pointer;
-            font-size: 18px;
+            font-size: 1.1rem;
             color: #999;
         }
         .modal-close:hover{
-            color: #333;
+            color: #555;
         }
 
-        .modal-img{
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 10px;
+        .modal-body
+        {
+             padding    : 20px 24px;
+            overflow-y : auto;
+            flex       : 1;
         }
 
         .modal-body p{
@@ -161,40 +198,142 @@
             color: #555;
         }
 
+        .modal-loading {
+            text-align : center;
+            color      : #aaa;
+            padding    : 40px 0;
+        }
+
+        .modal-error {
+            text-align : center;
+            color      : #cc0000;
+            padding    : 20px 0;
+        }
+
+        .detail-img {
+            width         : 100%;
+            height        : 200px;
+            object-fit    : cover;
+            border-radius : 10px;
+            margin-bottom : 16px;
+        }
+
+        .detail-meta { margin-bottom: 14px; }
+
+        .detail-meta p {
+            font-size   : 0.85rem;
+            color       : #555;
+            margin      : 4px 0;
+            line-height : 1.5;
+        }
+
+        .detail-meta strong { color: var(--deep-brown, #825540); }
+
+        .detail-content-text {
+            font-size     : 0.9rem;
+            color         : #444;
+            line-height   : 1.7;
+            margin-bottom : 20px;
+            padding       : 12px 14px;
+            background    : #faf8f5;
+            border-left   : 3px solid var(--deep-brown, #825540);
+            border-radius : 0 8px 8px 0;
+        }
+/*-------------Comment-----------------------*/
+        .comment-section h5{
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #aaa;
+            margin: 0 0 12px;
+        }
+
+       .comment-item {
+    padding       : 10px 12px;
+    background    : #f9f7f4;
+    border-radius : 8px;
+    margin-bottom : 8px;
+    border        : 1px solid rgba(130,85,64,0.07);
+}
+
+    .comment-item.is-reply {
+        margin-left : 20px;
+        background  : #f3f0ff;
+    }
+
+    .comment-meta {
+        display         : flex;
+        justify-content : space-between;
+        margin-bottom   : 4px;
+    }
+
+    .comment-user {
+        font-size  : 0.78rem;
+        font-weight: 600;
+        color      : var(--deep-brown, #825540);
+    }
+
+    .comment-date { font-size: 0.75rem; color: #bbb; }
+
+    .comment-text {
+        font-size   : 0.85rem;
+        color       : #555;
+        line-height : 1.5;
+        margin      : 0;
+    }
+
+    .reply-label  { font-size: 0.72rem; color: #aaa; margin-bottom: 4px; }
+    .no-comments  { font-size: 0.85rem; color: #bbb; text-align: center; padding: 16px 0; }
+
 /*----- Confrimation -------*/
 
         .confirm-box{
             background: white;
-            padding: 20px;
+            padding: 32px 28px 24px;
             border-radius: 10px;
             width: 300px;
             max-width: 90%;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .confrim-icon{
+            font-size: 2.2rem;
+            margin-bottom:14px;
         }
 
         .confirm-box p{
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-size: 14px;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .confrim-sub{
+            font-size: 0.9rem;
+            color: #aaa;
+            display: block;
+            margin-bottom: 6px;
         }
 
         .confirm-buttons{
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 12px;
         }
 
         .cancel{
-            padding: 8px 16px;
+            padding: 9px 20px;
             border: 1px solid #ccc;
             background: white;
             border-radius: 5px;
             cursor: pointer;
-            font-family: arial;
-            font-size:13px;
+            font-size:0.88rem;
+            color: #555;
         }
 
         .cancel:hover{
-            background: #f0f0f0;
+            background: #f5f5f5;
         }
 
         .confirm{
@@ -204,8 +343,8 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
-            font-family: arial;
-            font-size:13px;
+            font-weight: 600;
+            font-size:0.88rem;
         }
         .confirm:hover{
             background: #990000;
