@@ -156,9 +156,16 @@ while($row = $result_boards->fetch_assoc()){
                 </div>
 
                 <div class="actions">
-                    <button class = "btn-view" title="View detail" onclick="viewPost('<?= htmlspecialchars($board['BoardID']) ?>')">✏️</button>
-                    <button class="btn-delete" title="Delete post" onclick="confirmDelete('<?= htmlspecialchars($board['BoardID']) ?>')">🗑️</button>
-                </div>
+    
+                <button class="btn-view" onclick="viewPost('<?= htmlspecialchars($board['BoardID']); ?>')" title="View Detail">
+                    ✏️
+                </button>
+                
+                <button class="btn-delete" onclick="confirmDelete('<?= htmlspecialchars($board['BoardID']); ?>')" title="Delete Post">
+                    🗑️
+                </button>
+
+            </div>
             </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -167,27 +174,26 @@ while($row = $result_boards->fetch_assoc()){
 <!------------- view detail--------------->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
         <div class="modal" onclick="event.stopPropagation()">
-            // title and close button
             <div class="modal-header">
                 <h3 id="modal-title">Post Detail</h3>
                 <span class="modal-close" onclick="closeModal()">✕</span>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modal-body">
                 <div class="modal-loading"></div>
             </div>
         </div>
     </div>
 
 <!------------ display confrimation---->
-    <div class="modal-overlay" id="confrim-overlay">
-        <div class="confrim-box" onclick="event.stopPropagation()">
-            <div class="confrim-icon">🗑️</div>
+    <div class="modal-overlay" id="confirm-overlay">
+        <div class="confirm-box" onclick="event.stopPropagation()">
+            <div class="confirm-icon">🗑️</div>
             <p>Are you sure you want to delete this post?
-                <span class="confrim-sub"> All data related to this post will be permanently deleted.</span>
+                <span class="confirmm-sub"> All data related to this post will be permanently deleted.</span>
             </p>
         
             <div class="confirm-buttons">
-                <button class="confirm" onclick="confirmDelete()">Confirm</button>
+                <button class="confirm" onclick="doDelete()">Confirm</button>
                 <button class="cancel" onclick="cancelDelete()">Cancel</button>
             </div>
         </div>

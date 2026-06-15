@@ -147,10 +147,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
         }
 
         .modal-overlay.open{
@@ -158,14 +158,15 @@
         }
 
         .modal{
-            background: white;
-            border-radius: 14px;
-            width: 520px;
-            max-height: 80vh;
-            max-width: 90%;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+           background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh; 
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: none
         }
 
         .modal-header{
@@ -193,9 +194,10 @@
 
         .modal-body
         {
-            padding    : 20px 24px;
+            padding    : 20px;
             overflow-y : auto;
             flex       : 1;
+            background: #ffffff;
         }
 
         .modal-body p{
@@ -303,7 +305,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .confrim-icon{
+        .confirm-icon{
             font-size: 2.2rem;
             margin-bottom:14px;
         }
@@ -315,7 +317,7 @@
             line-height: 1.5;
         }
 
-        .confrim-sub{
+        .confirm-sub{
             font-size: 0.9rem;
             color: #aaa;
             display: block;
