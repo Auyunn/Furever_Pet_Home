@@ -1,15 +1,20 @@
 
 /*-----------------------header---------------------------------------------*/
         .page-header{
-           margin-top:var (--navbar-height,108px);
-            padding: 2.5rem 3rem 0.5rem;
+            margin-top: 140px;
+            padding: 1.5rem 0 0.5rem;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+            text-align: center;
         }
 
         .page-title{
             font-family:'DM Sans', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
+            font-size: 32px;
+            font-weight:  800;
+            letter-spacing: -0.03em;
             color: var(--deep-brown, #825540);
             margin: 0;
         }
@@ -33,13 +38,14 @@
         .box{
             display: flex;
             align-items: center;
-            background: white;
-            padding: 16px 20px;
-            margin-bottom: 16px;
+            background-color: #FDFDFB;
+            padding: 12px 20px;
+            margin-bottom: 12px;
             border-radius: 12px;
             border: 1px solid rgba(130,85,64,0.1);
             gap: 16px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            height: 90%;
         }
         .img-wrapper{
             flex-shrink: 0;
@@ -65,13 +71,17 @@
         }
         .content h4{
             margin: 0 0 4px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--deep-brown,#825540);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
+
+        .meta-info{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
 
         .org-name{
             font-size: 0.82rem;
@@ -84,36 +94,22 @@
         .date{
             font-size:0.78rem;
             color:#aaa;
-            margin: 2p 0;
+            margin: 2px 0;
         }
 
         .post-preview{
-            font-size:0.85rem;
+            font-size:0.88rem;
             color: #666;
             margin : 4px 0 0;
             line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp:2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+           
         }
-
 /*------------------------ BUTTON ----------------*/
         .actions{
             display:flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 8px;
             flex-shrink: 0;
-        }
-
-
-/*----button------------------*/
-
-        .actions{
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 0;
         }
 
         .btn-view, .btn-delete{
@@ -122,13 +118,23 @@
             border: none;
             font-size: 1.1rem;
             padding: 6px;
-            border-radius: 8px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
         }
-
+        .btn-view {
+            background: #fdf5ef;
+        }
         .btn-view:hover{
             background: rgba(130,85,64,0.1);
         }
-
+        .btn-delete {
+            background: #fdeaea;
+        }
         .btn-delete:hover{
             background: rgba(204,0,0,0.1);
         }
@@ -187,7 +193,7 @@
 
         .modal-body
         {
-             padding    : 20px 24px;
+            padding    : 20px 24px;
             overflow-y : auto;
             flex       : 1;
         }
@@ -249,12 +255,12 @@
         }
 
        .comment-item {
-    padding       : 10px 12px;
-    background    : #f9f7f4;
-    border-radius : 8px;
-    margin-bottom : 8px;
-    border        : 1px solid rgba(130,85,64,0.07);
-}
+            padding       : 10px 12px;
+            background    : #f9f7f4;
+            border-radius : 8px;
+            margin-bottom : 8px;
+            border        : 1px solid rgba(130,85,64,0.07);
+        }
 
     .comment-item.is-reply {
         margin-left : 20px;

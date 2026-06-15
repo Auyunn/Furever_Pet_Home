@@ -1,15 +1,15 @@
 <?php
 session_start();
 include('../db_connect.php');
-if(!isset($_SESSION['admin_id'])){
-    header("Location: admin_login.php");
+/*if(!isset($_SESSION['admin_id'])){
+    header("Location: login.php");
     exit();
 }
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: admin_login.php");
+    header("Location: login.php");
     exit();
 }
-
+*/
 if($_SERVER['REQUEST_METHOD']=== 'POST'){
     header('Content-Type: application/json');
     $action = $_POST['action']?? '';
@@ -22,9 +22,9 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
         }
 
         $sql_board = "SELECT b.BoardID, b.Title, b.Content, b.Photo, b.Date, b.OrgID, o.OrgName
-        FROM board b
+        FROM community_board b
         LEFT JOIN organization o ON b.OrgID = o.OrgID
-        WHERE b.BoardID = ' ". $boardID . "'";
+        WHERE b.BoardID = '". $boardID . "'";
         $result_board = mysqli_query($conn, $sql_board);
         $post = mysqli_fetch_assoc($result_board);
         if(!$post){
@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
         FROM comment c
         LEFT JOIN resident r ON c.ResidentID = r.ResidentID
         LEFT JOIN comment c2 ON c.ReplyID = c2.CommentID
-        WHERE c.BoardID = ' ". $boardID . "'
+        WHERE c.BoardID = '". $boardID . "'
         ORDER BY c.Date ASC";
         $result_comments = mysqli_query($conn, $sql_comments);
 
@@ -63,10 +63,10 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
         }
 
         //Delete all comments that related to the board
-        $sql_delete_comments = "DELETE FROM comment WHERE BoardID = ' ". $boardID . "'";
+        $sql_delete_comments = "DELETE FROM comment WHERE BoardID = '". $boardID . "'";
         mysqli_query($conn, $sql_delete_comments);
         //Delete the board
-        $sql_delete_board = "DELETE FROM board WHERE BoardID = ' ". $boardID. "'";
+        $sql_delete_board = "DELETE FROM community_board WHERE BoardID = '". $boardID. "'";
         mysqli_query($conn, $sql_delete_board);
 
         echo json_encode(['success' => true]);
@@ -79,7 +79,7 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
 
 // Load all boards
 $sql_posts = "SELECT b.BoardID, b.Title, b.Content, b.Photo, b.Date, b.OrgID, o.OrgName
-FROM board b
+FROM community_board b
 LEFT JOIN organization o ON b.OrgID = o.OrgID
 ORDER BY b.Date DESC";
 $result_boards = $conn->query($sql_posts);
@@ -119,7 +119,7 @@ while($row = $result_boards->fetch_assoc()){
             <a href=" " class="nav-tab"> Users/NGOs</a>
             <a href=" " class="nav-tab"> Report</a>
             <a href="../Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="pet_communityadmin.html" class="nav-tab">  Pet Community</a>
+            <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
             <a href="help_center.html" class="nav-tab"> Help Center</a>
         </div>
 </nav>
@@ -135,26 +135,26 @@ while($row = $result_boards->fetch_assoc()){
          <?php else: ?>
             <?php foreach ($boards as $board): ?>
             <div class ="box" id="post-<?= htmlspecialchars($board['BoardID'])?>">
-                <div class="img"-wrapper>
+                <div class="img-wrapper">
                 <?php if(!empty($board['Photo'])): ?>
                     <img src="../image/pet_community/<?= htmlspecialchars($board['Photo']) ?>" 
                     alt="<?= htmlspecialchars($board['Title']) ?>" class="img">
                 <?php endif; ?>
                 </div>
 
-                //Middle content
+        
                 <div class = "content">
                     <h4><?= htmlspecialchars($board['Title']) ?></h4>
-                    <p class ="org-name">
-                        <?= htmlspecialchars($board['OrgName'] ?? $board['OrgID']) ?>
-                    </p>
-                    <p class="date"><?= date('d M Y, g:i A', strtotime($board['Date'])) ?></p>
                     <p class="post-preview">
                         <?= htmlspecialchars(mb_substr($board['Content'], 0, 100)) ?>...
                     </p>
+                    
+                    <div class="meta-info">
+                        <span class="org-name"><?= htmlspecialchars($board['OrgName'] ?? $board['OrgID']) ?></span>
+                        <span class="date">• <?= date('d M Y, g:i A', strtotime($board['Date'])) ?></span>
+                    </div>
                 </div>
 
-                //Action buttons
                 <div class="actions">
                     <button class = "btn-view" title="View detail" onclick="viewPost('<?= htmlspecialchars($board['BoardID']) ?>')">✏️</button>
                     <button class="btn-delete" title="Delete post" onclick="confirmDelete('<?= htmlspecialchars($board['BoardID']) ?>')">🗑️</button>
@@ -164,7 +164,7 @@ while($row = $result_boards->fetch_assoc()){
         <?php endif; ?>
     </div>
 
-// View detail
+<!------------- view detail--------------->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
         <div class="modal" onclick="event.stopPropagation()">
             // title and close button
@@ -178,14 +178,14 @@ while($row = $result_boards->fetch_assoc()){
         </div>
     </div>
 
-// Confirmation delete
+<!------------ display confrimation---->
     <div class="modal-overlay" id="confrim-overlay">
         <div class="confrim-box" onclick="event.stopPropagation()">
             <div class="confrim-icon">🗑️</div>
             <p>Are you sure you want to delete this post?
                 <span class="confrim-sub"> All data related to this post will be permanently deleted.</span>
             </p>
-            //Action buttons
+        
             <div class="confirm-buttons">
                 <button class="confirm" onclick="confirmDelete()">Confirm</button>
                 <button class="cancel" onclick="cancelDelete()">Cancel</button>
