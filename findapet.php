@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../db_connect.php');
+include('db_connect.php');
 
 // ---------------------------------------------------------
 // Read filters submitted from the search form (GET so the
@@ -62,7 +62,7 @@ while ($row = $shelterResult->fetch_assoc()) {
 }
 
 // NOTE: adjust this if your pet photos live in a different folder
-$photoFolder = "../image/pet/";
+$photoFolder = "image/pet/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,8 +70,8 @@ $photoFolder = "../image/pet/";
         <meta charset="UTF-8">
         <title> Find A Pet </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/base.css">
-        <link rel="stylesheet" href="../css/findapet.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/findapet.css">
     </head>
 
     <!--body-->
@@ -80,7 +80,7 @@ $photoFolder = "../image/pet/";
         <!--logo and profile-->
         <div class="navbar-top">
             <a href="#" class="nav-logo">
-            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <img src="image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
@@ -146,7 +146,12 @@ $photoFolder = "../image/pet/";
                         <?php endif; ?>
                     </div>
                     <p class="pet-name"><?= htmlspecialchars($pet['PetName']) ?></p>
-                    <button onclick="window.location.href='pet_detail.php?id=<?= urlencode($pet['PetID']) ?>'">DETAILS</button>
+                    <ul class="pet-info">
+                        <li><span class="pet-info-label">Breed:</span> <?= htmlspecialchars($pet['Breed']) ?></li>
+                        <li><span class="pet-info-label">Age:</span> <?= htmlspecialchars($pet['Age']) ?></li>
+                        <li><span class="pet-info-label">Gender:</span> <?= htmlspecialchars($pet['Gender']) ?></li>
+                        <li><span class="pet-info-label">Location:</span> <?= htmlspecialchars($pet['Location']) ?></li>
+                    </ul>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>
