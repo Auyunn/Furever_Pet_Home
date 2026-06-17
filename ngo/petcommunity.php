@@ -78,7 +78,7 @@ while ($row = $postResult->fetch_assoc()) {
 }
 $stmt->close();
 
-
+/*test*/
 /* ============================================================
    FETCH COMMENTS for those posts (read-only display)
    comment columns: CommentID, BoardID, ResidentID, Content, Date, ReplyID
