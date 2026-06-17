@@ -147,6 +147,7 @@ $photoFolder = "image/pet/";
                     </div>
                     <p class="pet-name"><?= htmlspecialchars($pet['PetName']) ?></p>
                     <ul class="pet-info">
+                        <li><span class="pet-info-label">Type:</span> <?= htmlspecialchars($pet['PetType']) ?></li>
                         <li><span class="pet-info-label">Breed:</span> <?= htmlspecialchars($pet['Breed']) ?></li>
                         <li><span class="pet-info-label">Age:</span> <?= htmlspecialchars($pet['Age']) ?></li>
                         <li><span class="pet-info-label">Gender:</span> <?= htmlspecialchars($pet['Gender']) ?></li>
