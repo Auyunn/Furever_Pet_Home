@@ -1,6 +1,4 @@
 <?php
-
-
     include("../db_connect.php");
 
     $search = $_GET['search'] ?? '';
