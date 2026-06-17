@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "db_connect.php";
+require_once "../db_connect.php"; // petcommunity.php is in /ngo, db_connect.php is one level up in project root
 
 /* ============================================================
    CURRENT NGO (logged-in organization)
@@ -113,7 +113,7 @@ if (!empty($posts)) {
 <head>
 <meta charset="UTF-8">
 <title>Pet Community | Furever Pet Home</title>
-<link rel="stylesheet" href="petcommunityngo.css">
+<link rel="stylesheet" href="../css/petcommunityngo.css">
 </head>
 <body>
 
