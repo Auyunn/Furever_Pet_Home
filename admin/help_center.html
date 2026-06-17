@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Help Center</title>
+    <link rel="stylesheet" href="helpCenter.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class ="header">
+        <div class=" logo"> Furever Pet Home</div>
+        <div class="profile"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="#">DASHBOARD</a>
+        <a href="#">USERS/NGOS</a>
+        <a href="#"> REPORTS</a>
+        <a href="#">ANALYTICS</a>
+        <a href="#">PET COMMUNITY</a>
+        <a href="#" class="active">HELP CENTER</a>
+    </div>
+
+    <div class="main">
+        <div class="breadcrumb" id="breadcrumb" style="display:none;">
+            <span class="crumb" onclick="goBack()">Help Center</span>
+            <span>,</span>
+            <span class="crumb" id="breadcrumb-tab" onclick="goBack()"></span>
+            <span>,</span>
+            <span class="crumb-current" id="breadcrumb-title"></span>
+        </div>
+
+        <div class="tabs" id="tabs">
+            <button class="tab active" onclick="switchTab('guideline', this)">Guideline</button>
+            <button class="tab" onclick="switchTab('faq', this)">FAQ</button>
+        </div>
+
+        <div id="panel-guideline" class="panel active">
+            <div class="section-header">
+                <span class="section-title">Guidelines</span>
+                <span class="count-pill" id="guideline-count">0  entries</span>
+            </div>
+            <div class="card-list" id="guideline-cards"></div>
+        </div>
+
+        <div id="panel-faq" class="panel">
+                <div class="section-header">
+                    <span class="section-title">Frequently Asked Questions</span>
+                    <span class="count-pill" id="faq-count">0 entries</span>
+                </div>
+                <div class="card-list" id="faq-cards"></div>
+        </div>
+
+        <div id="panel-view" class="panel">
+            <div class="view-card" id="view-content"></div>
+        </div>
+    </div>
+
+    <script src="helpCenter.js"></script>
+</body>    
+</html>
