@@ -13,7 +13,7 @@ require_once "../db_connect.php"; // petcommunity.php is in /ngo, db_connect.php
    being logged in. REMOVE the fallback block once auth exists.
 ============================================================ */
 if (!isset($_SESSION['org_id'])) {
-    $_SESSION['org_id'] = "ORG01"; // TEMP placeholder - remove after login is built
+    $_SESSION['org_id'] = "ORG01"; 
 }
 $currentOrgID = $_SESSION['org_id'];
 
