@@ -35,6 +35,10 @@
   color: #fff;
 }
 
+.wrapper {
+  margin-top: var(--navbar-height);
+}
+
 /* ===========================
    PET GRID
    =========================== */
