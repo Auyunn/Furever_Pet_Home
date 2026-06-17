@@ -2,10 +2,9 @@
 
     include ("../db_connect.php");
     $search =$_GET['search'] ?? '';
-    $category = $_GET['category'] ?? 'all';
-
+    
     if ($search !== ''){
-        $sql = "SELECT Question , Description, Category FROM faq WHERE Question LIKE ?";
+        $sql = "SELECT Question , Description, FROM faq WHERE Question LIKE ?";
         $stmt = $conn->prepare($sql);
         $like = "%$search%";
         $stmt ->bind_param("s", $like ,$like) ;
@@ -16,19 +15,10 @@
 
     }
 
-    else if ($category !== 'all') {
-        $sql = "SELECT Question , Description, Category FROM faq WHERE Category = ? ";
-        $stmt = $conn->prepare($sql);
-        $stmt ->bind_param("s", $category );
-        $stmt ->execute();
-        $result = $stmt->get_result();
-
-        $no_match = ($result->num_rows ===0) ;
-    }
 
     else {
 
-    $sql = "SELECT Question , Description, Category FROM faq ";
+    $sql = "SELECT Question , Description, FROM faq ";
     $stmt = $conn->prepare($sql);
     $stmt ->bind_param("s", $category);
     $stmt ->execute();
