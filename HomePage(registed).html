@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Furever Pet Home – Dashboard</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/HomePage(registed).css">
+<link rel="stylesheet" href="css/HomePage(registed).css">>
 </head>
 <body>
 
@@ -22,29 +21,22 @@
 
 <!-- ── NAVBAR ── -->
 <nav class="navbar" id="navbar">
-  <!--logo and profile-->
-  <div class ="navbar-top">
-    <a href="#" class="nav-logo">
-      <img src="image/icons/logo.png" alt="Furever Pet Home">
-      <span>Furever Pet Home</span>
-    </a>
-    <div class="nav-right">
-      <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-      <div class="avatar" title="My Profile">AT</div>
-    </div>
+  <a href="#" class="nav-logo">
+    <div class="paw">🐾</div>
+    <span>Furever Pet Home</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#pets">Find A Pet</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#dashboard">My Activity</a></li>
+    <li><a href="#">Inbox</a></li>
+    <li><a href="#">Report</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="notif-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+    <div class="avatar" title="My Profile">AT</div>
   </div>
-
-  <!---Tab Navigation-->
-  <div class="nav-links">
-    <a href="#" class="nav-tab active"> Home</a>
-    <a href="resident/inbox.php" class="nav-tab"> Inbox</a>
-    <a href="resident/findapet.html" class="nav-tab"> Find A Pet</a>
-    <a href="resident/pet_community.html" class="nav-tab"> Pet Community</a>
-    <a href="resident/help_center.php" class="nav-tab"> Help Center</a>
-    <a href="Analytics.html" class="nav-tab"> Analytics</a>
-    <a href="resident/Report.html" class="nav-tab"> Report</a>
-  </div>
- 
 </nav>
 
 <!-- ── HERO ── -->
@@ -558,3 +550,4 @@ function toggleHeart(btn) {
 </script>
 </body>
 </html>
+>

@@ -1,4 +1,16 @@
 
+:root {
+  --warm-cream: #FFF9D2;
+  --warm-tan:   #FFE0BC;
+  --deep-brown: #825540;
+  --amber:      #d084c6;
+  --amber-lt:   #f0c080;
+  --sage:       #6b8f71;
+  --rose:       #c97d7d;
+  --off-white:  #C8E6F5;
+  --text-muted: #8175ba;
+  --navbar-height: 108px; /*navigation height*/
+}
 
   /* ── CANVAS SCENE ── */
   #hero-canvas {
