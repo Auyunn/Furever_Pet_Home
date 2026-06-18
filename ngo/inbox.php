@@ -96,7 +96,7 @@ $result = $stmt->get_result();
             </a>
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+            <div class="avatar" title="My Profile">AT</div>
             </div>
         </div>
 
