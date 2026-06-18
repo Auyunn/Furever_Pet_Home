@@ -107,99 +107,174 @@ if (!empty($posts)) {
     }
     $stmt->close();
 }
+
+// NOTE: adjust this if your community post photos live in a different folder
+$photoFolder = "../image/pet_community/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Pet Community | Furever Pet Home</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/petcommunityngo.css">
+    <meta charset="UTF-8">
+    <title>Pet Community | Furever Pet Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- petcommunity.php is inside /ngo, so styles need the ../ prefix -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/petcommunityngo.css">
 </head>
 <body>
 
-<!-- NOTE: Replace this with your actual shared navbar include, e.g. <?php include 'navbar.php'; ?> -->
+    <nav class="navbar" id="navbar">
+    <!--logo and profile-->
+    <div class="navbar-top">
+        <a href="#" class="nav-logo">
+        <img src="../image/icons/logo.png" alt="Furever Pet Home">
+        <span>Furever Pet Home</span>
+        </a>
+        <div class="nav-right">
+        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+        <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
+            <?= isset($_SESSION['org_id']) ? htmlspecialchars(strtoupper(substr($_SESSION['org_id'], 0, 2))) : 'AT' ?>
+        </div>
+        </div>
+    </div>
 
-<div class="community-grid">
+    <!---Tab Navigation-->
+    <div class="nav-links">
+        <a href="dashboard.php" class="nav-tab">🏠 Home</a>
+        <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
+        <a href="Add_Pet.html" class="nav-tab">🐾 My Pets</a>
+        <a href="petcommunity.php" class="nav-tab">📣 Pet Community</a>
+        <a href="helpcenter_ngo.php" class="nav-tab">❓ Help Center</a>
+        <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+    </div>
+    </nav>
 
-    <?php foreach ($posts as $post): ?>
-        <?php
-            $boardID  = $post['BoardID'];
-            $comments = $commentsByBoard[$boardID] ?? [];
-        ?>
+    <!--wrapper pushes all page content below the fixed navbar-->
+    <div class="wrapper">
 
-        <div class="community-card" id="board-<?php echo htmlspecialchars($boardID); ?>">
+    <div class="community-grid">
 
-            <div class="community-image">
-                <?php if (!empty($post['Photo'])): ?>
-                    <img src="<?php echo htmlspecialchars($post['Photo']); ?>" alt="<?php echo htmlspecialchars($post['Title']); ?>" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
-                <?php endif; ?>
-            </div>
+        <?php if (empty($posts)): ?>
+            <p class="empty-state">You haven't posted anything yet. Click the + button to add your first post.</p>
+        <?php else: ?>
+            <?php foreach ($posts as $post): ?>
+                <?php
+                    $boardID  = $post['BoardID'];
+                    $comments = $commentsByBoard[$boardID] ?? [];
+                ?>
 
-            <div class="community-content">
+                <div class="community-card" id="board-<?= htmlspecialchars($boardID) ?>">
 
-                <!-- ===== VIEW MODE ===== -->
-                <div class="view-mode" data-board="<?php echo htmlspecialchars($boardID); ?>">
-                    <h3 class="post-title"><?php echo htmlspecialchars($post['Title']); ?></h3>
-                    <p class="post-text"><?php echo htmlspecialchars($post['Content']); ?></p>
-                    <span class="post-meta">
-                        Posted by <?php echo htmlspecialchars($post['OrgName'] ?? $post['OrgID']); ?>
-                        on <?php echo htmlspecialchars($post['Date']); ?>
-                    </span>
-                </div>
-
-                <!-- ===== EDIT MODE (hidden until pencil icon clicked) ===== -->
-                <form class="edit-mode" data-board="<?php echo htmlspecialchars($boardID); ?>" method="POST" action="petcommunity.php" style="display:none;">
-                    <input type="hidden" name="action" value="update_post">
-                    <input type="hidden" name="BoardID" value="<?php echo htmlspecialchars($boardID); ?>">
-                    <input type="text" name="Title" class="edit-title-input" value="<?php echo htmlspecialchars($post['Title']); ?>" required>
-                    <textarea name="Content" class="edit-content-input" required><?php echo htmlspecialchars($post['Content']); ?></textarea>
-                    <div class="edit-actions">
-                        <button type="submit" class="save-btn">Save</button>
-                        <button type="button" class="cancel-btn" onclick="toggleEdit('<?php echo htmlspecialchars($boardID); ?>')">Cancel</button>
-                    </div>
-                </form>
-
-                <!-- ===== COMMENT PANEL (read-only - residents comment elsewhere) ===== -->
-                <div class="panel" id="panel-<?php echo htmlspecialchars($boardID); ?>">
-                    <div class="comment-list">
-                        <?php if (empty($comments)): ?>
-                            <p class="no-comments">No comments yet.</p>
-                        <?php else: ?>
-                            <?php foreach ($comments as $comment): ?>
-                                <div class="comment-item">
-                                    <strong><?php echo htmlspecialchars($comment['CommenterName'] ?? $comment['ResidentID']); ?>:</strong>
-                                    <span><?php echo htmlspecialchars($comment['Content']); ?></span>
-                                    <span class="comment-date"><?php echo htmlspecialchars($comment['Date']); ?></span>
-                                </div>
-                            <?php endforeach; ?>
+                    <div class="community-image">
+                        <?php if (!empty($post['Photo'])): ?>
+                            <img src="<?= $photoFolder . htmlspecialchars($post['Photo']) ?>" alt="<?= htmlspecialchars($post['Title']) ?>">
                         <?php endif; ?>
                     </div>
+
+                    <div class="community-content">
+
+                        <!-- ===== VIEW MODE ===== -->
+                        <div class="view-mode" data-board="<?= htmlspecialchars($boardID) ?>">
+                            <h3 class="post-title"><?= htmlspecialchars($post['Title']) ?></h3>
+                            <p class="post-text"><?= htmlspecialchars($post['Content']) ?></p>
+                            <span class="post-meta">
+                                Posted by <?= htmlspecialchars($post['OrgName'] ?? $post['OrgID']) ?>
+                                on <?= date('d M Y, g:i A', strtotime($post['Date'])) ?>
+                            </span>
+                        </div>
+
+                        <!-- ===== EDIT MODE (hidden until pencil icon clicked) ===== -->
+                        <form class="edit-mode" data-board="<?= htmlspecialchars($boardID) ?>" method="POST" action="petcommunity.php" style="display:none;">
+                            <input type="hidden" name="action" value="update_post">
+                            <input type="hidden" name="BoardID" value="<?= htmlspecialchars($boardID) ?>">
+                            <input type="text" name="Title" class="edit-title-input" value="<?= htmlspecialchars($post['Title']) ?>" required>
+                            <textarea name="Content" class="edit-content-input" required><?= htmlspecialchars($post['Content']) ?></textarea>
+                            <div class="edit-actions">
+                                <button type="submit" class="save-btn">Save</button>
+                                <button type="button" class="cancel-btn" onclick="toggleEdit('<?= htmlspecialchars($boardID) ?>')">Cancel</button>
+                            </div>
+                        </form>
+
+                        <!-- ===== COMMENT PANEL (read-only - residents comment elsewhere) ===== -->
+                        <div class="panel" id="panel-<?= htmlspecialchars($boardID) ?>">
+                            <div class="comment-list">
+                                <?php if (empty($comments)): ?>
+                                    <p class="no-comments">No comments yet.</p>
+                                <?php else: ?>
+                                    <?php foreach ($comments as $comment): ?>
+                                        <div class="comment-item">
+                                            <strong><?= htmlspecialchars($comment['CommenterName'] ?? $comment['ResidentID']) ?>:</strong>
+                                            <span><?= htmlspecialchars($comment['Content']) ?></span>
+                                            <span class="comment-date"><?= date('d M Y, g:i A', strtotime($comment['Date'])) ?></span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="community-actions">
+                        <button type="button" onclick="toggleComments('<?= htmlspecialchars($boardID) ?>')" title="View comments">💬</button>
+                        <button type="button" onclick="toggleEdit('<?= htmlspecialchars($boardID) ?>')" title="Edit">✏️</button>
+                        <form method="POST" action="petcommunity.php" onsubmit="return confirm('Delete this post? This cannot be undone.');" style="display:inline;">
+                            <input type="hidden" name="action" value="delete_post">
+                            <input type="hidden" name="BoardID" value="<?= htmlspecialchars($boardID) ?>">
+                            <button type="submit" title="Delete">🗑️</button>
+                        </form>
+                    </div>
+
                 </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-            </div>
+    </div>
 
-            <div class="community-actions">
-                <button type="button" onclick="toggleComments('<?php echo htmlspecialchars($boardID); ?>')" title="View comments">&#128172;</button>
-                <button type="button" onclick="toggleEdit('<?php echo htmlspecialchars($boardID); ?>')" title="Edit">&#9998;</button>
-                <form method="POST" action="petcommunity.php" onsubmit="return confirm('Delete this post? This cannot be undone.');" style="display:inline;">
-                    <input type="hidden" name="action" value="delete_post">
-                    <input type="hidden" name="BoardID" value="<?php echo htmlspecialchars($boardID); ?>">
-                    <button type="submit" title="Delete">&#128465;</button>
-                </form>
-            </div>
+    <a href="addboard.php" class="add-btn" title="Add new post">+</a>
 
+    <!--Footer-->
+    <footer>
+        <div class="footer-grid">
+        <div>
+            <div style="font-size:2rem;">🐾</div>
+            <div class="footer-brand-name">Furever Pet Home</div>
+            <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
         </div>
+        <div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
+            <li><a href="#">Find A Pet</a></li>
+            <li><a href="#">Report Animal</a></li>
+            <li><a href="#">Community Board</a></li>
+            <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Account</p>
+            <ul class="footer-links-list">
+            <li><a href="#">My Profile</a></li>
+            <li><a href="#">My Applications</a></li>
+            <li><a href="#">Favourites</a></li>
+            <li><a href="#">Inbox</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
+            <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+            <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+            <li><a href="#">+60 123-456-7890</a></li>
+            <li><a href="#">Facebook · Instagram · X</a></li>
+            </ul>
+        </div>
+        </div>
+        <div class="footer-bottom">
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
+        </div>
+    </footer>
 
-    <?php endforeach; ?>
-
-    <?php if (empty($posts)): ?>
-        <p>You haven't posted anything yet. Click the + button to add your first post.</p>
-    <?php endif; ?>
-
-</div>
-
-<a href="addboard.php" class="add-btn" title="Add new post">+</a>
+    </div><!--/wrapper-->
 
 <script>
 // Toggle the comment panel open/closed for a given post
