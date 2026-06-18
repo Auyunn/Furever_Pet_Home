@@ -92,7 +92,7 @@ if (!empty($posts)) {
 
     $sql = "
         SELECT c.CommentID, c.BoardID, c.ResidentID, c.Content, c.Date, c.ReplyID,
-               r.Name AS CommenterName
+               CONCAT(r.FirstName, ' ', r.LastName) AS CommenterName
         FROM comment c
         LEFT JOIN resident r ON c.ResidentID = r.ResidentID
         WHERE c.BoardID IN ($placeholders)
