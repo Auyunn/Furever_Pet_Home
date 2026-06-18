@@ -113,6 +113,7 @@ if (!empty($posts)) {
 <head>
 <meta charset="UTF-8">
 <title>Pet Community | Furever Pet Home</title>
+<link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/petcommunityngo.css">
 </head>
 <body>
