@@ -42,6 +42,7 @@
 
 .wrapper {
   margin-top: var(--navbar-height);
+  padding-top: 20px;
 }
 
 /* ===========================
