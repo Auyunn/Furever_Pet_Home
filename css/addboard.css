@@ -1,5 +1,4 @@
 body {
-  padding-top: var(--navbar-height); /* elak overlap dengan navbar */
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   margin: 0;
@@ -11,7 +10,6 @@ body {
   padding: 20px 40px;
 }
 
-/* Form validation / DB error messages */
 .form-errors {
   background: #fdecea;
   border: 1px solid #f5b5b0;
@@ -26,7 +24,6 @@ body {
   margin: 4px 0;
 }
 
-/* Add Post Layout */
 .add-container {
   display: flex;
   gap: 40px;
@@ -37,7 +34,6 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Image preview */
 .preview {
   flex: 1;
   text-align: center;
@@ -50,7 +46,6 @@ body {
   border-radius: 10px;
 }
 
-/* Form section */
 .form-section {
   flex: 2;
   display: flex;

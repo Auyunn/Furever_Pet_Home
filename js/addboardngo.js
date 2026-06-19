@@ -16,10 +16,3 @@ function previewImage(event) {
     };
     reader.readAsDataURL(file);
 }
-
-// ---------------------------------------------------------
-// Cancel button - go back to the community page without posting
-// ---------------------------------------------------------
-function goBack() {
-    window.location.href = 'petcommunity.php';
-}

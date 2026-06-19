@@ -86,83 +86,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Add Post | Furever Pet Home</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/addboard.css">
+    <meta charset="UTF-8">
+    <title>Add Post | Furever Pet Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- addboard.php is inside /ngo, so styles need the ../ prefix -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/addboard.css">
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar" id="navbar">
-  <div class="navbar-top">
-    <a href="#" class="nav-logo">
-      <img src="../image/icons/logo.png" alt="Furever Pet Home">
-      <span>Furever Pet Home</span>
-    </a>
-    <div class="nav-right">
-      <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-      <div class="avatar" title="My Profile"><?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?></div>
-    </div>
-  </div>
-  <div class="nav-links">
-    <a href="dashboard.php" class="nav-tab"> Home</a>
-    <a href="inbox.php" class="nav-tab"> Inbox</a>
-    <a href="../findapet.php" class="nav-tab"> Find A Pet</a>
-    <a href="petcommunity.php" class="nav-tab active"> Pet Community</a>
-    <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-    <a href="../Analytics.html" class="nav-tab"> Analytics</a>
-  </div>
-</nav>
-
-<!-- Add Post Form -->
-<div class="wrapper">
-<div class="add-container">
-
-    <?php if (!empty($errors)): ?>
-        <div class="form-errors">
-            <?php foreach ($errors as $error): ?>
-                <p><?= htmlspecialchars($error) ?></p>
-            <?php endforeach; ?>
+    <nav class="navbar" id="navbar">
+    <!--logo and profile-->
+    <div class="navbar-top">
+        <a href="#" class="nav-logo">
+        <img src="../image/icons/logo.png" alt="Furever Pet Home">
+        <span>Furever Pet Home</span>
+        </a>
+        <div class="nav-right">
+        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+        <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
+            <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
         </div>
-    <?php endif; ?>
-
-    <div class="preview">
-        <p>Image Preview</p>
-        <input type="file" id="imageUpload" name="photo" form="addPostForm" accept="image/*" onchange="previewImage(event)">
-        <img id="previewImg" alt="Preview" />
+        </div>
     </div>
 
-    <form id="addPostForm" method="POST" action="addboard.php" enctype="multipart/form-data" class="form-section">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" value="<?= htmlspecialchars($_POST['title'] ?? '') ?>" required>
+    <!---Tab Navigation-->
+    <div class="nav-links">
+        <a href="dashboard.php" class="nav-tab">🏠 Home</a>
+        <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
+        <a href="Add_Pet.html" class="nav-tab">🐾 My Pets</a>
+        <a href="petcommunity.php" class="nav-tab">📣 Pet Community</a>
+        <a href="helpcenter_ngo.php" class="nav-tab">❓ Help Center</a>
+        <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+    </div>
+    </nav>
 
-        <label for="desc">Description</label>
-        <textarea id="desc" name="desc" required><?= htmlspecialchars($_POST['desc'] ?? '') ?></textarea>
+    <!--wrapper pushes all page content below the fixed navbar-->
+    <div class="wrapper">
+    <div class="add-container">
 
-        <label>
-            <input type="checkbox" id="enableComment" name="enableComment" checked>
-            Enable Comment
-        </label>
+        <?php if (!empty($errors)): ?>
+            <div class="form-errors">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-        <div class="buttons">
-            <button type="reset">Reset Form</button>
-            <button type="submit">Post Pet</button>
-            <button type="button" onclick="goBack()">Cancel</button>
+        <div class="preview">
+            <p>Image Preview</p>
+            <input type="file" id="imageUpload" name="photo" form="addPostForm" accept="image/*" onchange="previewImage(event)">
+            <img id="previewImg" alt="Preview" />
         </div>
-    </form>
 
-</div>
-</div>
+        <form id="addPostForm" method="POST" action="addboard.php" enctype="multipart/form-data" class="form-section">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="<?= htmlspecialchars($_POST['title'] ?? '') ?>" required>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-bottom">
-    <span>©️ 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
-    <span>Made with ❤️ for Bandar Klang</span>
-  </div>
-</footer>
+            <label for="desc">Description</label>
+            <textarea id="desc" name="desc" required><?= htmlspecialchars($_POST['desc'] ?? '') ?></textarea>
+
+            <label>
+                <input type="checkbox" id="enableComment" name="enableComment" checked>
+                Enable Comment
+            </label>
+
+            <div class="buttons">
+                <button type="reset">Reset Form</button>
+                <button type="submit">Post Pet</button>
+                <button type="button" onclick="window.location.href='petcommunity.php';">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+    </div><!--/wrapper-->
+
+    <!--Footer-->
+    <footer>
+        <div class="footer-bottom">
+            <span>©️ 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+            <span>Made with ❤️ for Bandar Klang</span>
+        </div>
+    </footer>
 
 <script src="../js/addboardngo.js"></script>
 </body>
