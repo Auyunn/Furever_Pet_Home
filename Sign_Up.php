@@ -124,10 +124,12 @@
                 //delete temporary session
                 unset($_SESSION['reg_email']);
                 unset($_SESSION['reg_password']);
-                echo "Register Successful!<br>Please log in into our system."
+                echo "Register Successful!<br>Please log in into our system.";
                 
-                // redirect to login
-                header("Location: User_Login.php");
+                echo "<script>
+                        alert('Register Successful!\\nPlease log in into our system.');
+                        window.location.href = 'User_Login.php';
+                      </script>";
                 exit();
             } else {
                 $error = "Database registration failed: " . $con->error;
