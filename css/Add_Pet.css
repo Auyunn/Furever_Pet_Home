@@ -1,0 +1,477 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap");
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Colour palette — sama dengan report.css ── */
+:root {
+  --warm-cream: #FFF9D2;
+  --warm-tan:   #FFE0BC;
+  --deep-brown: #825540;
+  --amber:      #d084c6;
+  --amber-lt:   #f0c080;
+  --rose:       #c97d7d;
+  --off-white:  #C8E6F5;
+  --text-muted: #8175ba;
+}
+
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+body {
+  background: linear-gradient(160deg, #FFF9D2 0%, #FFE0BC 40%, #C8E6F5 75%, #AECFEA 100%);
+  background-attachment: fixed;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--deep-brown);
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════
+   PAGE HEADING
+   — sama padding-top dengan report.css (.page-title)
+══════════════════════════════ */
+.page-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  color: var(--deep-brown);
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6rem 2rem 1rem;
+}
+
+/* ══════════════════════════════
+   TOP HEADER — logo kiri | avatar kanan
+   Sama dengan .top-bar dalam report.css
+══════════════════════════════ */
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(250,246,240,0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 0.5px solid rgba(44,26,14,0.08);
+  padding: 0.6rem 2.5rem 0;
+}
+
+.navbar { display: flex; flex-direction: column; width: 100%; }
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--deep-brown);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo img {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: var(--warm-tan);
+  padding: 2px;
+}
+
+.nav-right { display: flex; align-items: center; gap: 0.8rem; }
+
+.notif-btn {
+  position: relative;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(44,26,14,0.15);
+  background: transparent;
+  display: grid; place-items: center;
+  font-size: 1rem;
+  color: var(--deep-brown);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.notif-btn:hover { background: var(--warm-tan); }
+
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px;
+  background: var(--rose);
+  border-radius: 50%;
+  border: 1.5px solid var(--warm-cream);
+}
+
+.avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--amber), var(--rose));
+  display: grid; place-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--warm-cream);
+  box-shadow: 0 0 0 2px var(--amber-lt);
+}
+
+/* ── Nav tabs — sama dengan report.css ── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.45rem;
+}
+.nav-tab {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--deep-brown);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  opacity: 0.6;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: opacity 0.2s, background 0.2s;
+}
+.nav-tab:hover  { opacity: 1; background: rgba(208,132,198,0.1); }
+.nav-tab.active { opacity: 1; font-weight: 500; background: rgba(208,132,198,0.16); }
+
+/* ══════════════════════════════
+   MAIN — offset sama dengan report.css
+══════════════════════════════ */
+main {
+  flex: 1;
+  padding: 1.5rem 3rem 3rem;
+  max-width: 900px;
+  margin: 108px auto 0;
+  width: 100%;
+}
+
+/* ══════════════════════════════
+   IMAGE UPLOAD — sama gaya dengan report.css .image-upload
+══════════════════════════════ */
+.upload-zone {
+  position: relative;
+  border: 2px dashed rgba(130,85,64,0.25);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.45);
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 1.6rem;
+  transition: border-color 0.25s, background 0.25s;
+}
+.upload-zone:hover {
+  border-color: var(--amber);
+  background: rgba(208,132,198,0.05);
+}
+.upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%; height: 100%;
+}
+.upload-placeholder {
+  width: 80px; height: 80px;
+  color: rgba(130,85,64,0.22);
+  pointer-events: none;
+}
+#preview-img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.upload-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════
+   FORM CARD — sama dengan .form-section dalam report.css
+══════════════════════════════ */
+.form-card {
+  background: rgba(200,230,245,0.55);
+  border-radius: 20px;
+  border: 1px solid rgba(44,26,14,0.07);
+  box-shadow: 0 4px 24px rgba(130,85,64,0.07);
+  padding: 2.2rem 2.6rem;
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  gap: 2.2rem;
+  align-items: start;
+}
+
+/* ── LEFT col ── */
+.upload-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── MIDDLE col: fields ── */
+.fields-col {
+  display: grid;
+  gap: 1.4rem;
+}
+
+/* field group — sama dengan fieldset > div dalam report.css */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-group label {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgba(44,26,14,0.14);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.6);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--deep-brown);
+  outline: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.field-group input::placeholder { color: rgba(130,85,64,0.35); }
+
+/* Custom dropdown arrow */
+.field-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23825540' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-color: rgba(255,255,255,0.6);
+  padding-right: 2.4rem;
+  cursor: pointer;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: var(--amber);
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 0 0 3px rgba(208,132,198,0.12);
+}
+
+/* ── RIGHT col: action buttons ── */
+/* Sama gaya dengan .action-buttons dalam report.css
+   tapi disusun menegak di sebelah kanan */
+.action-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: stretch;
+  padding-top: 0.2rem;
+  border-left: 1px solid rgba(44,26,14,0.07);
+  padding-left: 1.6rem;
+}
+
+/* Reset — sama gaya dengan .btn-attach */
+.btn-reset {
+  padding: 0.72rem 1.4rem;
+  background: transparent;
+  color: var(--deep-brown);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.86rem;
+  border: 1px solid rgba(44,26,14,0.2);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-reset:hover {
+  border-color: var(--amber);
+  background: rgba(208,132,198,0.06);
+}
+
+/* Post Pet — sama gaya dengan .btn-begin */
+.btn-post {
+  padding: 0.72rem 1.4rem;
+  background: var(--amber);
+  color: #fff;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(208,132,198,0.4);
+}
+.btn-post:active { transform: translateY(0); }
+
+/* Cancel — sama dengan .btn-cancel dalam report.css */
+.btn-cancel {
+  padding: 0.72rem 1.4rem;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.86rem;
+  border: 1px solid rgba(44,26,14,0.12);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-cancel:hover { color: var(--rose); border-color: var(--rose); }
+
+/* More ⋮ — sama dengan .btn-more dalam report.css */
+.btn-more {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(44,26,14,0.14);
+  background: transparent;
+  display: grid; place-items: center;
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-more:hover { background: var(--warm-tan); color: var(--deep-brown); }
+
+/* ══════════════════════════════
+   TOAST
+══════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--deep-brown);
+  color: #fff;
+  padding: 0.75rem 1.8rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  box-shadow: 0 8px 28px rgba(44,26,14,0.25);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ══════════════════════════════
+   FOOTER — sama dengan halaman lain
+══════════════════════════════ */
+footer {
+  background: var(--deep-brown);
+  color: rgba(255,255,255,0.5);
+  padding: 3.5rem 2.5rem 1.8rem;
+  margin-top: auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0.6rem 0 0.5rem;
+}
+.footer-tagline { font-size: 0.82rem; line-height: 1.7; max-width: 240px; }
+
+.footer-col-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 1rem;
+}
+
+.footer-links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.footer-links-list a {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.42);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links-list a:hover { color: var(--amber-lt); }
+
+.footer-bottom {
+  padding-top: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.28);
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 900px) {
+  .form-card {
+    grid-template-columns: 1fr;
+  }
+  .action-col {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(44,26,14,0.07);
+    padding-top: 1rem;
+  }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .top-header { padding: 0.5rem 1.2rem 0; }
+  .nav-links  { display: none; }
+  main        { margin-top: 68px; padding: 1.2rem 1.2rem 2rem; }
+  .form-card  { padding: 1.4rem 1.2rem; }
+  .page-heading { padding-top: 5rem; }
+}
+
+@media (max-width: 480px) {
+  .footer-grid   { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 0.4rem; text-align: center; }
+  .btn-more      { align-self: flex-start; }
+}

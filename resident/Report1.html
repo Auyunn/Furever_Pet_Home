@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reports - Furever Pet Home</title>
+  <link rel="stylesheet" href="../css/ReportStatus.css">
+</head>
+<body>
+
+  <h1 class="page-title">REPORT</h1>
+
+  <div class="wrapper">
+
+    <nav class="navbar" id="navbar">
+      <div class="navbar-top">
+        <a href="#" class="nav-logo">
+          <span style="font-size:1.5rem;">🐾</span>
+          <span>Furever Pet Home</span>
+        </a>
+        <div class="nav-right">
+          <button class="notif-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+          <div class="avatar" title="My Profile">AT</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-tab">🏠 Home</a>
+        <a href="#" class="nav-tab">✉️ Inbox</a>
+        <a href="#" class="nav-tab">🔍 Find A Pet</a>
+        <a href="#" class="nav-tab">🐾 Pet Community</a>
+        <a href="#" class="nav-tab">❓ Help Center</a>
+        <a href="#" class="nav-tab">📊 Analytics</a>
+        <a href="#" class="nav-tab active">🚨 Report</a>
+      </div>
+    </nav>
+
+    <main>
+
+      <!-- Top bar -->
+      <div class="report-topbar">
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="filterReports('all', this)">All</button>
+          <button class="filter-btn" onclick="filterReports('resolved', this)">Resolved</button>
+          <button class="filter-btn" onclick="filterReports('pending', this)">Pending</button>
+          <button class="filter-btn" onclick="filterReports('reviewing', this)">Reviewing</button>
+        </div>
+        <button class="btn-add" onclick="window.location.href='AddReport.html'">＋ Add Report</button>
+      </div>
+
+      <!-- Report Cards -->
+      <div class="report-list" id="reportList">
+
+        <!-- Card 1 – Resolved -->
+        <article class="report-card" data-status="resolved">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=120&h=120&fit=crop" alt="Dog report" onerror="this.parentElement.classList.add('no-img')">
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <span class="card-title">Injured Stray Dog</span>
+              <span class="status-badge resolved">✓ Resolved</span>
+            </div>
+            <p class="card-desc">A brown mixed-breed dog was spotted near Tesco Bandar Klang with a limping front leg. Appeared to be in pain and unable to walk properly.</p>
+            <div class="card-meta">
+              <span class="meta-item">📍 Tesco Bandar Klang, Selangor</span>
+              <span class="meta-item">🗓 12 May 2026</span>
+            </div>
+            <div class="card-footer">
+              <span class="report-id">RPT-00124</span>
+              <div class="card-actions">
+                <button class="btn-action btn-view" onclick="openModal('resolved','Injured Stray Dog','A brown mixed-breed dog was spotted near Tesco Bandar Klang with a limping front leg. The animal was rescued and is now under veterinary care.','Tesco Bandar Klang, Selangor','12 May 2026','RPT-00124')">View Details</button>
+                <button class="btn-action btn-remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 – Pending -->
+        <article class="report-card" data-status="pending">
+          <div class="card-image pending-img">
+            <span class="pending-icon">🕐</span>
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <span class="card-title">Abandoned Kittens</span>
+              <span class="status-badge pending">⏳ Pending</span>
+            </div>
+            <p class="card-desc">Three small kittens found in a cardboard box behind the wet market. Estimated 3–4 weeks old, crying and appear to be without their mother.</p>
+            <div class="card-meta">
+              <span class="meta-item">📍 Wet Market, Jalan Meru</span>
+              <span class="meta-item">🗓 28 May 2026</span>
+            </div>
+            <div class="card-footer">
+              <span class="report-id">RPT-00198</span>
+              <div class="card-actions">
+                <button class="btn-action btn-view" onclick="openModal('pending','Abandoned Kittens','Three small kittens found in a cardboard box behind the wet market. Estimated 3–4 weeks old. Your report has been received and is awaiting assignment to a rescue volunteer.','Wet Market, Jalan Meru','28 May 2026','RPT-00198')">View Details</button>
+                <button class="btn-action btn-remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 – Reviewing -->
+        <article class="report-card" data-status="reviewing">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=120&h=120&fit=crop" alt="Cat report" onerror="this.parentElement.classList.add('no-img')">
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <span class="card-title">Sick Cat Near School</span>
+              <span class="status-badge reviewing">🔍 Reviewing</span>
+            </div>
+            <p class="card-desc">A grey tabby cat was found outside SMK Bandar Klang looking lethargic and refusing food. Possibly has mange or skin condition on its ears.</p>
+            <div class="card-meta">
+              <span class="meta-item">📍 SMK Bandar Klang</span>
+              <span class="meta-item">🗓 3 Jun 2026</span>
+            </div>
+            <div class="card-footer">
+              <span class="report-id">RPT-00207</span>
+              <div class="card-actions">
+                <button class="btn-action btn-view" onclick="openModal('reviewing','Sick Cat Near School','A grey tabby cat was found outside SMK Bandar Klang. A volunteer has been assigned and will visit the location within 48 hours.','SMK Bandar Klang','3 Jun 2026','RPT-00207')">View Details</button>
+                <button class="btn-action btn-remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 – Pending -->
+        <article class="report-card" data-status="pending">
+          <div class="card-image pending-img">
+            <span class="pending-icon">🕐</span>
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <span class="card-title">Dog Pack Near Playground</span>
+              <span class="status-badge pending">⏳ Pending</span>
+            </div>
+            <p class="card-desc">A group of 5–6 stray dogs were seen congregating near the children's playground at Taman Bahagia. Residents are concerned about children's safety.</p>
+            <div class="card-meta">
+              <span class="meta-item">📍 Taman Bahagia Playground</span>
+              <span class="meta-item">🗓 7 Jun 2026</span>
+            </div>
+            <div class="card-footer">
+              <span class="report-id">RPT-00211</span>
+              <div class="card-actions">
+                <button class="btn-action btn-view" onclick="openModal('pending','Dog Pack Near Playground','A group of 5–6 stray dogs near the playground at Taman Bahagia. Your report has been received and is in queue for assessment.','Taman Bahagia Playground','7 Jun 2026','RPT-00211')">View Details</button>
+                <button class="btn-action btn-remove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /report-list -->
+
+      <!-- Empty state (hidden by default) -->
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <span class="empty-icon">📋</span>
+        <p>No reports in this category.</p>
+        <button class="btn-add" onclick="window.location.href='AddReport.html'">＋ Add Report</button>
+      </div>
+
+    </main>
+
+    <!-- Detail Modal -->
+    <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-status-bar" id="modalStatusBar"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-meta">
+          <div class="modal-meta-row"><span class="modal-meta-label">Location</span><span id="modalLocation"></span></div>
+          <div class="modal-meta-row"><span class="modal-meta-label">Date Filed</span><span id="modalDate"></span></div>
+          <div class="modal-meta-row"><span class="modal-meta-label">Report ID</span><span id="modalId"></span></div>
+          <div class="modal-meta-row"><span class="modal-meta-label">Status</span><span class="modal-status-text" id="modalStatusText"></span></div>
+        </div>
+        <div class="modal-timeline" id="modalTimeline"></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <div style="font-size:2rem;">🐾</div>
+          <div class="footer-brand-name">Furever Pet Home</div>
+          <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+        </div>
+        <div>
+          <p class="footer-col-title">Platform</p>
+          <ul class="footer-links-list">
+            <li><a href="#">Find A Pet</a></li>
+            <li><a href="#">Report Animal</a></li>
+            <li><a href="#">Community Board</a></li>
+            <li><a href="#">Analytics</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Account</p>
+          <ul class="footer-links-list">
+            <li><a href="#">My Profile</a></li>
+            <li><a href="#">My Applications</a></li>
+            <li><a href="#">Favourites</a></li>
+            <li><a href="#">Inbox</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Contact</p>
+          <ul class="footer-links-list">
+            <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+            <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+            <li><a href="#">+60 123-456-7890</a></li>
+            <li><a href="#">Facebook · Instagram · X</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
+      </div>
+    </footer>
+
+  </div><!-- /wrapper -->
+
+  <script>
+    // Filter
+    function filterReports(status, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.report-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const show = status === 'all' || card.dataset.status === status;
+        card.style.display = show ? 'flex' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('emptyState').style.display = visible === 0 ? 'flex' : 'none';
+    }
+
+    // Remove card
+    document.querySelectorAll('.btn-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.report-card');
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(30px)';
+        setTimeout(() => card.remove(), 300);
+      });
+    });
+
+    // Modal
+    const timelines = {
+      resolved: [
+        { label: 'Report Filed', done: true },
+        { label: 'Under Review', done: true },
+        { label: 'Rescue Dispatched', done: true },
+        { label: 'Resolved', done: true },
+      ],
+      pending: [
+        { label: 'Report Filed', done: true },
+        { label: 'Under Review', done: false },
+        { label: 'Rescue Dispatched', done: false },
+        { label: 'Resolved', done: false },
+      ],
+      reviewing: [
+        { label: 'Report Filed', done: true },
+        { label: 'Under Review', done: true },
+        { label: 'Rescue Dispatched', done: false },
+        { label: 'Resolved', done: false },
+      ],
+    };
+
+    const statusLabels = {
+      resolved: '✓ Resolved',
+      pending: '⏳ Pending',
+      reviewing: '🔍 Reviewing',
+    };
+
+    function openModal(status, title, desc, location, date, id) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = desc;
+      document.getElementById('modalLocation').textContent = location;
+      document.getElementById('modalDate').textContent = date;
+      document.getElementById('modalId').textContent = id;
+
+      const statusBar = document.getElementById('modalStatusBar');
+      statusBar.className = 'modal-status-bar ' + status;
+
+      const statusText = document.getElementById('modalStatusText');
+      statusText.textContent = statusLabels[status];
+      statusText.className = 'modal-status-text status-badge ' + status;
+
+      // Timeline
+      const tl = document.getElementById('modalTimeline');
+      tl.innerHTML = timelines[status].map((step, i) => `
+        <div class="tl-step ${step.done ? 'done' : ''}">
+          <div class="tl-dot">${step.done ? '✓' : i + 1}</div>
+          <div class="tl-label">${step.label}</div>
+          ${i < 3 ? '<div class="tl-line"></div>' : ''}
+        </div>
+      `).join('');
+
+      document.getElementById('modalBackdrop').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').classList.remove('open');
+    }
+  </script>
+
+</body>
+</html>
