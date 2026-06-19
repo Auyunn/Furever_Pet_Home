@@ -106,6 +106,7 @@
     margin: 6px 0 14px;
 }
 
+<<<<<<< HEAD
 .details-btn {
     padding: 7px 26px;
     background: transparent;
@@ -123,12 +124,44 @@
 .details-btn:hover {
     background: var(--deep-brown);
     color: var(--warm-cream);
+=======
+/* ── PET INFO LIST (Type/Breed/Age/Gender/Location) ── */
+.pet-info {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--deep-brown);
+}
+
+.pet-info li {
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.pet-info li:last-child {
+  border-bottom: none;
+}
+
+.pet-info-label {
+  font-weight: bold;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  font-size: 1.1rem;
+>>>>>>> a015950add47a9c63c6484da2230940c0d1c8465
 }
 
 /* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 768px) {
+<<<<<<< HEAD
     .pet-grid {
         grid-template-columns: 1fr 1fr;
         padding: 0 20px 40px;
@@ -146,4 +179,17 @@
     .pet-grid {
         grid-template-columns: 1fr;
     }
+=======
+  .search-section {
+    flex-direction: column;
+    max-width: 100%;
+  }
+  .pet-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    padding: 0 20px 20px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+>>>>>>> a015950add47a9c63c6484da2230940c0d1c8465
 }
