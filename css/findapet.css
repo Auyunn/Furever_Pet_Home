@@ -1,8 +1,7 @@
-
-
 /* Push content below fixed navbar */
-.page-main {
-    padding-top: var(--navbar-height);
+.wrapper {
+    margin-top: var(--navbar-height);
+    padding-top: 20px;
 }
 
 /* ===========================
@@ -16,7 +15,13 @@
     padding: 36px 20px 28px;
 }
 
-.fp-select {
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.search-section select {
     padding: 9px 16px;
     width: 180px;
     border: 1px solid var(--deep-brown);
@@ -30,13 +35,13 @@
     appearance: auto;
 }
 
-.fp-select:focus {
+.search-section select:focus {
     outline: none;
     border-color: var(--amber);
     box-shadow: 0 0 0 3px var(--amber-lt);
 }
 
-.fp-search-btn {
+.search-section .search-btn {
     padding: 9px 26px;
     background: var(--deep-brown);
     color: var(--warm-cream);
@@ -50,7 +55,7 @@
     transition: background 0.25s ease, transform 0.15s ease;
 }
 
-.fp-search-btn:hover {
+.search-section .search-btn:hover {
     background: var(--amber);
     color: var(--warm-cream);
     transform: translateY(-1px);
@@ -96,6 +101,13 @@
     font-size: 0.85rem;
     color: var(--text-muted);
     font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+}
+
+.pet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .pet-name {
@@ -106,25 +118,6 @@
     margin: 6px 0 14px;
 }
 
-<<<<<<< HEAD
-.details-btn {
-    padding: 7px 26px;
-    background: transparent;
-    color: var(--deep-brown);
-    border: 1.5px solid var(--deep-brown);
-    border-radius: 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: background 0.25s ease, color 0.25s ease;
-}
-
-.details-btn:hover {
-    background: var(--deep-brown);
-    color: var(--warm-cream);
-=======
 /* ── PET INFO LIST (Type/Breed/Age/Gender/Location) ── */
 .pet-info {
   list-style: none;
@@ -154,14 +147,12 @@
   color: var(--text-muted);
   padding: 40px 0;
   font-size: 1.1rem;
->>>>>>> a015950add47a9c63c6484da2230940c0d1c8465
 }
 
 /* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 768px) {
-<<<<<<< HEAD
     .pet-grid {
         grid-template-columns: 1fr 1fr;
         padding: 0 20px 40px;
@@ -171,25 +162,12 @@
         flex-wrap: wrap;
         padding: 24px 20px;
     }
-    .fp-select { width: 100%; }
-    .fp-search-btn { width: 100%; }
+    .search-section select { width: 100%; }
+    .search-section .search-btn { width: 100%; }
 }
 
 @media (max-width: 480px) {
     .pet-grid {
         grid-template-columns: 1fr;
     }
-=======
-  .search-section {
-    flex-direction: column;
-    max-width: 100%;
-  }
-  .pet-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    padding: 0 20px 20px;
-  }
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
->>>>>>> a015950add47a9c63c6484da2230940c0d1c8465
 }
