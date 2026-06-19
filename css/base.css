@@ -441,12 +441,12 @@ body {
     background-color: #ffffff;
 }
 
-/* Menyembunyikan step atau seksyen dinamik secara lalai */
+/* hide step */
 .form-step {
     display: none;
 }
 
-/* Memaparkan step yang aktif */
+/* show active step */
 .form-step.active {
     display: block;
 }
