@@ -1,6 +1,4 @@
-// ---------------------------------------------------------
-// Show a live preview of the selected image before upload
-// ---------------------------------------------------------
+
 function previewImage(event) {
     const file = event.target.files[0];
     const previewImg = document.getElementById('previewImg');

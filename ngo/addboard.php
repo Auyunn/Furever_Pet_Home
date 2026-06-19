@@ -1,22 +1,14 @@
 <?php
 session_start();
-require_once "../db_connect.php"; // addboard.php is in /ngo, db_connect.php is one level up in project root
+require_once "../db_connect.php"; 
 
-/* ============================================================
-   CURRENT NGO (logged-in organization)
-   Same temporary fallback used in petcommunity.php.
-   TODO: remove this once login sets $_SESSION['org_id'] for real.
-============================================================ */
 if (!isset($_SESSION['org_id'])) {
-    $_SESSION['org_id'] = "ORG01"; // TEMP placeholder - remove after login is built
+    $_SESSION['org_id'] = "ORG01"; 
 }
 $currentOrgID = $_SESSION['org_id'];
 
 $errors = [];
 
-/* ============================================================
-   HANDLE FORM SUBMISSION
-============================================================ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title   = trim($_POST['title'] ?? '');
     $content = trim($_POST['desc'] ?? '');
@@ -28,9 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Description is required.";
     }
 
-    // ---------------------------------------------------------
-    // Handle the optional photo upload
-    // ---------------------------------------------------------
     $photoFilename = null;
     if (!empty($_FILES['photo']['name'])) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -44,10 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = "Image must be a JPG, PNG, WEBP, or GIF file.";
         } else {
             $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-            // unique filename so two NGOs uploading "photo.jpg" never collide
             $photoFilename = 'board_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
 
-            // NOTE: adjust this folder if your community photos live elsewhere
             $uploadPath = "../image/pet_community/" . $photoFilename;
 
             if (!move_uploaded_file($fileTmpPath, $uploadPath)) {
@@ -57,13 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ---------------------------------------------------------
-    // Insert into community_board if no errors
-    // ---------------------------------------------------------
     if (empty($errors)) {
-        // Generate the next BoardID, e.g. BOARD01, BOARD02...
-        // NOTE: adjust the prefix/substring length below to match
-        // your actual BoardID format if it differs from "BOARD##"
+
         $result_max = $conn->query("SELECT MAX(CAST(SUBSTRING(BoardID, 6) AS UNSIGNED)) AS maxNum FROM community_board");
         $row_max    = $result_max->fetch_assoc();
         $nextNum    = ($row_max['maxNum'] !== NULL) ? $row_max['maxNum'] + 1 : 1;
@@ -89,14 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Add Post | Furever Pet Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- addboard.php is inside /ngo, so styles need the ../ prefix -->
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/addboard.css">
 </head>
 <body>
 
     <nav class="navbar" id="navbar">
-    <!--logo and profile-->
     <div class="navbar-top">
         <a href="#" class="nav-logo">
         <img src="../image/icons/logo.png" alt="Furever Pet Home">
@@ -110,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <!---Tab Navigation-->
+    <!---navigation bar-->
     <div class="nav-links">
         <a href="dashboard.php" class="nav-tab">🏠 Home</a>
         <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
@@ -121,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     </nav>
 
-    <!--wrapper pushes all page content below the fixed navbar-->
     <div class="wrapper">
     <div class="add-container">
 
@@ -161,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     </div><!--/wrapper-->
 
-    <!--Footer-->
+    <!--footer-->
     <footer>
         <div class="footer-bottom">
             <span>©️ 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>

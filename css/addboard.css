@@ -4,7 +4,6 @@ body {
   margin: 0;
 }
 
-/* Push content below fixed navbar */
 .wrapper {
   margin-top: var(--navbar-height);
   padding: 20px 40px;
