@@ -2,17 +2,9 @@
 session_start();
 include('db_connect.php');
 
-// ---------------------------------------------------------
-// Read filters submitted from the search form (GET so the
-// page stays bookmarkable/refreshable, e.g. findapet.php?pet_type=Dog)
-// ---------------------------------------------------------
 $selectedType = $_GET['pet_type'] ?? '';
 $selectedOrg  = $_GET['shelter']  ?? '';
 
-// ---------------------------------------------------------
-// Build the pet query with a prepared statement (safe against
-// SQL injection since pet_type/shelter come from the user)
-// ---------------------------------------------------------
 $sql = "SELECT p.PetID, p.PetName, p.PetType, p.Breed, p.Age, p.Location, p.Photo, p.Gender, o.OrgName
         FROM pet p
         LEFT JOIN organization o ON p.OrgID = o.OrgID
@@ -46,9 +38,6 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// ---------------------------------------------------------
-// Data for the two dropdowns
-// ---------------------------------------------------------
 $petTypes = [];
 $typeResult = $conn->query("SELECT DISTINCT PetType FROM pet ORDER BY PetType");
 while ($row = $typeResult->fetch_assoc()) {
@@ -61,7 +50,6 @@ while ($row = $shelterResult->fetch_assoc()) {
     $shelters[] = $row;
 }
 
-// NOTE: adjust this if your pet photos live in a different folder
 $photoFolder = "image/pet/";
 ?>
 <!DOCTYPE html>
@@ -91,7 +79,7 @@ $photoFolder = "image/pet/";
             </div>
         </div>
 
-        <!---Tab Navigation-->
+        <!---navigation bar-->
         <div class="nav-links">
             <a href="HomePage(registed).html" class="nav-tab">🏠 Home</a>
             <a href="resident/inbox.php" class="nav-tab">✉️ Inbox</a>
@@ -103,7 +91,6 @@ $photoFolder = "image/pet/";
         </div>
         </nav>
 
-        <!--wrapper pushes all page content below the fixed navbar-->
         <div class="wrapper">
 
         <!--search-->
@@ -158,7 +145,7 @@ $photoFolder = "image/pet/";
             <?php endif; ?>
         </section>
 
-    <!--Footer-->
+    <!--footer-->
         <footer>
             <div class="footer-grid">
             <div>
