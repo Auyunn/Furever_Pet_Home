@@ -1347,3 +1347,80 @@ body {
   .btn-view {width: 100%;}
   .inbox-right {padding: 1.4rem;}
 }
+
+/*PET LISTING*/
+/* ══════════════════════════════════════════════════════════════
+   TAMBAHAN GAYA UNTUK KAD AKSI PET & MODAL DIALOG
+   ══════════════════════════════════════════════════════════════ */
+.aksi-pet { 
+    display: flex; 
+    gap: 8px; 
+    margin-top: 1rem; 
+    width: 100%; 
+}
+
+.btn-edit { 
+    background-color: #f0c080; 
+    color: #333; 
+    flex: 1; 
+    padding: 8px; 
+    border: none; 
+    border-radius: 2rem; 
+    cursor: pointer; 
+    font-weight: bold;
+}
+
+.btn-delete { 
+    background-color: #c97d7d; 
+    color: #fff; 
+    padding: 8px 12px; 
+    border: none; 
+    border-radius: 2rem; 
+    cursor: pointer; 
+}
+
+.btn-edit:hover { 
+    background-color: var(--amber); 
+    color: #fff; 
+}
+
+.btn-delete:hover { 
+    background-color: #b55c5c; 
+}
+
+dialog { 
+    border: none; 
+    border-radius: 8px; 
+    padding: 20px; 
+    max-width: 500px; 
+    width: 90%; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+}
+
+dialog::backdrop { 
+    background: rgba(0,0,0,0.5); 
+}
+
+.modal-footer { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 1.5rem; 
+}
+
+.btn-batal { 
+    background: #ddd; 
+    border: none; 
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+.btn-simpan { 
+    background: var(--deep-brown); 
+    color: white; 
+    border: none; 
+    padding: 8px 15px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}

@@ -30,9 +30,9 @@
             } 
             elseif (str_contains($email, 'ngo.com')) {
                 // NGO / Organization Account
-                $sql = "SELECT OrgID, FirstName, Password FROM organization WHERE Email = ?";
+                $sql = "SELECT OrgID, Password FROM organization WHERE Email = ?";
                 $role = 'ngo';
-                $redirect = "ngo/Pet_listing.html"; 
+                $redirect = "ngo/Pet_listing.php"; 
             } 
             else {
                 // User / Resident

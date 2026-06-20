@@ -173,9 +173,7 @@ hgroup p {
   margin-bottom: 1.8rem;
 }
 
-/* ══════════════════════════════
-   TAB FILTER BUTTONS
-══════════════════════════════ */
+
 .tab-row {
   display: flex;
   gap: 0.6rem;

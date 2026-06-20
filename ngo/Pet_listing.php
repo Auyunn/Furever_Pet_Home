@@ -133,14 +133,14 @@ while ($row = $result_pets->fetch_assoc()) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NGO Dashboard - Manage Pets</title>
-  <link rel="stylesheet" href="/furever_pet_home/css/style.css">
-  <link rel="stylesheet" href="/furever_pet_home/css/Pet_Listing.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/Pet_Listing.css">
 </head>
   <script>
   const senaraiPet = <?= json_encode($pet_list, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
   console.log(senaraiPet);
   </script>
-  <script src="/furever_pet_home/js/script.js"></script>
+  <script src="../js/PetListing.js"></script>
 <body>
 
   <header class="top-header">
