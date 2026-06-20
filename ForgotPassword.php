@@ -111,10 +111,10 @@ mysqli_close($conn);
 </head>
 <body>
  
-<div class="signup-wrapper">
-  <div class="signup-card">
+<div class="fp-wrapper">
+  <div class="fp-card">
  
-    <div class="signup-header">
+    <div class="fp-header">
       <img src="../image/logo-placeholder.png" alt="Furever Home Pet logo" style="width:64px;height:64px;object-fit:contain;display:block;margin:0 auto 0.5rem;">
       <h2>Forgot Password</h2>
       <p style="font-size:0.85rem;color:var(--text-muted);">
@@ -135,47 +135,47 @@ mysqli_close($conn);
     <?php endif; ?>
  
     <!--------------------------- step1: verify email  -------------------------------------------------------------------------->
-    <div class="form-step <?php echo $currentStep === 1 ? 'active' : ''; ?>">
+    <div class="fp-step <?php echo $currentStep === 1 ? 'active' : ''; ?>">
       <form method="POST" action="ForgotPassword.php">
         <input type="hidden" name="action" value="check_email">
  
-        <div class="signup-field">
+        <div class="fp-field">
           <label for="email">Email Address</label>
           <input type="email" id="email" name="email" placeholder="you@example.com" required>
         </div>
  
-        <div class="signup-btn-wrap">
-          <button type="submit" class="signup-btn">Verify Account</button>
+        <div class="fp-btn-wrap">
+          <button type="submit" class="fp-btn">Verify Account</button>
         </div>
       </form>
  
-      <div class="signup-nav">
-        <a href="login.php">Remembered your password? Log in</a>
+      <div class="fp-nav">
+        <a href="User_Login.php">Remembered your password? Log in</a>
       </div>
     </div>
  
     <!---------------------------- step2: set new password  --------------------------------------------------------------->
 
-    <div class="form-step <?php echo $currentStep === 2 ? 'active' : ''; ?>">
+    <div class="fp-step <?php echo $currentStep === 2 ? 'active' : ''; ?>">
       <form method="POST" action="ForgotPassword.php">
         <input type="hidden" name="action" value="reset_password">
  
-        <div class="signup-field">
+        <div class="fp-field">
           <label for="newPw">New Password</label>
           <input type="password" id="newPw" name="newPw" placeholder="At least 8 characters" required>
         </div>
  
-        <div class="signup-field">
+        <div class="fp-field">
           <label for="confirmPw">Confirm Password</label>
           <input type="password" id="confirmPw" name="confirmPw" placeholder="Repeat your new password" required>
         </div>
  
-        <div class="signup-btn-wrap">
-          <button type="submit" class="signup-btn">Update Password</button>
+        <div class="fp-btn-wrap">
+          <button type="submit" class="fp-btn">Update Password</button>
         </div>
       </form>
  
-      <div class="signup-nav">
+      <div class="fp-nav">
         <form method="POST" action="ForgotPassword.php" style="display:inline;">
           <input type="hidden" name="action" value="restart">
           <button type="submit" style="background:none;border:none;font-size:0.8125rem;color:var(--deep-brown);text-decoration:underline;cursor:pointer;font-family:inherit;">
@@ -187,7 +187,7 @@ mysqli_close($conn);
  
     <!---------------------------- step3: done  ---------------------------------------------------------------->
 
-    <div class="form-step <?php echo $currentStep === 3 ? 'active' : ''; ?>">
+    <div class="fp-step <?php echo $currentStep === 3 ? 'active' : ''; ?>">
       <div class="success" style="margin-bottom:1.25rem;">
         Your password has been successfully updated.
       </div>
@@ -195,13 +195,13 @@ mysqli_close($conn);
         You can now log in using your new password.
       </p>
  
-      <div class="signup-btn-wrap">
-        <a href="login.php" class="signup-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+      <div class="fp-btn-wrap">
+        <a href="login.php" class="fp-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
           Go to Login
         </a>
       </div>
  
-      <div class="signup-nav">
+      <div class="fp-nav">
         <span style="font-size:0.78125rem;color:var(--text-muted);">
           If you did not request this change, please contact your administrator immediately.
         </span>
