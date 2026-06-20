@@ -6,7 +6,7 @@ if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
-if (!isset($_SESSION['orgID'])) {
+/*if (!isset($_SESSION['orgID'])) {
    if($_SERVER['REQUEST_METHOD']=='POST'){
     header('Content-Type: application/json');
     echo json_encode(['success'=> false, 'message'=> 'Unauthorized']);
@@ -16,7 +16,8 @@ if (!isset($_SESSION['orgID'])) {
    exit;
 }
 
-$org_id = $_SESSION['orgID'];
+$org_id = $_SESSION['orgID'];*/
+$org_id = "ORG05"; // TEST
 if($_SERVER['REQUEST_METHOD']==='POST'){
     header('Content-Type: application/json');
     $input    = json_decode(file_get_contents('php://input'), true);
@@ -29,7 +30,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         exit;
     }
     
-    $allow =['Pending', 'In Progress', 'Resolved', 'Submit'];
+    $allow = ['Pending', 'In Progress', 'Resolved'];
     if (empty($reportID) || !in_array($status, $allow)) {
         echo json_encode(['success' => false, 'message' => 'Invalid input']);
         exit;
@@ -122,8 +123,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resident Inbox</title>
+    <title>NGO Report</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ngo_report.css">
 </head>
 
 <body>
@@ -137,7 +139,7 @@ $conn->close();
             </a>
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+            <div class="avatar" title="My Profile"> AT</div>
             </div>
         </div>
 
@@ -206,7 +208,7 @@ $conn->close();
                     <td colspan="6">No reports found for this period.</td>
                 </tr>
             <?php } else {?>
-                <?php foreach($row as $row){
+                <?php foreach($rows as $row){
                 
                 $status = isset($row['Status']) ? $row['Status'] : 'Pending';
 
@@ -226,9 +228,9 @@ $conn->close();
                     $badgeClass = 'badge_pending';
                 }
 
-                if(isset($row['DataReported']))
+                if(isset($row['DateReported']))
                 {
-                    $dateFormatted = date("d/m/Y H:i", strtotime($row['DataReported']));
+                    $dateFormatted = date("d/m/Y H:i", strtotime($row['DateReported']));
                 }
                 else
                 {
@@ -236,41 +238,52 @@ $conn->close();
                 }
                 ?>
 
-                <tr id="row-<?php echo htmlspecialchars($row['ReportID']); ?>"
-                    data-petid="<?php echo htmlspecialchars($row['ResidentID']); ?>">
-
+        <tr id="row-<?php echo htmlspecialchars($row['ReportID']); ?>"
+                    data-id="<?php echo htmlspecialchars($row['ReportID']); ?>"
+                    data-pet="<?php echo htmlspecialchars($row['PetName']); ?>"
+                    data-loc="<?php echo htmlspecialchars($row['Location']); ?>"
+                    data-desc="<?php echo htmlspecialchars($row['Description']); ?>"
+                    data-date="<?php echo htmlspecialchars($dateFormatted); ?>"
+                    data-status="<?php echo htmlspecialchars($status); ?>"
+                    data-photo="<?php echo htmlspecialchars($row['Photo'] ?? ''); ?>">
+ 
+                    <td>
+                        <?php echo htmlspecialchars($row['ReportID']); ?>
+                    </td>
+ 
                     <td>
                         <?php echo htmlspecialchars($row['PetName']); ?>
                     </td>
-
+ 
                     <td>
                         <?php echo htmlspecialchars($row['Location']); ?>
                     </td>
-
+ 
                     <td>
                         <?php echo $dateFormatted; ?>
                     </td>
-
+ 
                     <td>
-                        <span class="<?php echo $badgeClass; ?>">
-                            <?php echo htmlspecialchars($status); ?>
+                       <span class="<?php echo $badgeClass; ?>" id="badge-<?php echo htmlspecialchars($row['ReportID']); ?>">
+                        <?php echo htmlspecialchars($status); ?>
                         </span>
                     </td>
+ 
 
-                    <td class="action-btns">
+                   <td class="action-btns">
 
                         <button class="btn-solve"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolve')">
-                            Approve
+                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
+                            Solve
                         </button>
 
                         <button class="btn-inprogress"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Rejected')">
-                            Reject
+                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
+                            In Progress
                         </button>
 
                         <button class="btn-view-report"
-                            onclick="viewApp('<?php echo htmlspecialchars($row['ReportID']); ?>')">
+                            onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
                             View
                         </button>
 
@@ -285,8 +298,8 @@ $conn->close();
 
         </table>
 
-            <div class="inbox-right" id="side-panel">
-                <div id="panel-content" class="panel-empty">
+        <div class="inbox-right" id="sidePanel">
+            <div id="panel-content" class="panel-empty">
                     Click "View" on a request to see details here.
                 </div>
             </div>
