@@ -142,9 +142,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!--footer-->
     <footer>
+        <div class="footer-grid">
+        <div>
+            <div style="font-size:2rem;">🐾</div>
+            <div class="footer-brand-name">Furever Pet Home</div>
+            <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+        </div>
+        <div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
+            <li><a href="#">Find A Pet</a></li>
+            <li><a href="#">Report Animal</a></li>
+            <li><a href="#">Community Board</a></li>
+            <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Account</p>
+            <ul class="footer-links-list">
+            <li><a href="#">My Profile</a></li>
+            <li><a href="#">My Applications</a></li>
+            <li><a href="#">Favourites</a></li>
+            <li><a href="#">Inbox</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
+            <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+            <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+            <li><a href="#">+60 123-456-7890</a></li>
+            <li><a href="#">Facebook · Instagram · X</a></li>
+            </ul>
+        </div>
+        </div>
         <div class="footer-bottom">
-            <span>©️ 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
-            <span>Made with ❤️ for Bandar Klang</span>
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
         </div>
     </footer>
 
