@@ -1,8 +1,13 @@
 <?php
 session_start();
-require_once "../db_connect.php"; 
+require_once "../db_connect.php"; // usercount.php is in /admin, db_connect.php is one level up in project root
 
+/* ============================================================
+   HANDLE FORM ACTIONS (update, delete) for resident & organization
+   Runs before any HTML output, then redirects back to this page.
+============================================================ */
 
+// ---- UPDATE RESIDENT ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_resident') {
     $residentID = $_POST['ResidentID'];
     $firstName  = trim($_POST['FirstName']);
@@ -20,18 +25,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
+// ---- DELETE RESIDENT (cascading: removes related adopt_application rows first) ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_resident') {
     $residentID = $_POST['ResidentID'];
 
-    $stmt = $conn->prepare("DELETE FROM resident WHERE ResidentID = ?");
-    $stmt->bind_param("s", $residentID);
-    $stmt->execute();
-    $stmt->close();
+    // NOTE: adopt_application has a foreign key on ResidentID, so we must delete
+    // those rows first or MySQL blocks the resident delete (as you saw in the
+    // fatal error). If other tables also reference ResidentID (e.g. comment,
+    // report, inbox), add a DELETE for each of those here too, in the same
+    // order: child tables first, resident last.
+
+    $conn->begin_transaction();
+    try {
+        $stmt = $conn->prepare("DELETE FROM adopt_application WHERE ResidentID = ?");
+        $stmt->bind_param("s", $residentID);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $conn->prepare("DELETE FROM resident WHERE ResidentID = ?");
+        $stmt->bind_param("s", $residentID);
+        $stmt->execute();
+        $stmt->close();
+
+        $conn->commit();
+    } catch (mysqli_sql_exception $e) {
+        $conn->rollback();
+        // If another table we don't know about still references this resident,
+        // the delete is safely rolled back (nothing partially deleted) and we
+        // show the real error so it's clear what table needs to be added above.
+        die("Delete failed - this resident still has related records in another table. Error: " . htmlspecialchars($e->getMessage()));
+    }
 
     header("Location: usercount.php?tab=residents");
     exit();
 }
 
+// ---- UPDATE ORGANIZATION ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_org') {
     $orgID   = $_POST['OrgID'];
     $orgName = trim($_POST['OrgName']);
@@ -49,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
+// ---- DELETE ORGANIZATION ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_org') {
     $orgID = $_POST['OrgID'];
 
@@ -61,6 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
+
+/* ============================================================
+   FETCH RESIDENTS
+   resident columns: ResidentID, FirstName, LastName, NumberPhone,
+                      Email, Password, Address, Status, Salary
+============================================================ */
 $residents = [];
 $result = $conn->query("SELECT ResidentID, FirstName, LastName, NumberPhone, Email, Status FROM resident");
 if ($result) {
@@ -69,6 +105,15 @@ if ($result) {
     }
 }
 
+
+/* ============================================================
+   FETCH ORGANIZATIONS (NGOs)
+   organization columns: OrgID, OrgName, NumberPhone, OrgAddress,
+                          Email, Password, Description
+   NOTE: No Status column exists in the database for organizations.
+   Per project decision, the Status badge below is a visual-only
+   placeholder (always shows "Active") and is NOT stored or editable.
+============================================================ */
 $organizations = [];
 $result = $conn->query("SELECT OrgID, OrgName, NumberPhone, Email FROM organization");
 if ($result) {
@@ -77,6 +122,7 @@ if ($result) {
     }
 }
 
+// Which tab to show first on page load (after a redirect, e.g. ?tab=ngos)
 $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'residents';
 ?>
 <!DOCTYPE html>
@@ -89,7 +135,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
 </head>
 <body>
 
-<!-- navigation bar -->
+<!-- Navbar -->
 <nav class="navbar" id="navbar">
   <div class="navbar-top">
     <a href="#" class="nav-logo">
@@ -111,13 +157,13 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
   </div>
 </nav>
 
-<!--Users | NGOs -->
+<!-- Kotak Tab Users | NGOs -->
 <div class="tab-box">
   <button class="tab-btn <?php echo $activeTab === 'residents' ? 'active' : ''; ?>" onclick="showTable('residents')">Users</button>
   <button class="tab-btn <?php echo $activeTab === 'ngos' ? 'active' : ''; ?>" onclick="showTable('ngos')">NGOs</button>
 </div>
 
-<!-- resident table -->
+<!-- Residents Table -->
 <div id="residents" class="table-section" style="<?php echo $activeTab === 'residents' ? '' : 'display:none;'; ?>">
   <h2>Resident List</h2>
   <table class="admin-table">
@@ -142,16 +188,20 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             $delFormId  = "delform-" . htmlspecialchars($r['ResidentID']);
           ?>
 
+          <!-- Forms live outside the table row; inputs/buttons inside the row
+               reference them via the form="" attribute (valid HTML5, avoids
+               putting <form> tags directly around <td> elements). -->
           <form id="<?php echo $editFormId; ?>" method="POST" action="usercount.php">
             <input type="hidden" name="action" value="update_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
-          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this resident account');">
+          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this resident account, including all of their adoption applications');">
             <input type="hidden" name="action" value="delete_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
 
           <tr id="<?php echo $rowId; ?>">
+              <!-- VIEW MODE -->
               <td class="view-mode">
                 <?php echo htmlspecialchars($r['FirstName'] . ' ' . $r['LastName']); ?>
               </td>
@@ -233,9 +283,11 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
               <td class="view-mode"><?php echo htmlspecialchars($o['NumberPhone']); ?></td>
               <td class="view-mode"><?php echo htmlspecialchars($o['Email']); ?></td>
               <td class="view-mode">
+                <!-- Placeholder only - no Status column in organization table -->
                 Active
               </td>
 
+              <!-- EDIT MODE -->
               <td class="edit-mode" style="display:none;">
                 <input type="text" name="OrgName" form="<?php echo $editFormId; ?>" value="<?php echo htmlspecialchars($o['OrgName']); ?>">
               </td>
@@ -246,6 +298,8 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
                 <input type="email" name="Email" form="<?php echo $editFormId; ?>" value="<?php echo htmlspecialchars($o['Email']); ?>">
               </td>
               <td class="edit-mode" style="display:none;">
+                <!-- Status not editable - placeholder only -->
+                Active
               </td>
 
               <td>

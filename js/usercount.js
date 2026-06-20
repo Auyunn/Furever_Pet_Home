@@ -1,3 +1,4 @@
+// Toggle between Users and NGOs tables
 function showTable(tableId) {
   document.getElementById('residents').style.display = 'none';
   document.getElementById('ngos').style.display = 'none';
@@ -12,6 +13,7 @@ function showTable(tableId) {
   }
 }
 
+// Switch a row from view mode to edit mode (reveals inputs + Save button)
 function editAccount(rowId) {
   const row = document.getElementById(rowId);
   if (!row) return;
@@ -20,6 +22,9 @@ function editAccount(rowId) {
   row.querySelectorAll('.edit-mode').forEach(el => el.style.display = '');
 }
 
+// Delete confirmation before the form actually submits to PHP.
+// Call this from the delete button's onclick, e.g.:
+// <button type="submit" onclick="return confirmDelete('this resident');">🗑️</button>
 function confirmDelete(label) {
   return confirm("Delete " + label + "? This cannot be undone.");
 }
