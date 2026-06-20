@@ -119,8 +119,7 @@ $photoFolder = "../image/pet_community/";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- petcommunity.php is inside /ngo, so styles need the ../ prefix -->
     <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/petcommunityngo.css">
-</head>
+    <link rel="stylesheet" href="../css/petcommunityngo.css?v=2"></head>
 <body>
 
     <nav class="navbar" id="navbar">
