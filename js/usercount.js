@@ -23,8 +23,7 @@ function editAccount(rowId) {
 }
 
 // Delete confirmation before the form actually submits to PHP.
-// Call this from the delete button's onclick, e.g.:
-// <button type="submit" onclick="return confirmDelete('this resident');">🗑️</button>
+// Wired via onsubmit="return confirmDelete('...')" on each row's delete form.
 function confirmDelete(label) {
   return confirm("Delete " + label + "? This cannot be undone.");
 }

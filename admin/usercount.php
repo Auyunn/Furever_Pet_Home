@@ -25,19 +25,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
-// ---- DELETE RESIDENT (cascading: removes related adopt_application rows first) ----
+// ---- DELETE RESIDENT (cascading: removes related adopt_application + comment rows first) ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_resident') {
     $residentID = $_POST['ResidentID'];
 
-    // NOTE: adopt_application has a foreign key on ResidentID, so we must delete
-    // those rows first or MySQL blocks the resident delete (as you saw in the
-    // fatal error). If other tables also reference ResidentID (e.g. comment,
-    // report, inbox), add a DELETE for each of those here too, in the same
-    // order: child tables first, resident last.
+    // NOTE: adopt_application and comment both have a foreign key on ResidentID,
+    // so those rows must be deleted first or MySQL blocks the resident delete.
+    // If other tables also reference ResidentID (e.g. report, inbox), add a
+    // DELETE for each of those here too, in the same order: child tables
+    // first, resident last. The try/catch below will safely roll back and
+    // tell you exactly which table is still blocking it, if any.
 
     $conn->begin_transaction();
     try {
         $stmt = $conn->prepare("DELETE FROM adopt_application WHERE ResidentID = ?");
+        $stmt->bind_param("s", $residentID);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $conn->prepare("DELETE FROM comment WHERE ResidentID = ?");
         $stmt->bind_param("s", $residentID);
         $stmt->execute();
         $stmt->close();
@@ -50,9 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $conn->commit();
     } catch (mysqli_sql_exception $e) {
         $conn->rollback();
-        // If another table we don't know about still references this resident,
-        // the delete is safely rolled back (nothing partially deleted) and we
-        // show the real error so it's clear what table needs to be added above.
         die("Delete failed - this resident still has related records in another table. Error: " . htmlspecialchars($e->getMessage()));
     }
 
@@ -67,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $phone   = trim($_POST['NumberPhone']);
     $email   = trim($_POST['Email']);
 
-    // NOTE: organization table has no Status column - not saved here.
-    // See comment near the NGO table below for details.
+    // NOTE: organization table has no Status column - the NGO Status badge
+    // shown in the UI is a display-only placeholder, never saved here.
     $stmt = $conn->prepare("UPDATE organization SET OrgName = ?, NumberPhone = ?, Email = ? WHERE OrgID = ?");
     $stmt->bind_param("ssss", $orgName, $phone, $email, $orgID);
     $stmt->execute();
@@ -81,6 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 // ---- DELETE ORGANIZATION ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_org') {
     $orgID = $_POST['OrgID'];
+
+    // NOTE: community_board has a foreign key on OrgID (NGOs author posts).
+    // If this delete fails with a foreign key error, uncomment the line below
+    // to cascade-delete that NGO's posts first, same pattern as residents above.
+    // $conn->query("DELETE FROM community_board WHERE OrgID = '" . $conn->real_escape_string($orgID) . "'");
 
     $stmt = $conn->prepare("DELETE FROM organization WHERE OrgID = ?");
     $stmt->bind_param("s", $orgID);
@@ -190,12 +198,13 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
 
           <!-- Forms live outside the table row; inputs/buttons inside the row
                reference them via the form="" attribute (valid HTML5, avoids
-               putting <form> tags directly around <td> elements). -->
+               putting <form> tags directly around <td> elements, which is
+               invalid HTML and renders inconsistently across browsers). -->
           <form id="<?php echo $editFormId; ?>" method="POST" action="usercount.php">
             <input type="hidden" name="action" value="update_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
-          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this resident account, including all of their adoption applications');">
+          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this resident account, including all of their adoption applications and comments');">
             <input type="hidden" name="action" value="delete_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
@@ -211,7 +220,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
                 <?php echo ((int)$r['Status'] === 1) ? 'Active' : 'Inactive'; ?>
               </td>
 
-              <!-- EDIT MODE (hidden inputs shown via JS when pencil clicked) -->
+              <!-- EDIT MODE (hidden until pencil icon clicked) -->
               <td class="edit-mode" style="display:none;">
                 <input type="text" name="FirstName" form="<?php echo $editFormId; ?>" value="<?php echo htmlspecialchars($r['FirstName']); ?>" size="8">
                 <input type="text" name="LastName" form="<?php echo $editFormId; ?>" value="<?php echo htmlspecialchars($r['LastName']); ?>" size="8">
