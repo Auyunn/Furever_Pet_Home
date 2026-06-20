@@ -177,6 +177,20 @@
                     <div class="status-dot"></div>
                     <p><strong>Urban Relocation:</strong> A significant portion of community growth stems from residents moving to newer Bandar Klang developments seeking pet-friendly environments.</p>
                 </div>
+
+                <div class="reason-card">
+                    <div class="status-dot"></div>
+                    <p><strong>Economic Factors:</strong> Families with stable incomes and financial security feel more confident about taking on the responsibility of pet ownership, leading to higher adoption rates.</p>
+                </div>
+
+                <div class="reason-card">
+                    <div class="status-dot"></div>
+                    <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
+                </div>
+
+            </div>
+
+
             </div>
         </div>
     </main>
@@ -229,12 +243,11 @@
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Weather Trends', 'Relocation/Move'],
+                labels: ['Weather Trends', 'Relocation/Move', 'Economic Factors','Health & Wellness Trends' ],
                 datasets: [{
                     label: 'Adoption Frequency',
-                    data: [78, 45],
-                    
-                    backgroundColor: ['#4f4f4f', '#9e9e9e'],
+                    data: [78, 45, 60, 85],
+                    backgroundColor: ['#4A90E2', '#F5A623', '#50E3C2', '#2ECC71'],
                     borderRadius: 8,
                     barThickness: 60,
                     borderColor: '#2c2c2c',
