@@ -1,13 +1,29 @@
 body {
-  padding-top: var(--navbar-height); /* ✅ elak overlap dengan navbar */
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   margin: 0;
 }
 
-/* Add Post Layout */
+.wrapper {
+  margin-top: var(--navbar-height);
+  padding: 20px 40px;
+}
+
+.form-errors {
+  background: #fdecea;
+  border: 1px solid #f5b5b0;
+  color: #b3261e;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.form-errors p {
+  margin: 4px 0;
+}
+
 .add-container {
-  margin-top: var(--navbar-height); /* ✅ tambahan untuk pastikan form turun bawah navbar */
   display: flex;
   gap: 40px;
   padding: 40px;
@@ -17,7 +33,6 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Image preview */
 .preview {
   flex: 1;
   text-align: center;
@@ -30,7 +45,6 @@ body {
   border-radius: 10px;
 }
 
-/* Form section */
 .form-section {
   flex: 2;
   display: flex;
@@ -67,4 +81,10 @@ textarea {
 
 .buttons button:hover {
   background: var(--amber-lt);
+}
+
+@media (max-width: 768px) {
+  .add-container {
+    flex-direction: column;
+  }
 }
