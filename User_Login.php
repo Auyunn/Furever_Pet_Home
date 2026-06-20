@@ -124,7 +124,7 @@
 
                 <div class="login-nav">
                     <a href="Sign_Up.php">Don't have an account?</a>
-                    <a href="Forgot_Password.html">Forgot Password?</a>
+                    <a href="ForgotPassword.php">Forgot Password?</a>
                 </div>
 
                 <div class="login-btn-wrap">
