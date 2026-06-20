@@ -105,6 +105,7 @@ mysqli_close($conn);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forgot Password — Furever Home Pet</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/forgotpassword.css">
 
 </head>
@@ -114,7 +115,6 @@ mysqli_close($conn);
   <div class="fp-card">
  
     <div class="fp-header">
-      
       <h2>Forgot Password</h2>
       <p style="font-size:0.85rem;color:var(--text-muted);">
         <?php
