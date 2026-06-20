@@ -318,6 +318,127 @@ window.updateStatus = function(adoptionID, newStatus, reason = null)
         }
     }
 
+//====REPORT NGO====
+//====NGO REPORT====
+
+window.applyFilter = function()
+{
+    const filter = document.getElementById('filter').value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('filter', filter);
+    window.location.href = url.toString();
+}
+
+window.viewReport = function(reportID)
+{
+    const row = document.getElementById('row-' + reportID);
+    if (!row) return;
+
+    const pet    = row.dataset.pet;
+    const loc    = row.dataset.loc;
+    const desc   = row.dataset.desc;
+    const date   = row.dataset.date;
+    const status = row.dataset.status;
+    const photo  = row.dataset.photo;
+
+    let photoHTML = '';
+    if (photo) {
+        photoHTML = `<div>
+            <p class="panel-label">Photo</p>
+            <img src="../uploads/${photo}" alt="Report Photo"
+                 style="width:100%;border-radius:14px;margin-top:0.4rem;object-fit:cover;max-height:180px;">
+        </div>`;
+    }
+
+    const panel = document.getElementById('panel-content');
+    panel.innerHTML = `
+        <div class="panel-card">
+            <div style="display:flex; justify-content:flex-end;">
+                <button onclick="closePanel()" class="close-btn">✕</button>
+            </div>
+            <div class="panel-title">${pet}</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);">Report ID: ${reportID}</div>
+            <hr class="panel-divider">
+            <div>
+                <p class="panel-label">Location</p>
+                <p class="panel-value">📍 ${loc}</p>
+            </div>
+            <div>
+                <p class="panel-label">Date Reported</p>
+                <p class="panel-value">${date}</p>
+            </div>
+            <div>
+                <p class="panel-label">Status</p>
+                <p class="panel-value"><span class="${getBadgeClass(status)}">${status}</span></p>
+            </div>
+            <hr class="panel-divider">
+            <div>
+                <p class="panel-label">Description</p>
+                <p class="panel-value">${desc}</p>
+            </div>
+            ${photoHTML}
+        </div>`;
+
+    panel.scrollTop = 0;
+    panel.dataset.currentId = reportID;
+}
+
+window.closePanel = function()
+{
+    const panel = document.getElementById('panel-content');
+    if (!panel) return;
+    panel.innerHTML = '<div class="panel-empty">Click "View" on a request to see details here.</div>';
+    panel.dataset.currentId = '';
+}
+
+window.updateStatus = function(reportID, newStatus)
+{
+    fetch('report.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update_status', reportID: reportID, status: newStatus })
+    })
+    .then(r => {
+        if (!r.ok) throw new Error('Network response not ok');
+        return r.json();
+    })
+    .then(data => {
+        if (!data.success) {
+            alert('Update failed: ' + (data.message || 'unknown'));
+            return;
+        }
+        window.updateRowBadge(reportID, newStatus);
+
+        const panel = document.getElementById('panel-content');
+        if (panel && panel.dataset.currentId === String(reportID)) {
+            window.viewReport(reportID);
+        }
+    })
+    .catch(e => {
+        console.error(e);
+        alert('Network error');
+    });
+}
+
+window.updateRowBadge = function(reportID, newStatus)
+{
+    const row = document.getElementById('row-' + reportID);
+    if (!row) return;
+
+    row.dataset.status = newStatus;
+
+    const badge = document.getElementById('badge-' + reportID);
+    if (badge) {
+        badge.textContent = newStatus;
+        badge.className   = getBadgeClass(newStatus);
+    }
+}
+function getBadgeClass(status)
+{
+    if (status === 'Resolved')    return 'badge_resolved';
+    if (status === 'In Progress') return 'badge_inprogress';
+    return 'badge_pending';
+}
     
 
 
