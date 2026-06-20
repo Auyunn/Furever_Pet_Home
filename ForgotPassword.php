@@ -68,16 +68,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $hashedPw = password_hash($newPw, PASSWORD_DEFAULT);
  
-            $stmt = mysqli_prepare($conn, "UPDATE resident SET Password = ? WHERE Email = ?");
-            mysqli_stmt_bind_param($stmt, "ss", $hashedPw, $email);
- 
-            if (mysqli_stmt_execute($stmt)) {
-                $_SESSION['fp_step'] = 3;
-                unset($_SESSION['fp_email']);
-            } else {
-                $errorMsg = "Something went wrong: " . mysqli_error($conn);
-            }
-            mysqli_stmt_close($stmt);
+            // changed
+              $stmt = mysqli_prepare($conn, "UPDATE resident SET Password = ? WHERE Email = ?");
+              mysqli_stmt_bind_param($stmt, "ss", $newPw, $email);
+
+              if (mysqli_stmt_execute($stmt)) {
+                  if (mysqli_stmt_affected_rows($stmt) > 0) {
+                      $_SESSION['fp_step'] = 3;
+                      unset($_SESSION['fp_email']);
+                  } else {
+                      $errorMsg = "No matching account was found for email \"$email\" — the password was not changed. Please verify the email is correct.";
+                  }
+              } else {
+                  $errorMsg = "Something went wrong: " . mysqli_error($conn);
+              }
+              mysqli_stmt_close($stmt);
         }
     }
  
@@ -99,7 +104,7 @@ mysqli_close($conn);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forgot Password — Furever Home Pet</title>
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
  
