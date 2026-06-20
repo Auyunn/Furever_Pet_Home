@@ -104,9 +104,8 @@ mysqli_close($conn);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forgot Password — Furever Home Pet</title>
-<link rel="stylesheet" href="../css/styles.css">
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/forgotpassword.css">
+
+<link rel="stylesheet" href="css/forgotpassword.css">
 
 </head>
 <body>
@@ -115,7 +114,7 @@ mysqli_close($conn);
   <div class="fp-card">
  
     <div class="fp-header">
-      <img src="../image/logo-placeholder.png" alt="Furever Home Pet logo" style="width:64px;height:64px;object-fit:contain;display:block;margin:0 auto 0.5rem;">
+      
       <h2>Forgot Password</h2>
       <p style="font-size:0.85rem;color:var(--text-muted);">
         <?php
