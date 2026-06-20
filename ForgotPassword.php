@@ -105,6 +105,9 @@ mysqli_close($conn);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forgot Password — Furever Home Pet</title>
 <link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/forgotpassword.css">
+
 </head>
 <body>
  
