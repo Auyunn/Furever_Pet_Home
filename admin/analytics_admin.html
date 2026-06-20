@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics - Furever Pet Home</title>
-    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="../css/base.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -70,6 +70,12 @@
         }
 
         /* --- Reasons Section (PD)--- */
+        .reasons-container {
+            margin-top: 10px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 25px;
+        }
+
         .reasons-container h3 {
             font-size: 1.2rem;
             color: var(--primary-gray-dark);
@@ -79,15 +85,20 @@
             padding-bottom: 8px;
         }
 
+        .reason-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
         .reason-card {
             background: #fefefe;
             border: 1px solid var(--border-light);
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 16px 18px;
             display: flex;
             align-items: flex-start;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s, border-color 0.2s , box-shadow 0.2s;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
@@ -123,7 +134,9 @@
             .dashboard-container { grid-template-columns: 1fr; }
             .bar { flex-direction: column; gap: 15px; }
             .nav a { margin: 0 10px; font-size: 0.8rem; }
+             .reason-grid { grid-template-columns: 1fr; }
         }
+
     </style>
 </head>
 <body>
@@ -159,40 +172,37 @@
         <h2>Pet Adoption Insights: Bandar Klang</h2>
         
         <div class="dashboard-container">
-            <!-- Graph Section  -->
-            <div class="chart-wrapper">
-                <canvas id="adoptionRateChart"></canvas>
+    <!-- Graph Section (top) -->
+    <div class="chart-wrapper">
+        <canvas id="adoptionRateChart"></canvas>
+    </div>
+
+    <!-- Insights Section moved below chart -->
+    <div class="reasons-container">
+        <h3>Primary Drivers</h3>
+        <div class="reason-grid">
+            <div class="reason-card">
+                <div class="status-dot"></div>
+                <p><strong>Weather Impact:</strong> Higher adoption rates are observed during festive seasons and school holidays in Selangor when families have more time to settle a new pet.</p>
             </div>
 
-            <!-- Insights Section -->
-            <div class="reasons-container">
-                <h3>Primary Drivers</h3>
-                
-                <div class="reason-card">
-                    <div class="status-dot"></div>
-                    <p><strong>Weather Impact:</strong> Higher adoption rates are observed during festive seasons and school holidays in Selangor when families have more time to settle a new pet.</p>
-                </div>
-
-                <div class="reason-card">
-                    <div class="status-dot"></div>
-                    <p><strong>Urban Relocation:</strong> A significant portion of community growth stems from residents moving to newer Bandar Klang developments seeking pet-friendly environments.</p>
-                </div>
-
-                <div class="reason-card">
-                    <div class="status-dot"></div>
-                    <p><strong>Economic Factors:</strong> Families with stable incomes and financial security feel more confident about taking on the responsibility of pet ownership, leading to higher adoption rates.</p>
-                </div>
-
-                <div class="reason-card">
-                    <div class="status-dot"></div>
-                    <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
-                </div>
-
+            <div class="reason-card">
+                <div class="status-dot"></div>
+                <p><strong>Urban Relocation:</strong> A significant portion of community growth stems from residents moving to newer Bandar Klang developments seeking pet-friendly environments.</p>
             </div>
 
+            <div class="reason-card">
+                <div class="status-dot"></div>
+                <p><strong>Economic Factors:</strong> Families with stable incomes and financial security feel more confident about taking on the responsibility of pet ownership, leading to higher adoption rates.</p>
+            </div>
 
+            <div class="reason-card">
+                <div class="status-dot"></div>
+                <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
             </div>
         </div>
+    </div>
+</div>
     </main>
 
     <!-- Footer -->
