@@ -81,7 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
  
-    
+    /* ---------- restart the flow ---------- */
+    if (isset($_POST['action']) && $_POST['action'] === 'restart') {
+        unset($_SESSION['fp_email']);
+        $_SESSION['fp_step'] = 1;
+    }
 }
  
 $currentStep = $_SESSION['fp_step'];
