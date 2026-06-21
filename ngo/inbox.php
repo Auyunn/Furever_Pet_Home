@@ -30,7 +30,6 @@ $params = [$org_id];
 $types = "s";
 
 switch ($filter) {
-
     case 'yesterday':
         $where .= " AND DATE(a.RequestDate) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
         break;
@@ -77,77 +76,54 @@ $result = $stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resident Inbox</title>
+    <title>NGO Inbox</title>
+    <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body>
 
-        <!-- LOGO and LOGIN -->
         <nav class="navbar" id="navbar">
-        <div class ="navbar-top">
+        <div class="navbar-top">
             <a href="#" class="nav-logo">
-            <img src="../image/icons/logo.png" alt="Furever Pet Home">
-            <span>Furever Pet Home</span>
+                <img src="../image/icons/logo.png" alt="Furever Pet Home">
+                <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="avatar" title="My Profile">
+                    <?= htmlspecialchars(strtoupper(substr($_SESSION['orgID'], 0, 2))) ?>
+                </div>
             </div>
         </div>
 
-        <!-- NAVIGATION -->
         <div class="nav-links">
             <a href="Pet_listing.php" class="nav-tab"> Home</a>
             <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="petcommunity.php" class="nav-tab"> Pet Community</a>
             <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="report..php" class="nav-tab"> Report</a>
+            <a href="Analytics.php" class="nav-tab"> Analytics</a>
+            <a href="report.php" class="nav-tab"> Report</a>
         </div>
-               
         </nav>
-
 
 <div class="filter-box">
     <label for="filter">Show:</label>
-
-    <select id="filter" class="select-filter" onchange="applyFilter()">
-
-        <option value="today" <?php echo ($filter=='today') ? 'selected' : ''; ?>>
-            Today
-        </option>
-
-        <option value="yesterday" <?php echo ($filter=='yesterday') ? 'selected' : ''; ?>>
-            Yesterday
-        </option>
-
-        <option value="this_week" <?php echo ($filter=='this_week') ? 'selected' : ''; ?>>
-            This Week
-        </option>
-
-        <option value="this_month" <?php echo ($filter=='this_month') ? 'selected' : ''; ?>>
-            This Month
-        </option>
-
-        <option value="this_year"  <?php echo ($filter == 'this_year') ? 'selected' : ''; ?>>
-            This Year
-        </option>
-
+    <select id="filter" class="select-filter" onchange="window.applyFilter()">
+        <option value="today" <?php echo ($filter=='today') ? 'selected' : ''; ?>>Today</option>
+        <option value="yesterday" <?php echo ($filter=='yesterday') ? 'selected' : ''; ?>>Yesterday</option>
+        <option value="this_week" <?php echo ($filter=='this_week') ? 'selected' : ''; ?>>This Week</option>
+        <option value="this_month" <?php echo ($filter=='this_month') ? 'selected' : ''; ?>>This Month</option>
+        <option value="this_year"  <?php echo ($filter == 'this_year') ? 'selected' : ''; ?>>This Year</option>
     </select>
 </div>
 
-<div class="ngo-inbox-container" >
-
+<div class="ngo-inbox-container">
     <div class="inbox-table-wrap">
-
         <table class="inbox-table">
-
             <thead>
                 <tr>
                     <th>Request ID</th>
@@ -158,152 +134,92 @@ $result = $stmt->get_result();
                     <th>Action</th>
                 </tr>
             </thead>
-
             <tbody>
-
             <?php while($row = $result->fetch_assoc()) { 
-
                 $status = isset($row['Status']) ? $row['Status'] : 'Pending';
-
-                if($status == 'Approved')
-                {
+                if($status == 'Approved') {
                     $badgeClass = 'badge_approved';
-                }
-                elseif($status == 'Rejected')
-                {
+                } elseif($status == 'Rejected') {
                     $badgeClass = 'badge_rejected';
-                }
-                else
-                {
+                } else {
                     $badgeClass = 'badge_pending';
                 }
 
-                if(isset($row['RequestDate']))
-                {
+                if(isset($row['RequestDate'])) {
                     $requestDate = date("d/m/Y H:i", strtotime($row['RequestDate']));
-                }
-                else
-                {
+                } else {
                     $requestDate = '-';
                 }
             ?>
-
-                <tr id="row-<?php echo htmlspecialchars($row['AdoptionID']); ?>"
-                    data-petid="<?php echo htmlspecialchars($row['PetID']); ?>">
-
-                    <td>
-                        <?php echo htmlspecialchars($row['AdoptionID']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($row['PetName']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($row['FirstName'] . ' ' . $row['LastName']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo $requestDate; ?>
-                    </td>
-
+                <tr id="row-<?php echo htmlspecialchars($row['AdoptionID']); ?>" data-petid="<?php echo htmlspecialchars($row['PetID']); ?>">
+                    <td><?php echo htmlspecialchars($row['AdoptionID']); ?></td>
+                    <td><?php echo htmlspecialchars($row['PetName']); ?></td>
+                    <td><?php echo htmlspecialchars($row['FirstName'] . ' ' . $row['LastName']); ?></td>
+                    <td><?php echo $requestDate; ?></td>
                     <td>
                         <span class="<?php echo $badgeClass; ?>">
                             <?php echo htmlspecialchars($status); ?>
                         </span>
                     </td>
-
                     <td class="action-btns">
-
-                        <button class="btn-approve"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Approved')">
-                            Approve
-                        </button>
-
-                        <button class="btn-reject"
-                            onclick="rejectWithReason('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Rejected')">
-                            Reject
-                        </button>
-
-                        <button class="btn-view"
-                            onclick="viewApp('<?php echo htmlspecialchars($row['AdoptionID']); ?>')">
-                            View
-                        </button>
-
+                        <button class="btn-approve" onclick="window.updateStatus('<?php echo htmlspecialchars($row['AdoptionID']); ?>', 'Approved')">Approve</button>
+                        <button class="btn-reject" onclick="window.rejectWithReason('<?php echo htmlspecialchars($row['AdoptionID']); ?>')">Reject</button>
+                        <button class="btn-view" onclick="window.viewApp('<?php echo htmlspecialchars($row['AdoptionID']); ?>')">View</button>
                     </td>
-
                 </tr>
-
             <?php } ?>
-
             </tbody>
-
         </table>
 
-            <div class="inbox-right" id="side-panel">
-                <div id="panel-content" class="panel-empty">
-                    Click "View" on a request to see details here.
-                </div>
+        <div class="inbox-right" id="side-panel">
+            <div id="panel-content" class="panel-empty">
+                Click "View" on a request to see details here.
             </div>
-
-    </div>
-
-</div>
-
-<div class="inbox-container">
-
-    <div class="inbox-left">
-        <div class="inbox-table-wrap">
-
-            <table class="inbox-table">
-                </table>
-
         </div>
     </div>
-
 </div>
- <footer>
-            <div class="footer-grid">
-            <div>
-                <div style="font-size:2rem;">🐾</div>
-                <div class="footer-brand-name">Furever Pet Home</div>
-                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
-            </div>
-            <div>
-                <p class="footer-col-title">Platform</p>
-                <ul class="footer-links-list">
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div style="font-size:2rem;">🐾</div>
+            <div class="footer-brand-name">Furever Pet Home</div>
+            <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+        </div>
+        <div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
                 <li><a href="#">Find A Pet</a></li>
                 <li><a href="#">Report Animal</a></li>
                 <li><a href="#">Community Board</a></li>
                 <li><a href="#">Analytics</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="footer-col-title">Account</p>
-                <ul class="footer-links-list">
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Account</p>
+            <ul class="footer-links-list">
                 <li><a href="#">My Profile</a></li>
                 <li><a href="#">My Applications</a></li>
                 <li><a href="#">Favourites</a></li>
                 <li><a href="#">Inbox</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="footer-col-title">Contact</p>
-                <ul class="footer-links-list">
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
                 <li><a href="#">41700 Bandar Klang, Selangor</a></li>
                 <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
                 <li><a href="#">+60 123-456-7890</a></li>
                 <li><a href="#">Facebook · Instagram · X</a></li>
-                </ul>
-            </div>
-            </div>
-            <div class="footer-bottom">
-            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
-            <span>Made with ❤️ for Bandar Klang</span>
-            </div>
-        </footer>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
+    </div>
+</footer>
 
-<script src="../js/script.js"></script>
-
+<script src="../js/script.js?v=<?= time(); ?>"></script>
 </body>
 </html>
