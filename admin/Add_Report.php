@@ -154,7 +154,7 @@ foreach ($reports as $rep) {
                     <span>Furever Pet Home</span>
                 </a>
                 <div class="nav-right">
-                    <div class="avatar" title="My Profile" onclick="window.location.href='';">AT</div>
+                    <div class="avatar" title="My Profile" onclick="window.location.href='';">A</div>
                 </div>
             </div>
 
