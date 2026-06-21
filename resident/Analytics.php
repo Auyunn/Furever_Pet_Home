@@ -1,3 +1,31 @@
+<?php
+    session_start();
+    include("../db_connect.php");
+
+    // 1. Semak status login & dapatkan ResidentID untuk kegunaan sistem
+    $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['residentID']);
+    $resident_id = $is_logged_in ? $_SESSION['residentID'] : 'GUEST';
+
+    // ── QUERY 1: AMBIL DATA PROFILE USER YANG LOGIN (UNTUK AVATAR) ──
+    $firstName = 'Resident';
+    $lastName  = '';
+
+    if ($is_logged_in) {
+        $profileStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+        $profileStmt->bind_param('s', $resident_id);
+        $profileStmt->execute();
+        $residentResult = $profileStmt->get_result();
+        if ($resident = $residentResult->fetch_assoc()) {
+            $firstName = $resident['FirstName'] ?? 'Resident';
+            $lastName  = $resident['LastName'] ?? '';
+        }
+        $profileStmt->close();
+    }
+
+    // Sediakan data avatar initials (Huruf pertama FirstName + Huruf pertama LastName)
+    $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,9 +160,7 @@
 
         @media (max-width: 768px) {
             .dashboard-container { grid-template-columns: 1fr; }
-            .bar { flex-direction: column; gap: 15px; }
-            .nav a { margin: 0 10px; font-size: 0.8rem; }
-             .reason-grid { grid-template-columns: 1fr; }
+            .reason-grid { grid-template-columns: 1fr; }
         }
 
     </style>
@@ -143,7 +169,6 @@
 
     <div class="bar">
         <nav class="navbar" id="navbar">
-        <!--logo and profile-->
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
@@ -151,25 +176,22 @@
             </a>
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+            
+            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
+                <?= htmlspecialchars($avatarInitials) ?>
+            </div>
+            
             </div>
         </div>
 
-        <!---Tab Navigation-->
         <div class="nav-links">
-            <?php if(isset($_SESSION['user_id'])): ?>
-
-                <a href="../HomePage(registed).html" class="nav-tab">Home</a>
-            <?php else: ?>
-                <a href="../HomePage(unregistered).html" class="nav-tab">Home</a>
-            <?php endif; ?>            
+            <a href="HomePage(registed).php" class="nav-tab">Home</a>
             <a href="inbox.php" class="nav-tab">Inbox</a>
-            <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
-            <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab">Analytics</a>
-            <a href="Report.html" class="nav-tab">Report</a>
-
+            <a href="findapet.php" class="nav-tab">Find A Pet</a>
+            <a href="pet_community.php" class="nav-tab">Pet Community</a>
+            <a href="help_center.php" class="nav-tab">Help Center</a>
+            <a href="Analytics.php" class="nav-tab">Analytics</a>
+            <a href="Report.php" class="nav-tab">Report</a>
         </div>
         </nav>
     </div>
@@ -178,94 +200,83 @@
         <h2>Pet Adoption Insights: Bandar Klang</h2>
         
         <div class="dashboard-container">
-    <!-- Graph Section (top) -->
-    <div class="chart-wrapper">
-        <canvas id="adoptionRateChart"></canvas>
-    </div>
-
-    <!-- Insights Section moved below chart -->
-    <div class="reasons-container">
-        <h3>Primary Drivers</h3>
-        <div class="reason-grid">
-            <div class="reason-card">
-                <div class="status-dot"></div>
-                <p><strong>Weather Impact:</strong> Higher adoption rates are observed during festive seasons and school holidays in Selangor when families have more time to settle a new pet.</p>
+            <div class="chart-wrapper">
+                <canvas id="adoptionRateChart"></canvas>
             </div>
 
-            <div class="reason-card">
-                <div class="status-dot"></div>
-                <p><strong>Urban Relocation:</strong> A significant portion of community growth stems from residents moving to newer Bandar Klang developments seeking pet-friendly environments.</p>
+            <div class="reasons-container">
+                <h3>Primary Drivers</h3>
+                <div class="reason-grid">
+                    <div class="reason-card">
+                        <div class="status-dot"></div>
+                        <p><strong>Weather Impact:</strong> Higher adoption rates are observed during festive seasons and school holidays in Selangor when families have more time to settle a new pet.</p>
+                    </div>
+
+                    <div class="reason-card">
+                        <div class="status-dot"></div>
+                        <p><strong>Urban Relocation:</strong> A significant portion of community growth stems from residents moving to newer Bandar Klang developments seeking pet-friendly environments.</p>
+                    </div>
+
+                    <div class="reason-card">
+                        <div class="status-dot"></div>
+                        <p><strong>Economic Factors:</strong> Families with stable incomes and financial security feel more confident about taking on the responsibility of pet ownership, leading to higher adoption rates.</p>
+                    </div>
+
+                    <div class="reason-card">
+                        <div class="status-dot"></div>
+                        <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
+                    </div>
+
+                    <div class="reason-card">
+                        <div class="status-dot"></div>
+                        <p><strong>Social Media Influence:</strong> Viral posts, influencer endorsements, or heartwarming rescue stories shared online can inspire spontaneous adoptions.</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="reason-card">
-                <div class="status-dot"></div>
-                <p><strong>Economic Factors:</strong> Families with stable incomes and financial security feel more confident about taking on the responsibility of pet ownership, leading to higher adoption rates.</p>
-            </div>
-
-            <div class="reason-card">
-                <div class="status-dot"></div>
-                <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
-            </div>
-
-            
-
-            <div class="reason-card">
-                <div class="status-dot"></div>
-                <p><strong>Social Media Influence:</strong> Viral posts, influencer endorsements, or heartwarming rescue stories shared online can inspire spontaneous adoptions.</p>
-            </div>
-
-        
-
-
-
-        </dive>
-    </div>
-</div>
+        </div>
     </main>
 
-    <!-- Footer -->
     <footer>
-            <div class="footer-grid">
-            <div>
-                <div style="font-size:2rem;">🐾</div>
-                <div class="footer-brand-name">Furever Pet Home</div>
-                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
-            </div>
-            <div>
-                <p class="footer-col-title">Platform</p>
-                <ul class="footer-links-list">
-                <li><a href="#">Find A Pet</a></li>
-                <li><a href="#">Report Animal</a></li>
-                <li><a href="#">Community Board</a></li>
-                <li><a href="#">Analytics</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="footer-col-title">Account</p>
-                <ul class="footer-links-list">
-                <li><a href="#">My Profile</a></li>
-                <li><a href="#">My Applications</a></li>
-                <li><a href="#">Favourites</a></li>
-                <li><a href="#">Inbox</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="footer-col-title">Contact</p>
-                <ul class="footer-links-list">
-                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
-                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
-                <li><a href="#">+60 123-456-7890</a></li>
-                <li><a href="#">Facebook · Instagram · X</a></li>
-                </ul>
-            </div>
-            </div>
-            <div class="footer-bottom">
-            <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
-            <span>Made with ❤️ for Bandar Klang</span>
-            </div>
-        </footer>
+        <div class="footer-grid">
+        <div>
+            <div style="font-size:2rem;">🐾</div>
+            <div class="footer-brand-name">Furever Pet Home</div>
+            <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+        </div>
+        <div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
+            <li><a href="#">Find A Pet</a></li>
+            <li><a href="#">Report Animal</a></li>
+            <li><a href="#">Community Board</a></li>
+            <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Account</p>
+            <ul class="footer-links-list">
+            <li><a href="#">My Profile</a></li>
+            <li><a href="#">My Applications</a></li>
+            <li><a href="#">Favourites</a></li>
+            <li><a href="#">Inbox</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
+            <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+            <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+            <li><a href="#">+60 123-456-7890</a></li>
+            <li><a href="#">Facebook · Instagram · X</a></li>
+            </ul>
+        </div>
+        </div>
+        <div class="footer-bottom">
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
+        </div>
+    </footer>
 
-    <!-- Internal Script for Chart-->
     <script>
         const ctx = document.getElementById('adoptionRateChart').getContext('2d');
         new Chart(ctx, {
@@ -275,6 +286,7 @@
                 datasets: [{
                     label: 'Adoption Frequency',
                     data: [78, 45, 60, 85, 70],
+                    // Mengekalkan warna asal carta anda
                     backgroundColor: ['#4A90E2', '#F5A623', '#50E3C2', '#2ECC71', '#9B59B6'],
                     borderRadius: 8,
                     barThickness: 60,
@@ -299,9 +311,6 @@
                     y: { 
                         beginAtZero: true,
                         grid: { color: '#e2e2e2', lineWidth: 0.5 },
-                        title: {
-                            display: false
-                        },
                         ticks: {
                             color: '#3a3a3a'
                         }
