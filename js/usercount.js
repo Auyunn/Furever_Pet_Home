@@ -22,8 +22,9 @@ function editAccount(rowId) {
   row.querySelectorAll('.edit-mode').forEach(el => el.style.display = '');
 }
 
-// Delete confirmation before the form actually submits to PHP.
-// Wired via onsubmit="return confirmDelete('...')" on each row's delete form.
-function confirmDelete(label) {
-  return confirm("Delete " + label + "? This cannot be undone.");
+// Confirmation before deactivating an account (soft delete - sets Status to
+// Inactive, does not remove any data, and can be reversed by editing the
+// account and setting Status back to Active).
+function confirmDeactivate(label) {
+  return confirm("Set " + label + " to Inactive? They will be blocked from the platform, but their data will be kept. You can reactivate them later by editing their account.");
 }

@@ -25,39 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
-// ---- DELETE RESIDENT (cascading: removes related adopt_application + comment rows first) ----
+// ---- DEACTIVATE RESIDENT (soft delete: sets Status to Inactive, no data removed) ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_resident') {
     $residentID = $_POST['ResidentID'];
 
-    // NOTE: adopt_application and comment both have a foreign key on ResidentID,
-    // so those rows must be deleted first or MySQL blocks the resident delete.
-    // If other tables also reference ResidentID (e.g. report, inbox), add a
-    // DELETE for each of those here too, in the same order: child tables
-    // first, resident last. The try/catch below will safely roll back and
-    // tell you exactly which table is still blocking it, if any.
-
-    $conn->begin_transaction();
-    try {
-        $stmt = $conn->prepare("DELETE FROM adopt_application WHERE ResidentID = ?");
-        $stmt->bind_param("s", $residentID);
-        $stmt->execute();
-        $stmt->close();
-
-        $stmt = $conn->prepare("DELETE FROM comment WHERE ResidentID = ?");
-        $stmt->bind_param("s", $residentID);
-        $stmt->execute();
-        $stmt->close();
-
-        $stmt = $conn->prepare("DELETE FROM resident WHERE ResidentID = ?");
-        $stmt->bind_param("s", $residentID);
-        $stmt->execute();
-        $stmt->close();
-
-        $conn->commit();
-    } catch (mysqli_sql_exception $e) {
-        $conn->rollback();
-        die("Delete failed - this resident still has related records in another table. Error: " . htmlspecialchars($e->getMessage()));
-    }
+    // Soft delete: just mark the resident Inactive instead of removing the row.
+    // This avoids every foreign key issue (adopt_application, comment, report,
+    // etc. all still validly reference this resident) since nothing is deleted.
+    $stmt = $conn->prepare("UPDATE resident SET Status = 0 WHERE ResidentID = ?");
+    $stmt->bind_param("s", $residentID);
+    $stmt->execute();
+    $stmt->close();
 
     header("Location: usercount.php?tab=residents");
     exit();
@@ -69,11 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $orgName = trim($_POST['OrgName']);
     $phone   = trim($_POST['NumberPhone']);
     $email   = trim($_POST['Email']);
+    $status  = $_POST['Status']; // "1" or "0"
 
-    // NOTE: organization table has no Status column - the NGO Status badge
-    // shown in the UI is a display-only placeholder, never saved here.
-    $stmt = $conn->prepare("UPDATE organization SET OrgName = ?, NumberPhone = ?, Email = ? WHERE OrgID = ?");
-    $stmt->bind_param("ssss", $orgName, $phone, $email, $orgID);
+    $stmt = $conn->prepare("UPDATE organization SET OrgName = ?, NumberPhone = ?, Email = ?, Status = ? WHERE OrgID = ?");
+    $stmt->bind_param("sssis", $orgName, $phone, $email, $status, $orgID);
     $stmt->execute();
     $stmt->close();
 
@@ -81,16 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
-// ---- DELETE ORGANIZATION ----
+// ---- DEACTIVATE ORGANIZATION (soft delete: sets Status to Inactive, no data removed) ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_org') {
     $orgID = $_POST['OrgID'];
 
-    // NOTE: community_board has a foreign key on OrgID (NGOs author posts).
-    // If this delete fails with a foreign key error, uncomment the line below
-    // to cascade-delete that NGO's posts first, same pattern as residents above.
-    // $conn->query("DELETE FROM community_board WHERE OrgID = '" . $conn->real_escape_string($orgID) . "'");
-
-    $stmt = $conn->prepare("DELETE FROM organization WHERE OrgID = ?");
+    $stmt = $conn->prepare("UPDATE organization SET Status = 0 WHERE OrgID = ?");
     $stmt->bind_param("s", $orgID);
     $stmt->execute();
     $stmt->close();
@@ -117,13 +89,12 @@ if ($result) {
 /* ============================================================
    FETCH ORGANIZATIONS (NGOs)
    organization columns: OrgID, OrgName, NumberPhone, OrgAddress,
-                          Email, Password, Description
-   NOTE: No Status column exists in the database for organizations.
-   Per project decision, the Status badge below is a visual-only
-   placeholder (always shows "Active") and is NOT stored or editable.
+                          Email, Password, Description, Status
+   Status mirrors resident.Status: 1 = Active, 0 = Inactive (added
+   via ALTER TABLE, defaults existing NGOs to Active).
 ============================================================ */
 $organizations = [];
-$result = $conn->query("SELECT OrgID, OrgName, NumberPhone, Email FROM organization");
+$result = $conn->query("SELECT OrgID, OrgName, NumberPhone, Email, Status FROM organization");
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         $organizations[] = $row;
@@ -156,12 +127,12 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
     </div>
   </div>
   <div class="nav-links">
-            <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-            <a href=" " class="nav-tab"> Users/NGOs</a>
-            <a href=" " class="nav-tab"> Report</a>
-            <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
-            <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
-            <a href="help_center.html" class="nav-tab"> Help Center</a>
+    <a href="dashboard.php" class="nav-tab">🏠 Dashboard</a>
+    <a href="usercount.php" class="nav-tab active">✉️ Users/NGOs</a>
+    <a href="report.html" class="nav-tab">🚨 Report</a>
+    <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
+    <a href="pet_communityadmin.html" class="nav-tab">🐾 Pet Community</a>
+    <a href="help_center.html" class="nav-tab">❓ Help Center</a>
   </div>
 </nav>
 
@@ -204,7 +175,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             <input type="hidden" name="action" value="update_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
-          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this resident account, including all of their adoption applications and comments');">
+          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDeactivate('this resident');">
             <input type="hidden" name="action" value="delete_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
@@ -281,7 +252,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             <input type="hidden" name="action" value="update_org">
             <input type="hidden" name="OrgID" value="<?php echo htmlspecialchars($o['OrgID']); ?>">
           </form>
-          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDelete('this NGO account');">
+          <form id="<?php echo $delFormId; ?>" method="POST" action="usercount.php" onsubmit="return confirmDeactivate('this NGO');">
             <input type="hidden" name="action" value="delete_org">
             <input type="hidden" name="OrgID" value="<?php echo htmlspecialchars($o['OrgID']); ?>">
           </form>
@@ -292,8 +263,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
               <td class="view-mode"><?php echo htmlspecialchars($o['NumberPhone']); ?></td>
               <td class="view-mode"><?php echo htmlspecialchars($o['Email']); ?></td>
               <td class="view-mode">
-                <!-- Placeholder only - no Status column in organization table -->
-                Active
+                <?php echo ((int)$o['Status'] === 1) ? 'Active' : 'Inactive'; ?>
               </td>
 
               <!-- EDIT MODE -->
@@ -307,8 +277,10 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
                 <input type="email" name="Email" form="<?php echo $editFormId; ?>" value="<?php echo htmlspecialchars($o['Email']); ?>">
               </td>
               <td class="edit-mode" style="display:none;">
-                <!-- Status not editable - placeholder only -->
-                Active
+                <select name="Status" form="<?php echo $editFormId; ?>">
+                  <option value="1" <?php echo ((int)$o['Status'] === 1) ? 'selected' : ''; ?>>Active</option>
+                  <option value="0" <?php echo ((int)$o['Status'] === 0) ? 'selected' : ''; ?>>Inactive</option>
+                </select>
               </td>
 
               <td>
