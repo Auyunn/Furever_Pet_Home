@@ -1,3 +1,5 @@
+
+
 (function() {
   const canvas = document.getElementById('hero-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -149,3 +151,26 @@ function toggleHeart(btn) {
   const liked = btn.classList.toggle('liked');
   btn.textContent = liked ? '❤️' : '🤍';
 }
+
+// ── PROFILE DROPDOWN TOGGLE ──
+// Fungsi untuk buka/tutup dropdown avatar
+// Fungsi untuk buka/tutup dropdown avatar
+function toggleProfileDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+}
+
+// Menutup dropdown secara automatik jika pengguna klik di luar avatar/menu
+window.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('profileDropdown');
+    const avatar = document.querySelector('.avatar');
+    
+    if (dropdown && dropdown.classList.contains('show')) {
+        if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    }
+});
+
