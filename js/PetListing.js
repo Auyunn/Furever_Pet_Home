@@ -223,3 +223,16 @@ function sahkanPadam(petID) {
         }
     }
 }
+
+function toggleProfileDropdown() {
+  const menu = document.getElementById('profileDropdown');
+  menu.classList.toggle('open');
+}
+
+// Tutup dropdown bila click luar
+document.addEventListener('click', function(e) {
+  const dropdown = document.querySelector('.profile-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    document.getElementById('profileDropdown').classList.remove('open');
+  }
+});
