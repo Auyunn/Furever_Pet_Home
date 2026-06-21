@@ -1,12 +1,15 @@
 <?php
     session_start();
 
-    $resident_id = $_SESSION['resident_id'] ?? 'R0001'; 
-    /*if (!isset($_SESSION['resident_id'])) {
-            die("Not logged in");
-        }
+    
+    $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && $_SESSION['role'] === 'user';
 
-        $resident_id = $_SESSION['resident_id'];*/
+    
+    if ($is_logged_in) {
+        $resident_id = $_SESSION['residentID']; 
+    } else {
+        $resident_id = 'GUEST'; 
+    }
 
     $conn = new mysqli("localhost", "root", "", "Furever_Pet_Home");
 
@@ -115,27 +118,17 @@
 
         <!-- NAVIGATION -->
         <div class="nav-links">
-<<<<<<< HEAD
-            <a href="../HomePage(registed).php" class="nav-tab"> Home</a>
-            <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.php" class="nav-tab">Find A Pet</a>
-            <a href="pet_community.php" class="nav-tab"> Pet Community</a>
-            <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="../Analytics.php" class="nav-tab"> Analytics</a>
-            <a href="Report.php" class="nav-tab"> Report</a>
-=======
             <?php if($is_logged_in): ?>
-                <a href="../HomePage(registed).html" class="nav-tab">Home</a>
+                <a href="../HomePage(registed).php" class="nav-tab">Home</a>
             <?php else: ?>
-                <a href="../HomePage(unregistered).html" class="nav-tab">Home</a>
+                <a href="../HomePage_Unregistered.html" class="nav-tab">Home</a>
             <?php endif; ?>
             <a href="inbox.php" class="nav-tab">Inbox</a>
             <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="pet_community.php" class="nav-tab"> Pet Community</a>
             <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab">Analytics</a>
-            <a href="Report.html" class="nav-tab">Report</a>
->>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579
+            <a href="Analytics.php" class="nav-tab">Analytics</a>
+            <a href="Report.php" class="nav-tab">Report</a>
         </div>
                
         </nav>
