@@ -36,15 +36,15 @@ function isLoggedIn() {
         <!---Tab Navigation-->
         <div class="nav-links">
             <a href="" class="nav-tab"> Home</a>
-            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Inbox</a>
-            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Find A Pet</a>
-            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Pet Community</a>
-            <a href="<?php if (!isloggedIn()): echo "Sign_up.php"; endif; ?>" class="nav-tab"> Help Center</a>
-            <a href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>" class="nav-tab"> Analytics</a>
-            <a href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>" class="nav-tab"> Report</a>
+            <a href="<?php if (!isLoggedIn()): echo "User_Login.php"; endif; ?>" class="nav-tab"> Inbox</a>
+            <a href="<?php if (!isLoggedIn()): echo "User_Login.php"; endif; ?>" class="nav-tab"> Find A Pet</a>
+            <a href="<?php if (!isLoggedIn()): echo "User_Login.php"; endif; ?>" class="nav-tab"> Pet Community</a>
+            <a href="<?php if (!isloggedIn()): echo "helpcenter_unregister.php"; endif; ?>" class="nav-tab"> Help Center</a>
+            <a href="<?php if (!isloggedIn()): echo "analytics_unregister.php"; endif; ?>" class="nav-tab"> Analytics</a>
+            <a href="<?php if (!isloggedIn()): echo "User_Login.php"; endif; ?>" class="nav-tab"> Report</a>
         </div>
         </nav>
-
+ 
     <!-- First Body: Introduction -->
     <section class="first-body">
         <h1>Find Your Furever Friend</h1>
