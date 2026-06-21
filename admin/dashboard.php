@@ -76,7 +76,7 @@
             </a>
             <div class="nav-right">
                 <div class="profile-dropdown">
-                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">AT</div>
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">A</div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <div class="dropdown-user-info">
                             <strong><?php echo htmlspecialchars($admin_name); ?></strong>
