@@ -43,7 +43,9 @@
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="login-btn-nav" title="Log In" onclick="window.location.href='User_Login.php';">Log In</button>
+            <div class="login">
+                <a href="User_Login.php" title="Log In">Log In</a>
+            </div>
             </div>
         </div>
 
@@ -68,7 +70,7 @@
         </section>
         
     <div class="search-container">
-        <form method="GET" action="guidelines.php">
+        <form method="GET" action="guidelines_unregister.php">
             <input type="text" name="search" placeholder="Search Your Guideline..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
