@@ -49,17 +49,18 @@
 
         <!-- NAVIGATION -->
         <div class="nav-links">
-        <?php if($is_logged_in): ?>
-            <a href="../HomePage(registed).html" class="nav-tab">Home</a>
-        <?php else: ?>
-            <a href="../HomePage(unregistered).html" class="nav-tab">Home</a>
-        <?php endif; ?>
+        <?php if(isset($_SESSION['user_id'])): ?>
+
+                <a href="HomePage(registed).php" class="nav-tab">Home</a>
+            <?php else: ?>
+                <a href="HomePage_Unregistered.php" class="nav-tab">Home</a>
+            <?php endif; ?>            
             <a href="inbox.php" class="nav-tab">Inbox</a>
-            <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="pet_community.php" class="nav-tab"> Pet Community</a>
             <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab">Analytics</a>
-            <a href="Report.html" class="nav-tab">Report</a>
+            <a href="Analytics.php" class="nav-tab">Analytics</a>
+            <a href="Report.php" class="nav-tab">Report</a>
         </div>
                
         </nav>
