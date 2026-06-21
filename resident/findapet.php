@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include('db_connect.php');
+include('../db_connect.php');
 
 $selectedType = $_REQUEST['pet_type'] ?? '';
 $selectedOrg  = $_REQUEST['shelter']  ?? '';
@@ -110,7 +110,7 @@ if (isset($_SESSION['residentID'])) {
     }
 }
 
-$photoFolder = "image/pets/";
+$photoFolder = "../image/pets/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,15 +118,15 @@ $photoFolder = "image/pets/";
         <meta charset="UTF-8">
         <title> Find A Pet </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/findapet.css">
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/findapet.css">
     </head>
 
     <body>
         <nav class="navbar" id="navbar">
         <div class="navbar-top">
             <a href="#" class="nav-logo">
-            <img src="image/icons/logo.png" alt="Furever Pet Home">
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">

@@ -197,7 +197,7 @@ $totalAvailablePets = $availableNow;
   <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer; position: relative;">
     <?php echo htmlspecialchars($avatarInitials); ?>
   </div>
-  
+ 
   <div class="dropdown-menu" id="profileDropdown">
     <div class="dropdown-user-info">
       <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
