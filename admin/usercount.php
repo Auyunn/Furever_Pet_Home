@@ -103,6 +103,14 @@ if ($result) {
 
 // Which tab to show first on page load (after a redirect, e.g. ?tab=ngos)
 $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'residents';
+
+// All the small edit/delete forms are collected here as HTML strings and
+// printed together at the very end of the page, completely outside the
+// <table> elements. Browsers apply "foster parenting" rules to elements
+// placed directly between/inside table rows that aren't valid table
+// children (like <form>), which can silently relocate or break them.
+// Keeping forms outside the table entirely avoids that.
+$pendingForms = [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,10 +175,11 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             $delFormId  = "delform-" . htmlspecialchars($r['ResidentID']);
           ?>
 
-          <!-- Forms live outside the table row; inputs/buttons inside the row
-               reference them via the form="" attribute (valid HTML5, avoids
-               putting <form> tags directly around <td> elements, which is
-               invalid HTML and renders inconsistently across browsers). -->
+          <?php
+            // Queue this resident's forms for later - NOT printed here,
+            // since "here" is between table rows (invalid form placement).
+            ob_start();
+          ?>
           <form id="<?php echo $editFormId; ?>" method="POST" action="usercount.php">
             <input type="hidden" name="action" value="update_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
@@ -179,6 +188,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             <input type="hidden" name="action" value="delete_resident">
             <input type="hidden" name="ResidentID" value="<?php echo htmlspecialchars($r['ResidentID']); ?>">
           </form>
+          <?php $pendingForms[] = ob_get_clean(); ?>
 
           <tr id="<?php echo $rowId; ?>">
               <!-- VIEW MODE -->
@@ -248,6 +258,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             $delFormId  = "delform-" . htmlspecialchars($o['OrgID']);
           ?>
 
+          <?php ob_start(); ?>
           <form id="<?php echo $editFormId; ?>" method="POST" action="usercount.php">
             <input type="hidden" name="action" value="update_org">
             <input type="hidden" name="OrgID" value="<?php echo htmlspecialchars($o['OrgID']); ?>">
@@ -256,6 +267,7 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
             <input type="hidden" name="action" value="delete_org">
             <input type="hidden" name="OrgID" value="<?php echo htmlspecialchars($o['OrgID']); ?>">
           </form>
+          <?php $pendingForms[] = ob_get_clean(); ?>
 
           <tr id="<?php echo $rowId; ?>">
               <!-- VIEW MODE -->
@@ -336,6 +348,10 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
     <span>Made with ❤️ for Bandar Klang</span>
   </div>
 </footer>
+
+<!-- All edit/delete forms for every row, printed here outside any table.
+     Buttons inside the tables reference these by id via the form="" attribute. -->
+<?php foreach ($pendingForms as $formHtml) { echo $formHtml; } ?>
 
 <script src="../js/usercount.js"></script>
 </body>
