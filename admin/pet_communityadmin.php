@@ -106,7 +106,6 @@ while($row = $result_boards->fetch_assoc()){
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
             <div class="avatar" title="My Profile">AT</div>
 
             </div>
@@ -115,11 +114,11 @@ while($row = $result_boards->fetch_assoc()){
         <!---Tab Navigation-->
         <div class="nav-links">
             <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-            <a href=" " class="nav-tab"> Users/NGOs</a>
-            <a href=" " class="nav-tab"> Report</a>
-            <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
-            <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
-            <a href="help_center.html" class="nav-tab"> Help Center</a>
+                <a href="usercount.php" class="nav-tab"> Users/NGOs</a>
+                <a href="Add_Report.php" class="nav-tab"> Report</a>
+                <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
+                <a href="pet_communityadmin.php" class="nav-tab"> Pet Community</a>
+                <a href="help_center.php" class="nav-tab"> Help Center</a> 
         </div>
 </nav>
     <div class = "page-header">
@@ -200,8 +199,9 @@ while($row = $result_boards->fetch_assoc()){
 
     <script src="../js/pet_communityadmin.js"></script>
     <!--Footer-->
+        <!--Footer-->
         <footer>
-            <div class="footer-grid">
+        <div class="footer-grid">
             <div>
                 <div style="font-size:2rem;">🐾</div>
                 <div class="footer-brand-name">Furever Pet Home</div>
@@ -210,34 +210,30 @@ while($row = $result_boards->fetch_assoc()){
             <div>
                 <p class="footer-col-title">Platform</p>
                 <ul class="footer-links-list">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Report Animal</a></li>
-                <li><a href="#">Analytics</a></li>
-                <li><a href="#">Pet Community</a></li>
-                <li><a href="#">Help Center</a></li>
+                    <li><a href="dashboard.php">Dashboard</a></li>
+                    <li><a href="usercount.php">Users/NGOs</a></li>
+                    <li><a href="Add_Report.php">Report</a></li>
+                    <li><a href="analytics_admin.php">Analytics</a></li>
+                    <li><a href="pet_communityadmin.php">Pet Community</a></li>
+                    <li><a href="help_center.php">Help Center</a></li>
                 </ul>
             </div>
             <div>
-                <p class="footer-col-title">Account</p>
-                <ul class="footer-links-list">
-                <li><a href="#">My Profile</a></li>
-                </ul>
+                  <p class="footer-col-title">Contact</p>
+                  <ul class="footer-links-list">
+                  <li>41700 Bandar Klang, Selangor</li>
+                  <li>info@fureverpethome.com</li>
+                  <li>+6012-456 7890</li>
+                  <li>Facebook · Instagram · X</li>
+                  </ul>
             </div>
-            <div>
-                <p class="footer-col-title">Contact</p>
-                <ul class="footer-links-list">
-                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
-                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
-                <li><a href="#">+60 123-456-7890</a></li>
-                <li><a href="#">Facebook · Instagram · X</a></li>
-                </ul>
-            </div>
-            </div>
-            <div class="footer-bottom">
+        </div>
+        <div class="footer-bottom">
             <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
             <span>Made with ❤️ for Bandar Klang</span>
-            </div>
-        </footer>
+        </div>
+    </footer>
+
 </body>
 </html>
 
