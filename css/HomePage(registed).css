@@ -1,5 +1,3 @@
-
-
 #hero-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -625,6 +623,73 @@
 @keyframes slideInRight {
   from { transform: translateX(120%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── PROFILE DROPDOWN ── */
+/* 1. Ini pembungkus avatar & dropdown - WAJIB letak relative */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* 2. Ini keadaan ASAL menu (Sorok dulu!) */
+.dropdown-menu {
+  display: none; /* Sorok secara default! */
+  position: absolute;
+  top: 100%;     /* Tepat di bawah avatar */
+  right: 0;      /* Rapat ke sebelah kanan */
+  background: rgba(250,246,240,0.98);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 1rem;
+  min-width: 190px;
+  box-shadow: 0 10px 30px rgba(44,26,14,0.14);
+  border: 1px solid rgba(130,85,64,0.12);
+  z-index: 9999; /* Supaya dia duduk paling atas tak tenggelam */
+}
+
+/* 3. Ini kelas yang akan ditambah oleh JavaScript bila AVATAR DIKLIK */
+.dropdown-menu.show {
+  display: block !important; /* Paksa keluar bila ada kelas .show */
+}
+
+.dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(130,85,64,0.1);
+  margin-bottom: 0.8rem;
+}
+
+.dropdown-user-info strong {
+  font-size: 0.9rem;
+  color: var(--deep-brown);
+}
+
+.dropdown-user-info span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.4rem 0;
+  background: transparent;
+  color: #c0392b;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.logout-btn:hover {
+  color: #e74c3c;
+  background: transparent;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ── RESPONSIVE ── */
