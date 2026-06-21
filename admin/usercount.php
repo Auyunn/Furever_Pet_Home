@@ -156,12 +156,12 @@ $activeTab = isset($_GET['tab']) && $_GET['tab'] === 'ngos' ? 'ngos' : 'resident
     </div>
   </div>
   <div class="nav-links">
-    <a href="dashboard.php" class="nav-tab">🏠 Dashboard</a>
-    <a href="usercount.php" class="nav-tab active">✉️ Users/NGOs</a>
-    <a href="report.html" class="nav-tab">🚨 Report</a>
-    <a href="../Analytics.html" class="nav-tab">📊 Analytics</a>
-    <a href="pet_communityadmin.html" class="nav-tab">🐾 Pet Community</a>
-    <a href="help_center.html" class="nav-tab">❓ Help Center</a>
+            <a href="dashboard.php" class="nav-tab"> Dashboard</a>
+            <a href=" " class="nav-tab"> Users/NGOs</a>
+            <a href=" " class="nav-tab"> Report</a>
+            <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
+            <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
+            <a href="help_center.html" class="nav-tab"> Help Center</a>
   </div>
 </nav>
 

@@ -60,7 +60,7 @@
             <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
             <a href="pet_community.html" class="nav-tab"> Pet Community</a>
             <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="../Analytics.html" class="nav-tab">Analytics</a>
+            <a href="Analytics.html" class="nav-tab">Analytics</a>
             <a href="Report.html" class="nav-tab">Report</a>
         </div>
                
