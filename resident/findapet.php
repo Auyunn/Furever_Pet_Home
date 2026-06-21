@@ -1,10 +1,41 @@
 <?php
+
 session_start();
-include('../db_connect.php');
+include('db_connect.php');
 
+$selectedType = $_REQUEST['pet_type'] ?? '';
+$selectedOrg  = $_REQUEST['shelter']  ?? '';
 
-$selectedType = $_GET['pet_type'] ?? '';
-$selectedOrg  = $_GET['shelter']  ?? '';
+// --- Handle "Apply for Adoption" submission ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply_pet_id'])) {
+
+    if (!isset($_SESSION['residentID'])) {
+        header("Location: User_Login.php");
+        exit;
+    }
+
+    $residentID = $_SESSION['residentID'];
+    $petID = $_POST['apply_pet_id'];
+
+    // Don't allow a duplicate application while one is already pending or approved
+    $checkSql = "SELECT AdoptionID FROM adopt_application WHERE ResidentID = ? AND PetID = ? AND Status IN ('Pending','Approved')";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ss", $residentID, $petID);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows === 0) {
+        $insertSql = "INSERT INTO adopt_application (ResidentID, PetID, Status, Reason, RequestDate) VALUES (?, ?, 'Pending', NULL, NOW())";
+        $insertStmt = $conn->prepare($insertSql);
+        $insertStmt->bind_param("ss", $residentID, $petID);
+        $insertStmt->execute();
+        $insertStmt->close();
+    }
+    $checkStmt->close();
+
+    header("Location: findapet.php?applied=1&pet_type=" . urlencode($selectedType) . "&shelter=" . urlencode($selectedOrg));
+    exit;
+}
 
 $sql = "SELECT p.PetID, p.PetName, p.PetType, p.Breed, p.Age, p.Location, p.Photo, p.Gender, o.OrgName
         FROM pet p
@@ -51,7 +82,35 @@ while ($row = $shelterResult->fetch_assoc()) {
     $shelters[] = $row;
 }
 
-$photoFolder = "../image/pets/";
+// --- Look up the logged-in resident's existing applications, so we know which
+//     pets to show as "Pending" / "Already Adopted" instead of an Apply button ---
+$myApplications = [];
+if (isset($_SESSION['residentID'])) {
+    $myAppStmt = $conn->prepare("SELECT PetID, Status FROM adopt_application WHERE ResidentID = ?");
+    $myAppStmt->bind_param("s", $_SESSION['residentID']);
+    $myAppStmt->execute();
+    $myAppResult = $myAppStmt->get_result();
+    while ($row = $myAppResult->fetch_assoc()) {
+        $myApplications[$row['PetID']] = $row['Status'];
+    }
+    $myAppStmt->close();
+}
+
+// --- Fetch nama untuk avatar initials ---
+$avatarInitials = 'AT';
+if (isset($_SESSION['residentID'])) {
+    $avatarStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    $avatarStmt->bind_param("s", $_SESSION['residentID']);
+    $avatarStmt->execute();
+    $avatarRow = $avatarStmt->get_result()->fetch_assoc();
+    $avatarStmt->close();
+
+    if ($avatarRow) {
+        $avatarInitials = strtoupper(substr($avatarRow['FirstName'], 0, 1) . substr($avatarRow['LastName'], 0, 1));
+    }
+}
+
+$photoFolder = "image/pets/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,43 +118,38 @@ $photoFolder = "../image/pets/";
         <meta charset="UTF-8">
         <title> Find A Pet </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../css/base.css">
-        <link rel="stylesheet" href="../css/findapet.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/findapet.css">
     </head>
 
-    <!--body -->
     <body>
         <nav class="navbar" id="navbar">
-        <!--logo and profile-->
         <div class="navbar-top">
             <a href="#" class="nav-logo">
-            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <img src="image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile" onclick="window.location.href='../User Login.html';">
-                <?= isset($_SESSION['username']) ? htmlspecialchars(strtoupper(substr($_SESSION['username'], 0, 2))) : 'AT' ?>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="avatar" title="My Profile">
+                <?= htmlspecialchars($avatarInitials) ?>
             </div>
             </div>
         </div>
 
-        <!---Tab Navigation-->
         <div class="nav-links">
-            <a href="../HomePage(registed).php" class="nav-tab">🏠 Home</a>
-            <a href="inbox.php" class="nav-tab">✉️ Inbox</a>
-            <a href="findapet.php" class="nav-tab">🔍 Find A Pet</a>
-            <a href="pet_community.php" class="nav-tab"> 🐾Pet Community</a>
-            <a href="help_center.php" class="nav-tab">❓ Help Center</a>
-            <a href="Analytics.php" class="nav-tab">📊 Analytics</a>
-            <a href="Report.php" class="nav-tab">🚨 Report</a>
+            <a href="HomePage(registed).php" class="nav-tab">Home</a>
+            <a href="resident/inbox.php" class="nav-tab">Inbox</a>
+            <a href="findapet.php" class="nav-tab">Find A Pet</a>
+            <a href="resident/pet_community.php" class="nav-tab">Pet Community</a>
+            <a href="resident/help_center.php" class="nav-tab">Help Center</a>
+            <a href="Analytics.html" class="nav-tab">Analytics</a>
+            <a href="resident/  Report.php" class="nav-tab">Report</a>
         </div>
         </nav>
 
-        <!--wrapper pushes all page content below the fixed navbar-->
         <div class="wrapper">
 
-        <!--search-->
         <section class="search-section">
             <form method="GET" action="findapet.php" class="search-form">
                 <select name="pet_type">
@@ -120,7 +174,10 @@ $photoFolder = "../image/pets/";
             </form>
         </section>
 
-        <!--pet list-->
+        <?php if (isset($_GET['applied'])): ?>
+            <div class="apply-banner">Your adoption application has been submitted! You'll be notified once it's reviewed.</div>
+        <?php endif; ?>
+
         <section class="pet-grid">
             <?php if (empty($pets)): ?>
                 <p class="empty-state">No pets found.</p>
@@ -142,12 +199,31 @@ $photoFolder = "../image/pets/";
                         <li><span class="pet-info-label">Gender:</span> <?= htmlspecialchars($pet['Gender']) ?></li>
                         <li><span class="pet-info-label">Location:</span> <?= htmlspecialchars($pet['Location']) ?></li>
                     </ul>
+
+                    <div class="pet-apply">
+                        <?php if (!isset($_SESSION['residentID'])): ?>
+                            <button type="button" class="apply-btn" onclick="window.location.href='User_Login.php';">Log In to Apply</button>
+                        <?php else:
+                            $appStatus = $myApplications[$pet['PetID']] ?? null;
+                            if ($appStatus === 'Pending'): ?>
+                                <button type="button" class="apply-btn" disabled>Application Pending</button>
+                            <?php elseif ($appStatus === 'Approved'): ?>
+                                <button type="button" class="apply-btn" disabled>Already Adopted</button>
+                            <?php else: ?>
+                                <form method="POST" action="findapet.php" onsubmit="return confirm('Apply to adopt <?= htmlspecialchars($pet['PetName']) ?>?');">
+                                    <input type="hidden" name="apply_pet_id" value="<?= htmlspecialchars($pet['PetID']) ?>">
+                                    <input type="hidden" name="pet_type" value="<?= htmlspecialchars($selectedType) ?>">
+                                    <input type="hidden" name="shelter" value="<?= htmlspecialchars($selectedOrg) ?>">
+                                    <button type="submit" class="apply-btn">Apply for Adoption</button>
+                                </form>
+                            <?php endif;
+                        endif; ?>
+                    </div>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
 
-    <!--Footer-->
         <footer>
             <div class="footer-grid">
             <div>
@@ -189,6 +265,6 @@ $photoFolder = "../image/pets/";
             </div>
         </footer>
 
-        </div><!--/wrapper-->
+        </div>
     </body>
 </html>
