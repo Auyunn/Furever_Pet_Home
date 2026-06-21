@@ -265,7 +265,7 @@ $pendingForms = [];
       <span>Furever Pet Home</span>
     </a>
     <div class="nav-right">
-      <div class="avatar" title="My Profile">AT</div>
+      <div class="avatar" title="My Profile">A</div>
     </div>
   </div>
   <div class="nav-links">
