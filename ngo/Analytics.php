@@ -150,8 +150,8 @@
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="avatar" title="My Profile" onclick="window.location.href='User_Login.html';">OR</div>
             </div>
         </div>
 
@@ -159,11 +159,11 @@
         <div class="nav-links">
         <a href="Pet_listing.php" class="nav-tab"> Home</a>
             <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="petcommunity.php" class="nav-tab"> Pet Community</a>
             <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="report..php" class="nav-tab"> Report</a>
+            <a href="Analytics.php" class="nav-tab"> Analytics</a>
+            <a href="report.php" class="nav-tab"> Report</a>
         </div>
         </nav>
     </div>
