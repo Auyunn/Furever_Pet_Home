@@ -22,9 +22,10 @@ function editAccount(rowId) {
   row.querySelectorAll('.edit-mode').forEach(el => el.style.display = '');
 }
 
-// Confirmation before deactivating an account (soft delete - sets Status to
-// Inactive, does not remove any data, and can be reversed by editing the
-// account and setting Status back to Active).
-function confirmDeactivate(label) {
-  return confirm("Set " + label + " to Inactive? They will be blocked from the platform, but their data will be kept. You can reactivate them later by editing their account.");
+// Confirmation before permanently deleting an account. This is a real,
+// irreversible delete - it also removes all of that account's related
+// records (applications, comments, reports, posts, etc. depending on
+// account type). Wired via onsubmit="return confirmDelete('...')".
+function confirmDelete(label) {
+  return confirm("Permanently delete " + label + "? This cannot be undone.");
 }
