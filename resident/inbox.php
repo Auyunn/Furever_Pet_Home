@@ -1,10 +1,9 @@
 <?php
     session_start();
 
-    
+    // 1. Semak status login
     $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && $_SESSION['role'] === 'user';
 
-    
     if ($is_logged_in) {
         $resident_id = $_SESSION['residentID']; 
     } else {
@@ -17,6 +16,7 @@
         die("DB connection failed: " . $conn->connect_error);
     }
 
+   
     $sql = "
     SELECT 
         i.InboxID, 
@@ -39,6 +39,24 @@
     $stmt->execute();
     $result = $stmt->get_result();
 
+    $inbox_rows = [];
+    while($row = $result->fetch_assoc()) {
+        $inbox_rows[] = $row;
+    }
+    $stmt->close(); // Tutup statement pertama dengan selamat di sini
+
+    $profileStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    $profileStmt->bind_param('s', $resident_id);
+    $profileStmt->execute();
+    $residentResult = $profileStmt->get_result();
+    $resident = $residentResult->fetch_assoc();
+    $profileStmt->close(); // Tutup statement kedua
+
+    $firstName = $resident['FirstName'] ?? 'Resident';
+    $lastName  = $resident['LastName'] ?? '';
+    
+    $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+
     $today = [];
     $yesterday = [];
     $week = [];
@@ -52,44 +70,44 @@
     $current_month = date('Y-m', $current_time);
     $current_year = date('Y', $current_time);
 
-    while($row = $result->fetch_assoc()) {
+    // Proses data menggunakan array yang disimpan tadi
+    foreach ($inbox_rows as $row) {
+        $notif_time = strtotime($row['DateTime']);
+        if (!$notif_time) continue;
 
-    $notif_time = strtotime($row['DateTime']);
-    if (!$notif_time) continue;
+        $notif_date  = date('Y-m-d', $notif_time);
+        $notif_month = date('Y-m', $notif_time);
+        $notif_year  = date('Y', $notif_time);
 
-    $notif_date  = date('Y-m-d', $notif_time);
-    $notif_month = date('Y-m', $notif_time);
-    $notif_year  = date('Y', $notif_time);
+        // TODAY
+        if ($notif_date === $today_date) {
+            $today[] = $row;
+            continue;
+        }
 
-    // TODAY
-    if ($notif_date === $today_date) {
-        $today[] = $row;
-        continue;
+        // YESTERDAY
+        if ($notif_date === $yesterday_date) {
+            $yesterday[] = $row;
+            continue;
+        }
+
+        // THIS WEEK
+        if ($notif_time >= $one_week_ago) {
+            $week[] = $row;
+            continue;
+        }
+
+        // YEAR FIRST
+        if ($notif_year === $current_year) {
+            $year[] = $row;
+        }
+
+        // MONTH FILTER
+        if ($notif_month === $current_month) {
+            $month[] = $row;
+        }
     }
-
-    // YESTERDAY
-    if ($notif_date === $yesterday_date) {
-        $yesterday[] = $row;
-        continue;
-    }
-
-    // THIS WEEK
-    if ($notif_time >= $one_week_ago) {
-        $week[] = $row;
-        continue;
-    }
-
-        // YEAR FIRST (IMPORTANT)
-    if ($notif_year === $current_year) {
-        $year[] = $row;
-    }
-
-    // MONTH FILTER (subset of year)
-    if ($notif_month === $current_month) {
-        $month[] = $row;
-    }
-    }
-    $stmt->close();
+    // Baris $stmt->close() yang ralat di sini telah dibuang dengan selamat
 ?>
 <!Doctype html>
 <html lang="en">
@@ -98,8 +116,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Resident Inbox</title>
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/base.css">
         <script src="../js/script.js" defer></script>
-
     </head>
 
     <body>
@@ -112,25 +130,22 @@
             </a>
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+            <!-- Papar initial huruf besar di sini -->
+            <div class="avatar" title="My Profile"><?php echo htmlspecialchars($avatarInitials); ?></div>
             </div>
         </div>
 
         <!-- NAVIGATION -->
         <div class="nav-links">
-            <?php if($is_logged_in): ?>
-                <a href="../HomePage(registed).php" class="nav-tab">Home</a>
-            <?php else: ?>
-                <a href="../HomePage_Unregistered.html" class="nav-tab">Home</a>
-            <?php endif; ?>
+            <a href="HomePage(registed).php" class="nav-tab">Home</a>
             <a href="inbox.php" class="nav-tab">Inbox</a>
-            <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
             <a href="pet_community.php" class="nav-tab"> Pet Community</a>
             <a href="help_center.php" class="nav-tab"> Help Center</a>
             <a href="Analytics.php" class="nav-tab">Analytics</a>
             <a href="Report.php" class="nav-tab">Report</a>
         </div>
-               
+                   
         </nav>
 
         <!--Notifications-->
@@ -237,7 +252,6 @@
             </div>
 
             <!--Right: Content-->
-            
             <div class="notif-content" id="notif-content">
                 <div class="content-empty">Select a notification to view</div>
             </div>
@@ -285,6 +299,7 @@
             <span>Made with ❤️ for Bandar Klang</span>
             </div>
         </footer>
+        
         <script>
         window.notifData = {
             today: <?= json_encode($today) ?>,
@@ -294,7 +309,5 @@
             year: <?= json_encode($year) ?>
         };
         </script>
-
-
     </body>
 </html>
