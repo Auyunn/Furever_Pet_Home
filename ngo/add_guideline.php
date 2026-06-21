@@ -1,221 +1,271 @@
-/* Push content below fixed navbar */
-.wrapper {
-    margin-top: var(--navbar-height);
-    padding-top: 20px;
-}
+<?php
+    session_start();
+    include("../db_connect.php");
 
-/* ===========================
-   SEARCH SECTION
-   =========================== */
-.search-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 14px;
-    padding: 36px 20px 28px;
-}
-
-.search-form {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.search-section select {
-    padding: 9px 16px;
-    width: 180px;
-    border: 1px solid var(--deep-brown);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    background-color: var(--warm-cream);
-    color: var(--deep-brown);
-    cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: auto;
-}
-
-.search-section select:focus {
-    outline: none;
-    border-color: var(--amber);
-    box-shadow: 0 0 0 3px var(--amber-lt);
-}
-
-.search-section .search-btn {
-    padding: 9px 26px;
-    background: var(--deep-brown);
-    color: var(--warm-cream);
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: background 0.25s ease, transform 0.15s ease;
-}
-
-.search-section .search-btn:hover {
-    background: var(--amber);
-    color: var(--warm-cream);
-    transform: translateY(-1px);
-}
-
-/* ===========================
-   PET GRID
-   =========================== */
-.pet-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    padding: 0 80px 60px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.pet-card {
-    background: var(--warm-cream);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--warm-tan);
-    border-radius: 14px;
-    padding: 20px 20px 24px;
-    text-align: center;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.pet-card:hover {
-    transform: translateY(-6px);
-    background: var(--warm-tan);
-    box-shadow: 0 12px 32px var(--warm-tan);
-}
-
-.pet-image {
-    height: 140px;
-    border: 1.5px solid var(--warm-tan);
-    border-radius: 10px;
-    margin-bottom: 14px;
-    background: var(--off-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    overflow: hidden;
-}
-
-.pet-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.pet-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--deep-brown);
-    margin: 6px 0 14px;
-}
-
-/* ── PET INFO LIST (Type/Breed/Age/Gender/Location) ── */
-.pet-info {
-  list-style: none;
-  margin: 10px 0 0;
-  padding: 0;
-  text-align: left;
-  font-size: 0.85rem;
-  color: var(--deep-brown);
-}
-
-.pet-info li {
-  padding: 3px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.pet-info li:last-child {
-  border-bottom: none;
-}
-
-.pet-info-label {
-  font-weight: bold;
-}
-
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: var(--text-muted);
-  padding: 40px 0;
-  font-size: 1.1rem;
-}
-
-/* ===========================
-   APPLY FOR ADOPTION
-   =========================== */
-.pet-apply {
-    margin-top: 16px;
-}
-
-.apply-btn {
-    width: 100%;
-    padding: 9px 16px;
-    background: var(--deep-brown);
-    color: var(--warm-cream);
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: background 0.25s ease, transform 0.15s ease;
-}
-
-.apply-btn:hover:not(:disabled) {
-    background: var(--amber);
-    color: var(--warm-cream);
-    transform: translateY(-1px);
-}
-
-.apply-btn:disabled {
-    background: var(--warm-tan);
-    color: var(--text-muted);
-    cursor: not-allowed;
-    transform: none;
-}
-
-.apply-banner {
-    max-width: 600px;
-    margin: 0 auto 24px;
-    padding: 12px 18px;
-    text-align: center;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--deep-brown);
-    background: var(--warm-tan);
-    border: 1px solid var(--amber);
-    border-radius: 8px;
-}
-
-/* ===========================
-   RESPONSIVE
-   =========================== */
-@media (max-width: 768px) {
-    .pet-grid {
-        grid-template-columns: 1fr 1fr;
-        padding: 0 20px 40px;
-        gap: 16px;
+    if (empty($_SESSION['loggedin']) || $_SESSION['role'] !== 'ngo') {
+        header("Location: ../User_Login.php");
+        exit;
     }
-    .search-section {
-        flex-wrap: wrap;
-        padding: 24px 20px;
-    }
-    .search-section select { width: 100%; }
-    .search-section .search-btn { width: 100%; }
-}
 
-@media (max-width: 480px) {
-    .pet-grid {
-        grid-template-columns: 1fr;
+    $orgID = $_SESSION['orgID'];
+    $error = "";
+    $success = isset($_GET['success']) ? "Guideline posted successfully!" : "";
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['post_guideline'])) {
+        $title       = trim($_POST['title'] ?? '');
+        $petType     = trim($_POST['pet_type'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $budget      = $_POST['budget'] ?? '';
+
+        if ($title === '' || $petType === '' || $description === '' || $budget === '') {
+            $error = "Please fill in all fields.";
+        } else {
+            $sql  = "INSERT INTO guidelines (OrgID, Title, PetType, Description, Budget) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssd", $orgID, $title, $petType, $description, $budget);
+
+            if ($stmt->execute()) {
+                header("Location: add_guideline.php?success=1");
+                exit;
+            } else {
+                $error = "Something went wrong. Please try again.";
+            }
+        }
     }
-}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Guideline - Furever Pet Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .form-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+        .form-page h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--deep-brown);
+            margin-bottom: 1.5rem;
+        }
+        .guideline-form {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 2.5rem;
+            background: rgba(250,246,240,0.95);
+            border: 1px solid rgba(130,85,64,0.2);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .form-field {
+            margin-bottom: 1.1rem;
+        }
+        .form-field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+            color: var(--deep-brown);
+        }
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            width: 100%;
+            padding: 0.55rem 0.7rem;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            border: 1px solid rgba(130,85,64,0.4);
+            border-radius: 0.3rem;
+            background-color: rgba(255,255,255,0.7);
+            color: var(--deep-brown);
+            outline: none;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        .form-field textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus {
+            border-color: var(--deep-brown);
+            background-color: #ffffff;
+        }
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(130,85,64,0.15);
+            padding-top: 1.25rem;
+        }
+        .form-actions button,
+        .form-actions a {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            border-radius: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .btn-reset {
+            background: transparent;
+            border: 1px solid rgba(130,85,64,0.5);
+            color: var(--deep-brown);
+        }
+        .btn-reset:hover { background: rgba(130,85,64,0.08); }
+        .btn-post {
+            background: var(--deep-brown);
+            border: 1px solid var(--deep-brown);
+            color: #fff;
+        }
+        .btn-post:hover { background: var(--rose); border-color: var(--rose); }
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(130,85,64,0.3);
+            color: var(--deep-brown);
+        }
+        .btn-cancel:hover { background: rgba(130,85,64,0.06); }
+        .form-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 0.85rem;
+            padding: 0.6rem;
+            border-radius: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .form-msg.error { color: #d43f3a; background: rgba(212,63,58,0.1); }
+        .form-msg.success { color: #2b753a; background: rgba(43,117,58,0.1); }
+
+        @media (max-width: 700px) {
+            .guideline-form { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <nav class="navbar" id="navbar">
+        <div class="navbar-top">
+            <a href="#" class="nav-logo">
+                <img src="../image/icons/logo.png" alt="Furever Pet Home">
+                <span>Furever Pet Home</span>
+            </a>
+            <div class="nav-right">
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="avatar" title="My Profile"><?php echo htmlspecialchars(substr($_SESSION['name'] ?? 'NGO', 0, 2)); ?></div>
+            </div>
+        </div>
+
+        <div class="nav-links">
+          <a href="Pet_listing.php" class="nav-tab"> Home</a>
+            <a href="inbox.php" class="nav-tab">Inbox</a>
+            <a href="findapet.php" class="nav-tab">Find A Pet</a>
+            <a href="petcommunity.php" class="nav-tab">Pet Community</a>
+            <a href="helpcenter_ngo.php" class="nav-tab active">Help Center</a>
+            <a href="Analytics.php" class="nav-tab">Analytics</a>
+            <a href="report.php" class="nav-tab">Report</a>
+        </div>
+    </nav>
+
+    <section class="sub-navbar">
+        <button class="guidelines-btn" onclick="window.location.href='guidelines_ngo.php';">Guidelines</button>
+        <button class="faq-btn" onclick="window.location.href='helpcenter_ngo.php';">FAQ</button>
+    </section>
+
+    <div class="form-page">
+        <h2>Guideline Form</h2>
+
+        <form class="guideline-form" method="POST" action="">
+            <?php if ($error): ?>
+                <div class="form-msg error"><?php echo htmlspecialchars($error); ?></div>
+            <?php elseif ($success): ?>
+                <div class="form-msg success"><?php echo htmlspecialchars($success); ?></div>
+            <?php endif; ?>
+
+            <div>
+                <div class="form-field">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" value="" required>
+                </div>
+                <div class="form-field">
+                    <label for="pet_type">Pet Type</label>
+                    <input type="text" id="pet_type" name="pet_type" placeholder="e.g. Cat, Dog" value="" required>
+                </div>
+            </div>
+
+            <div>
+                <div class="form-field">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-field">
+                    <label for="budget">Budget to care for pet (RM)</label>
+                    <input type="number" id="budget" name="budget" step="0.01" min="0" value="" required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="reset" class="btn-reset">Reset Form</button>
+                <button type="submit" name="post_guideline" class="btn-post">Post Guideline</button>
+                <a href="guidelines_ngo.php" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div style="font-size:2rem;">🐾</div>
+            <div class="footer-brand-name">Furever Pet Home</div>
+            <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
+        </div>
+        <div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
+                <li><a href="#">Find A Pet</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Community Board</a></li>
+                <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Account</p>
+            <ul class="footer-links-list">
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">My Applications</a></li>
+                <li><a href="#">Favourites</a></li>
+                <li><a href="#">Inbox</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
+        <span>Made with ❤️ for Bandar Klang</span>
+    </div>
+</footer>
+
+<script src="../js/script.js"></script>
+</body>
+</html>
