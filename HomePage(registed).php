@@ -1,9 +1,4 @@
 <?php
-/**
- * HomePage(registed).php
- * Resident dashboard — wired to furever_pet_home DB.
- * Located at PROJECT ROOT (not inside resident/).
- */
 
 // ── START SESSION ──
 if (session_status() === PHP_SESSION_NONE) {
@@ -11,11 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ── DATABASE CONNECTION ──
-// EDIT THESE WITH YOUR ACTUAL CREDENTIALS:
 $DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
-$DB_NAME = 'furever_pet_home';   // confirm this matches the name in phpMyAdmin exactly
+$DB_NAME = 'furever_pet_home';
 
 $conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 if (!$conn) {
@@ -24,13 +18,12 @@ if (!$conn) {
 mysqli_set_charset($conn, 'utf8mb4');
 
 if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
-    header('Location: User_Login.php');
+    header('Location: ../User_Login.php');
     exit;
 }
 
 $residentID = $_SESSION['residentID'];
 
-// Pastikan resident masih aktif
 $stmt = mysqli_prepare($conn, "SELECT ResidentID FROM resident WHERE ResidentID = ? AND Status = 1");
 mysqli_stmt_bind_param($stmt, 's', $residentID);
 mysqli_stmt_execute($stmt);
@@ -41,10 +34,11 @@ mysqli_stmt_close($stmt);
 if (!$authRow) {
     session_unset();
     session_destroy();
-    header('Location: User_Login.php');
+    header('Location: ../User_Login.php');
     exit;
 }
-// ── FETCH RESIDENT INFO (for greeting + avatar initials) ──
+
+// ── FETCH RESIDENT INFO ──
 $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
 mysqli_stmt_bind_param($stmt, 's', $residentID);
 mysqli_stmt_execute($stmt);
@@ -83,7 +77,7 @@ $totalReports = (int) ($reportRow['cnt'] ?? 0);
 $resolvedReports = (int) ($reportRow['resolved'] ?? 0);
 $reportsSub = ($totalReports - $resolvedReports) . ' under investigation';
 
-// Messages (inbox) — count tied to this resident's reports/applications
+// Messages (inbox)
 $stmt = mysqli_prepare($conn, "
     SELECT COUNT(*) AS cnt FROM inbox i
     LEFT JOIN report r ON i.ReportID = r.ReportID
@@ -96,11 +90,11 @@ $msgResult = mysqli_stmt_get_result($stmt);
 $totalMessages = (int) (mysqli_fetch_assoc($msgResult)['cnt'] ?? 0);
 mysqli_stmt_close($stmt);
 
-// Favourites — NOTE: no favourites table exists in the schema yet.
+// Favourites
 $totalFavourites = 12;
 $favouritesSub = '3 new matches this week';
 
-// ── RECENT ACTIVITY FEED (from inbox, joined to report/application context) ──
+// ── RECENT ACTIVITY FEED ──
 $activityStmt = mysqli_prepare($conn, "
     SELECT i.Title, i.Message, i.DateTime, i.Type
     FROM inbox i
@@ -122,21 +116,19 @@ function time_ago($datetime) {
     return floor($diff / 86400) . ' days ago';
 }
 
-// ── STATS STRIP (sitewide counters) ──
+// ── STATS STRIP ──
 $petsAdoptedRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM adopt_application WHERE Status = 'Approved'"));
 $petsAdopted = (int) $petsAdoptedRow['cnt'];
 
 $availableNowRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM pet WHERE IsAvailable = 1"));
 $availableNow = (int) $availableNowRow['cnt'];
 
-$sheltersColumn = mysqli_fetch_column(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM organization"));
-
 $sheltersRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM organization"));
 
 $membersRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM resident WHERE Status = 1"));
 $memberCount = (int) $membersRow['cnt'];
 
-// ── FEATURED PETS (4 newest available pets) ──
+// ── FEATURED PETS ──
 $petsResult = mysqli_query($conn, "
     SELECT PetID, PetType, Breed, Age, Location, Photo, Gender, PetName
     FROM pet
@@ -149,7 +141,6 @@ $petTypeEmoji = ['Dog' => '🐕', 'Cat' => '🐈'];
 $cardColors = ['#ead9c8', '#d9c8d4', '#c8d9d0', '#d4c8e0'];
 
 // ── COMMUNITY POSTS ──
-// NOTE: organization table uses OrgName (not FirstName/LastName) — fixed below.
 $postsResult = mysqli_query($conn, "
     SELECT cb.BoardID,
            cb.Title,
@@ -172,7 +163,6 @@ function org_initials($name) {
 }
 $postAccentColors = ['var(--amber)', 'var(--sage)', 'var(--rose)', '#8b6fcf'];
 
-// Total available pets count, for "See all N pets" link
 $totalAvailablePets = $availableNow;
 ?>
 <!DOCTYPE html>
@@ -181,18 +171,15 @@ $totalAvailablePets = $availableNow;
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Furever Pet Home – Dashboard</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/HomePage(registed).css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/HomePage(registed).css">
 </head>
 <body>
 
-<!-- scroll progress -->
 <div id="progress-bar"></div>
 
-<!-- canvas for Three.js particles -->
 <canvas id="hero-canvas"></canvas>
 
-<!-- parallax paws (decorative) -->
 <div class="parallax-layer p-paw" id="paw1" style="top:20vh;left:5vw;">🐾</div>
 <div class="parallax-layer p-paw" id="paw2" style="top:55vh;right:6vw;font-size:3rem;">🐾</div>
 <div class="parallax-layer p-paw" id="paw3" style="top:80vh;left:12vw;font-size:2.5rem;">🐾</div>
@@ -201,23 +188,37 @@ $totalAvailablePets = $availableNow;
   <nav class="navbar" id="navbar">
     <div class="navbar-top">
       <a href="#" class="nav-logo">
-        <img src="image/icons/logo.png" alt="Furever Pet Home">
+        <img src="../image/icons/logo.png" alt="Furever Pet Home">
         <span>Furever Pet Home</span>
       </a>
       <div class="nav-right">
-        <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-        <div class="avatar" title="My Profile"><?php echo htmlspecialchars($avatarInitials); ?></div>
+        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+   <div class="profile-dropdown">
+  <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer; position: relative;">
+    <?php echo htmlspecialchars($avatarInitials); ?>
+  </div>
+  
+  <div class="dropdown-menu" id="profileDropdown">
+    <div class="dropdown-user-info">
+      <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+      <span>Resident Account</span>
+    </div>
+    <form method="post" action="../logout.php" style="margin:0;">
+      <button type="submit" class="logout-btn" style="cursor: pointer; width: 100%; text-align: left;">&#128274; Log Out</button>
+    </form>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="nav-links">
-      <a href="HomePage(registed).php" class="nav-tab"> Home</a>
-      <a href="resident/inbox.php" class="nav-tab"> Inbox</a>
-      <a href="findapet.php" class="nav-tab"> Find A Pet</a>
-      <a href="resident/pet_community.php" class="nav-tab"> Pet Community</a>
-      <a href="resident/help_center.php" class="nav-tab"> Help Center</a>
-      <a href="Analytics.html" class="nav-tab"> Analytics</a>
-      <a href="resident/Report.php" class="nav-tab"> Report</a>
+      <a href="HomePage(registed).php" class="nav-tab">Home</a>
+      <a href="inbox.php" class="nav-tab">Inbox</a>
+      <a href="findapet.php" class="nav-tab">Find A Pet</a>
+      <a href="pet_community.php" class="nav-tab">Pet Community</a>
+      <a href="help_center.php" class="nav-tab">Help Center</a>
+      <a href="Analytics.php" class="nav-tab">Analytics</a>
+      <a href="Report.php" class="nav-tab">Report</a>
     </div>
   </nav>
 
@@ -232,18 +233,17 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
-    <!-- STATS STRIP -->
     <div class="stats-strip reveal">
       <div class="stat-item">
-        <div class="stat-num" data-target="<?php echo $petsAdopted; ?>"><?php echo $petsAdopted;?></div>
+        <div class="stat-num" data-target="<?php echo $petsAdopted; ?>"><?php echo $petsAdopted; ?></div>
         <div class="stat-label">Pets Adopted</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num" data-target="<?php echo $availableNow; ?>"><?php echo $availableNow;?></div>
+        <div class="stat-num" data-target="<?php echo $availableNow; ?>"><?php echo $availableNow; ?></div>
         <div class="stat-label">Available Now</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num" data-target="<?php echo $sheltersRow; ?>"><?php echo $sheltersRow["cnt"]; ?></div>
+        <div class="stat-num" data-target="<?php echo $sheltersRow['cnt']; ?>"><?php echo $sheltersRow['cnt']; ?></div>
         <div class="stat-label">Shelters & NGOs</div>
       </div>
       <div class="stat-item">
@@ -252,7 +252,6 @@ $totalAvailablePets = $availableNow;
       </div>
     </div>
 
-    <!-- MY DASHBOARD -->
     <section class="section" id="dashboard">
       <div class="section-header reveal">
         <div>
@@ -292,7 +291,6 @@ $totalAvailablePets = $availableNow;
         </div>
       </div>
 
-      <!-- Activity feed -->
       <div style="margin-top:3rem;">
         <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;color:var(--deep-brown);" class="reveal">Recent Activity</h3>
         <div class="activity-feed">
@@ -318,7 +316,6 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
-    <!-- FEATURED PETS -->
     <section class="section" id="pets" style="background:var(--warm-tan);padding-top:5rem;padding-bottom:6rem;">
       <div class="section-header reveal">
         <div>
@@ -336,9 +333,15 @@ $totalAvailablePets = $availableNow;
             $i++;
         ?>
           <div class="pet-card reveal">
-            <div class="pet-img" style="background:<?php echo $bgColor; ?>;">
-              <span class="emoji"><?php echo $emoji; ?></span>
-              <button class="pet-heart" onclick="toggleHeart(this)">🤍</button>
+            <div class="pet-img" style="background:<?php echo $bgColor; ?>; position: relative; overflow: hidden;">
+              <?php if (!empty($pet['Photo'])): ?>
+                <img src="../image/pets/<?php echo htmlspecialchars($pet['Photo']); ?>"
+                    alt="<?php echo htmlspecialchars($pet['PetName']); ?>"
+                    style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <?php else: ?>
+                <span class="emoji" style="font-size: 3rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><?php echo $emoji; ?></span>
+              <?php endif; ?>
+              <button class="pet-heart" onclick="toggleHeart(this)" style="position: absolute; z-index: 2;">🤍</button>
             </div>
             <div class="pet-info">
               <div class="pet-name-row">
@@ -352,17 +355,12 @@ $totalAvailablePets = $availableNow;
                 <span class="pet-tag"><?php echo htmlspecialchars($pet['Gender']); ?></span>
               </div>
               <p class="pet-desc">Friendly and ready for a loving home. Vaccinated & cared for by shelter staff.</p>
-              <div class="pet-card-footer">
-                <a href="apply.php?pet=<?php echo urlencode($pet['PetID']); ?>" class="btn-adopt">Apply to Adopt</a>
-                <a href="pet_details.php?pet=<?php echo urlencode($pet['PetID']); ?>" class="btn-details">Details</a>
-              </div>
             </div>
           </div>
         <?php endwhile; ?>
       </div>
     </section>
 
-    <!-- MAP CTA -->
     <div class="map-section reveal">
       <div class="map-blob"></div>
       <div class="map-content">
@@ -379,14 +377,13 @@ $totalAvailablePets = $availableNow;
       </div>
     </div>
 
-    <!-- COMMUNITY -->
     <section class="section" id="community">
       <div class="section-header reveal">
         <div>
           <p class="section-eyebrow">Pet Community</p>
           <h2 class="section-title">What People<br>Are Sharing</h2>
         </div>
-        <a href="resident/pet_community.php" class="section-link">Join the conversation →</a>
+        <a href="pet_community.php" class="section-link">Join the conversation →</a>
       </div>
       <div class="community-posts">
         <?php if (mysqli_num_rows($postsResult) === 0): ?>
@@ -400,7 +397,7 @@ $totalAvailablePets = $availableNow;
               $j++;
           ?>
             <div class="post-card reveal">
-              <span class="post-emoji-big">📢</span>
+              <span class="post-emoji-big"></span>
               <div class="post-header">
                 <div class="post-avatar" style="background:<?php echo $accent; ?>;"><?php echo htmlspecialchars($initials); ?></div>
                 <div>
@@ -416,7 +413,6 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footer-grid">
         <div>
@@ -428,9 +424,9 @@ $totalAvailablePets = $availableNow;
           <p class="footer-col-title">Platform</p>
           <ul class="footer-links-list">
             <li><a href="findapet.php">Find A Pet</a></li>
-            <li><a href="resident/Report.html">Report Animal</a></li>
-            <li><a href="resident/pet_community.php">Community Board</a></li>
-            <li><a href="Analytics.html">Analytics</a></li>
+            <li><a href="Report.php">Report Animal</a></li>
+            <li><a href="pet_community.php">Community Board</a></li>
+            <li><a href="Analytics.php">Analytics</a></li>
           </ul>
         </div>
         <div>
@@ -439,7 +435,7 @@ $totalAvailablePets = $availableNow;
             <li><a href="#">My Profile</a></li>
             <li><a href="#">My Applications</a></li>
             <li><a href="#">Favourites</a></li>
-            <li><a href="resident/inbox.php">Inbox</a></li>
+            <li><a href="inbox.php">Inbox</a></li>
           </ul>
         </div>
         <div>
@@ -459,7 +455,6 @@ $totalAvailablePets = $availableNow;
     </footer>
   </div>
 
-  <!-- Welcome toast -->
   <div class="welcome-ticker" id="ticker">
     <span>🐾</span>
     <div style="flex:1;">
@@ -471,7 +466,10 @@ $totalAvailablePets = $availableNow;
 
 </div>
 
-<script src="js/homepage.js"></script>
+<!-- DENGAN ni: -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+   <script src="../js/HomePage_Registed.js"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>
