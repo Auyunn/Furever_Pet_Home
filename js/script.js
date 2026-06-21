@@ -1,102 +1,57 @@
 //====HomePage Unregistered====
 let currentSlide = 0;
 
-    function showSlide(n) {
-        let slides = document.querySelectorAll(".slides");
-        if (slides.length === 0) return; 
-        slides.forEach(s => s.style .display = "none");
-        slides[n].style.display = "block";
-    }
+function showSlide(n) {
+    let slides = document.querySelectorAll(".slides");
+    if (slides.length === 0) return; 
+    slides.forEach(s => s.style.display = "none");
+    slides[n].style.display = "block";
+}
 
-    window.prevSlide = function()
-    {
-        let slides = document.querySelectorAll(".slides");
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
-    }
+window.prevSlide = function() {
+    let slides = document.querySelectorAll(".slides");
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+}
 
-    window.nextSlide = function()
-    {
+window.nextSlide = function() {
     let slides = document.querySelectorAll(".slides");
     currentSlide = (currentSlide + 1) % slides.length;
     showSlide(currentSlide);
-    }
+}
 
-    document.addEventListener("DOMContentLoaded", function(){
-        showSlide(currentSlide);
-    })
+document.addEventListener("DOMContentLoaded", function(){
+    showSlide(currentSlide);
+});
 
 
 //====|Resident|====
 //====INBOX RESIDENT====
-//==== INBOX RESIDENT ====
 function toggleGroup(id) {
-
     const panel = document.getElementById(id);
     const arrow = document.getElementById('arrow-' + id);
-
     const isHidden = panel.style.display === 'none';
-
     panel.style.display = isHidden ? 'flex' : 'none';
-
     arrow.textContent = isHidden ? '▾' : '▸';
 }
 
 function getStatusInfo(status) {
-
     if (!status) {
-        return {
-            label: '',
-            cls: ''
-        };
+        return { label: '', cls: '' };
     }
-
     const map = {
-
-        'Approve': {
-            label: 'Diluluskan',
-            cls: 'approve',
-            dot: '●'
-        },
-
-        'Reject': {
-            label: 'Ditolak',
-            cls: 'reject',
-            dot: '●'
-        },
-
-        'Pending': {
-            label: 'Dalam Semakan',
-            cls: 'pending',
-            dot: '●'
-        },
-
-        'In Progress': {
-            label: 'Sedang Diurus',
-            cls: 'in-progress',
-            dot: '●'
-        },
-
-        'Resolve': {
-            label: 'Selesai',
-            cls: 'resolve',
-            dot: '●'
-        }
+        'Approve': { label: 'Diluluskan', cls: 'approve', dot: '●' },
+        'Reject': { label: 'Ditolak', cls: 'reject', dot: '●' },
+        'Pending': { label: 'Dalam Semakan', cls: 'pending', dot: '●' },
+        'In Progress': { label: 'Sedang Diurus', cls: 'in-progress', dot: '●' },
+        'Resolve': { label: 'Selesai', cls: 'resolve', dot: '●' }
     };
-
-    return map[status] || {
-        label: status,
-        cls: 'pending',
-        dot: '●'
-    };
+    return map[status] || { label: status, cls: 'pending', dot: '●' };
 }
 
 function formatDateTime(dtStr) {
-
     if (!dtStr) return '';
-
     const d = new Date(dtStr);
-
     return d.toLocaleString('ms-MY', {
         day: '2-digit',
         month: 'long',
@@ -107,51 +62,24 @@ function formatDateTime(dtStr) {
 }
 
 function openNotif(event, index, group) {
-
-    document.querySelectorAll('.notif-item')
-        .forEach(el => el.classList.remove('active'));
-
-    const clickedItem =
-        document.getElementById('item-' + group + '-' + index);
-
+    document.querySelectorAll('.notif-item').forEach(el => el.classList.remove('active'));
+    const clickedItem = document.getElementById('item-' + group + '-' + index);
     if (clickedItem) {
         clickedItem.classList.add('active');
     }
-
     const notif = window.notifData[group][index];
-
     if (!notif) return;
 
     const status = getStatusInfo(notif.Status);
-
-    const panel =
-        document.getElementById('notif-content');
-
+    const panel = document.getElementById('notif-content');
     panel.innerHTML = `
         <div class="content-wrapper">
-
-            <div class="content-type-badge">
-                ${notif.Type || ''}
-            </div>
-
-            <h2 class="content-title">
-                ${notif.Title || ''}
-            </h2>
-
-            <div class="content-time">
-                ${formatDateTime(notif.DateTime)}
-            </div>
-
-            <div class="content-status ${status.cls}">
-                ${status.dot} ${status.label}
-            </div>
-
+            <div class="content-type-badge">${notif.Type || ''}</div>
+            <h2 class="content-title">${notif.Title || ''}</h2>
+            <div class="content-time">${formatDateTime(notif.DateTime)}</div>
+            <div class="content-status ${status.cls}">${status.dot} ${status.label}</div>
             <hr class="content-divider">
-
-            <div class="content-body">
-                ${notif.Message || ''}
-            </div>
-
+            <div class="content-body">${notif.Message || ''}</div>
         </div>
     `;
 }
@@ -159,55 +87,49 @@ function openNotif(event, index, group) {
 //====== PET COMMUNITY ===============
 function toggleComment(boardId) {
     var panel = document.getElementById('panel-'+ boardId);
-   if(panel.style.display == 'none' || panel.style.display ==''){
-    panel.style.display='block';
-   }else{
-    panel.style.display='none';
-   }
+    if(panel.style.display == 'none' || panel.style.display == ''){
+        panel.style.display='block';
+    }else{
+        panel.style.display='none';
+    }
 }
 
 //====RESIDENT HELP CENTER====
-//==== RESIDENT HELP CENTER ALERT ====
 if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
     alert("Sorry, no results found for your search. Please try again with different keywords or try contacting our customer service.");
 }
 
+
 //====|NGO|====
 //====INBOX NGOS====
-   // apply filter reload page
-    //====|NGO|====
-    window.applyFilter = function() 
-    {
-        const filter = document.getElementById('filter').value;
-        const url = new URL(window.location.href);
-        url.searchParams.set('filter', filter);
-        window.location.href = url.toString();
-    }
+window.applyFilter = function() {
+    const filter = document.getElementById('filter').value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('filter', filter);
+    window.location.href = url.toString();
+}
 
-    window.viewApp = function(adoptionID) 
-    {
-        fetch('getApplicant.php?id=' + encodeURIComponent(adoptionID))
-            .then(r => r.text())
-            .then(html => {
-                const panel = document.getElementById('panel-content');
-                panel.innerHTML = html;
-                panel.scrollTop = 0;
-                panel.dataset.currentId = adoptionID;
-            })
-            .catch(err => {
-                document.getElementById('panel-content').innerHTML =
-                    '<div style="color:#c00">Error loading details</div>';
-            });
-    }
+window.viewApp = function(adoptionID) {
+    fetch('getApplicant.php?id=' + encodeURIComponent(adoptionID))
+        .then(r => r.text())
+        .then(html => {
+            const panel = document.getElementById('panel-content');
+            panel.innerHTML = html;
+            panel.scrollTop = 0;
+            panel.dataset.currentId = adoptionID;
+        })
+        .catch(err => {
+            document.getElementById('panel-content').innerHTML =
+                '<div style="color:#c00">Error loading details</div>';
+        });
+}
 
-    window.closePanel = function()
-    {
-        const panel = document.getElementById('panel-content');
-        if (!panel) return;
-        panel.innerHTML = '<div class="panel-empty">Click "View" on a request to see details here.</div>';
-        panel.dataset.currentId = '';
-    }
-
+window.closePanel = function() {
+    const panel = document.getElementById('panel-content');
+    if (!panel) return;
+    panel.innerHTML = '<div class="panel-empty">Click "View" on a request to see details here.</div>';
+    panel.dataset.currentId = '';
+}
 
 window.rejectWithReason = function(adoptionID) {
     let reason = prompt("Please enter a reason for rejection:");
@@ -216,40 +138,69 @@ window.rejectWithReason = function(adoptionID) {
     }
 }
 
-window.updateStatus = function(adoptionID, newStatus, reason = null) 
-{
-    fetch('updateStatus.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: adoptionID, status: newStatus, reason: reason })
-    })
-    .then(r => {
-        if (!r.ok) throw new Error('Network response not ok');
-        return r.json();
-    })
-    .then(data => {
-        if (!data.ok) {
-            alert('Update failed: ' + (data.error || 'unknown'));
-            return;
-        }
-        window.updateRowBadge(adoptionID, newStatus);
-        const panel = document.getElementById('panel-content');
-        if (panel && panel.dataset.currentId === String(adoptionID)) {
-            window.viewApp(adoptionID);
-        }
-    })
-    .catch(e => {
-        console.error(e);
-        alert('Network error');
-    });
+window.updateStatus = function(id, statusOrAction, reason = null) {
+    if (String(id).startsWith('ADOP')) {
+        fetch('updateStatus.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, status: statusOrAction, reason: reason })
+        })
+        .then(r => {
+            if (!r.ok) throw new Error('Network response not ok');
+            return r.json();
+        })
+        .then(data => {
+            if (!data.ok) {
+                alert('Update failed: ' + (data.error || 'unknown'));
+                return;
+            }
+            window.updateRowBadge(id, statusOrAction);
+            const panel = document.getElementById('panel-content');
+            if (panel && panel.dataset.currentId === String(id)) {
+                window.viewApp(id);
+            }
+        })
+        .catch(e => {
+            console.error(e);
+            alert('Network error');
+        });
+    } 
+    else if (String(id).startsWith('REP')) {
+        fetch('report.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'update_status', reportID: id, status: statusOrAction })
+        })
+        .then(r => {
+            if (!r.ok) throw new Error('Network response not ok');
+            return r.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                alert('Update failed: ' + (data.message || 'unknown'));
+                return;
+            }
+            window.updateRowBadge(id, statusOrAction);
+            const panel = document.getElementById('panel-content');
+            if (panel && panel.dataset.currentId === String(id)) {
+                window.viewReport(id);
+            }
+        })
+        .catch(e => {
+            console.error(e);
+            alert('Network error');
+        });
+    }
 }
 
+window.updateInboxStatus = window.updateStatus;
 
-    window.updateRowBadge = function(adoptionID, newStatus)
-    {
-        const row = document.getElementById('row-' + adoptionID);
+window.updateRowBadge = function(id, newStatus) {
+    if (String(id).startsWith('ADOP')) {
+        const row = document.getElementById('row-' + id);
         if (!row) return;
 
+        // Update badge status
         const badge = row.querySelector('td span');
         if (badge) {
             badge.textContent = newStatus;
@@ -258,10 +209,21 @@ window.updateStatus = function(adoptionID, newStatus, reason = null)
                             : 'badge_pending';
         }
 
-        const approveBtn = row.querySelector('.btn-approve, .btn-undo');
-        const rejectBtn  = row.querySelector('.btn-reject');
+        const actionTd = row.querySelector('.action-btns');
+        if (!actionTd) return;
+
+        const approveBtn = actionTd.querySelector('.btn-approve, .btn-undo');
+        const rejectBtn  = actionTd.querySelector('.btn-reject');
+        const viewBtn    = actionTd.querySelector('.btn-view');
+
+        // View button sentiasa enabled
+        if (viewBtn) {
+            viewBtn.disabled = false;
+            viewBtn.classList.remove('btn-disabled');
+        }
 
         if (newStatus === 'Approved') {
+            // Tukar Approve → Undo
             if (approveBtn) {
                 approveBtn.textContent = 'Undo';
                 approveBtn.className = 'btn-undo';
@@ -276,7 +238,7 @@ window.updateStatus = function(adoptionID, newStatus, reason = null)
                     .then(r => r.json())
                     .then(res => {
                         if (res.ok) {
-                            window.updateRowBadge(adoptionID, 'Pending');
+                            window.updateRowBadge(id, 'Pending');
                         } else {
                             alert('Undo failed: ' + (res.error || 'unknown'));
                         }
@@ -284,53 +246,64 @@ window.updateStatus = function(adoptionID, newStatus, reason = null)
                     .catch(err => alert('Network error during undo'));
                 };
             }
+            // Reject kekal boleh guna
             if (rejectBtn) {
-                rejectBtn.disabled = true;
-                rejectBtn.classList.add('btn-disabled');
+                rejectBtn.disabled = false;
+                rejectBtn.classList.remove('btn-disabled');
+                rejectBtn.textContent = 'Reject';
+                rejectBtn.onclick = () => window.rejectWithReason(id);
             }
 
         } else if (newStatus === 'Rejected') {
-            if (rejectBtn) {
-                rejectBtn.textContent = 'Rejected';
-                rejectBtn.disabled = true;
-                rejectBtn.classList.add('btn-disabled');
-            }
+            // Approve kekal boleh guna
             if (approveBtn) {
                 approveBtn.textContent = 'Approve';
                 approveBtn.className = 'btn-approve';
                 approveBtn.disabled = false;
-                approveBtn.onclick = () => window.updateStatus(adoptionID, 'Approved');
+                approveBtn.onclick = () => window.updateStatus(id, 'Approved');
+            }
+            // Reject tunjuk "Rejected" tapi boleh click semula untuk tukar reason
+            if (rejectBtn) {
+                rejectBtn.textContent = 'Rejected';
+                rejectBtn.disabled = false;
+                rejectBtn.classList.remove('btn-disabled');
+                rejectBtn.onclick = () => window.rejectWithReason(id);
             }
 
         } else {
+            // Pending — semua normal
             if (approveBtn) {
                 approveBtn.textContent = 'Approve';
                 approveBtn.className = 'btn-approve';
                 approveBtn.disabled = false;
-                approveBtn.onclick = () => window.updateStatus(adoptionID, 'Approved');
+                approveBtn.onclick = () => window.updateStatus(id, 'Approved');
             }
             if (rejectBtn) {
                 rejectBtn.textContent = 'Reject';
                 rejectBtn.disabled = false;
                 rejectBtn.classList.remove('btn-disabled');
-                rejectBtn.onclick = () => window.updateStatus(adoptionID, 'Rejected');
+                rejectBtn.onclick = () => window.rejectWithReason(id);
             }
         }
+
+    } 
+    else if (String(id).startsWith('REP')) {
+        const row = document.getElementById('row-' + id);
+        if (!row) return;
+        row.dataset.status = newStatus;
+        const badge = document.getElementById('badge-' + id);
+        if (badge) {
+            badge.textContent = newStatus;
+            badge.className   = (newStatus === 'Resolved') ? 'badge_resolved'
+                                : (newStatus === 'In Progress') ? 'badge_inprogress'
+                                : 'badge_pending';
+        }
     }
+}
+window.updateInboxRowBadge = window.updateRowBadge;
 
 //====REPORT NGO====
-//====NGO REPORT====
-
-window.applyFilter = function()
-{
-    const filter = document.getElementById('filter').value;
-    const url = new URL(window.location.href);
-    url.searchParams.set('filter', filter);
-    window.location.href = url.toString();
-}
-
-window.viewReport = function(reportID)
-{
+window.viewReport = function(reportID) {
     const row = document.getElementById('row-' + reportID);
     if (!row) return;
 
@@ -383,114 +356,59 @@ window.viewReport = function(reportID)
     panel.dataset.currentId = reportID;
 }
 
-window.closePanel = function()
-{
-    const panel = document.getElementById('panel-content');
-    if (!panel) return;
-    panel.innerHTML = '<div class="panel-empty">Click "View" on a request to see details here.</div>';
-    panel.dataset.currentId = '';
-}
-
-window.updateStatus = function(reportID, newStatus)
-{
-    fetch('report.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_status', reportID: reportID, status: newStatus })
-    })
-    .then(r => {
-        if (!r.ok) throw new Error('Network response not ok');
-        return r.json();
-    })
-    .then(data => {
-        if (!data.success) {
-            alert('Update failed: ' + (data.message || 'unknown'));
-            return;
-        }
-        window.updateRowBadge(reportID, newStatus);
-
-        const panel = document.getElementById('panel-content');
-        if (panel && panel.dataset.currentId === String(reportID)) {
-            window.viewReport(reportID);
-        }
-    })
-    .catch(e => {
-        console.error(e);
-        alert('Network error');
-    });
-}
-
-window.updateRowBadge = function(reportID, newStatus)
-{
-    const row = document.getElementById('row-' + reportID);
-    if (!row) return;
-
-    row.dataset.status = newStatus;
-
-    const badge = document.getElementById('badge-' + reportID);
-    if (badge) {
-        badge.textContent = newStatus;
-        badge.className   = getBadgeClass(newStatus);
-    }
-}
-function getBadgeClass(status)
-{
+function getBadgeClass(status) {
     if (status === 'Resolved')    return 'badge_resolved';
     if (status === 'In Progress') return 'badge_inprogress';
     return 'badge_pending';
 }
-    
-//==== PET LISTING =====
-
 
 
 //====|ADMIN|====
+//====PROFILE DROPDOWN====
+function toggleProfileDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.profile-dropdown')) {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown) dropdown.classList.remove('show');
+    }
+});
+
 //====ADMIN DASHBOARD====
-
-//===== ADMIN HELP CENTER =====
-/*Tab Switch*/
 function switchTab(tabName,button){
-
-    // Make sure all tab button and panel deactivate
     document.querySelectorAll('.panel').forEach(function(panel){
         panel.classList.remove('active');
     });
     document.querySelectorAll('.tab').forEach(function(tab){
         tab.classList.remove('active');
     });
-
-    // Selected tab and panel
     document.getElementById('panel-' + tabName).classList.add('active');
     button.classList.add('active');
-
-    //Show tab navigation
     document.getElementById('breadcrumb').style.display ='none';
     document.getElementById('tabs').style.display = 'flex';
 }
 
-// -------------- VIEW DETAIL -----------------
 function viewGuideline(data){
-
     updateBreadcrumb('Guideline',data.Title);
-
     var Information = '';
     if(data.Budget || data.PetType || data.OrgName){
         Information = `
-        <div class= "meta-grid" style="margin-top: 16px;">
+        <div class="meta-grid" style="margin-top: 16px;">
             <div class="meta-item">
                 <div class="meta-label">Organization</div>
                 <div class="meta-value">${escapeHTML(data.OrgName) || 'Unknown'}</div>
             </div>
-
              <div class="meta-item">
                 <div class="meta-label">Pet Type</div>
                 <div class="meta-value">${escapeHTML(data.PetType)}</div>
             </div>
-
              <div class="meta-item">
                 <div class="meta-label">Budget</div>
-                <div class="meta-value">${data.Budget? 'RM ' + parseFloat(data.Budget).toFixed(2) : 'N/A'}
-                </div>
+                <div class="meta-value">${data.Budget? 'RM ' + parseFloat(data.Budget).toFixed(2) : 'N/A'}</div>
             </div>
         </div>`;
     }
@@ -499,76 +417,69 @@ function viewGuideline(data){
         <div class="view-header">
             <div class="view-header-left">
                 <div>
-                    <div class = "view-title">${escapeHTML(data.Title)}</div>
+                    <div class="view-title">${escapeHTML(data.Title)}</div>
                     <div class="view-meta">
                         ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrgName)|| 'Unknown'}
                     </div>
                 </div>
             </div>
-            <button class = "btn-back" onclick="goBack()"> Back </button>
+            <button class="btn-back" onclick="goBack()"> Back </button>
         </div>
         <div class="view-body">
-            <div class = "section-label"> Details </div>
-            <div class ="body-text">${escapeHTML(data.Description)}</div>
-        </div>
-    `;
-
-    showDetailPanel();
-}
-
-function viewFaq(data){
-
-    updateBreadcrumb('FAQ',data.Question);
-
-    document.getElementById('view-content').innerHTML = `
-        <div class= "view-header">
-        <div class="view-header-left">
-            <div>
-                <div class = "view-title">${escapeHTML(data.Question)}</div>
-                <div class="view-meta">
-                    By: ${escapeHTML(data.OrgName) || 'Unknown'}
-                </div>
-            </div>
-        </div>
-         <button class = "btn-back" onclick="goBack()"> Back </button>
-        </div>
-
-        <div class = "view-body">
-            <div class = "section-label"> Answer </div>
+            <div class="section-label"> Details </div>
             <div class="body-text">${escapeHTML(data.Description)}</div>
         </div>
     `;
     showDetailPanel();
 }
 
+function viewFaq(data){
+    updateBreadcrumb('FAQ',data.Question);
+    document.getElementById('view-content').innerHTML = `
+        <div class="view-header">
+        <div class="view-header-left">
+            <div>
+                <div class="view-title">${escapeHTML(data.Question)}</div>
+                <div class="view-meta">
+                    By: ${escapeHTML(data.OrgName) || 'Unknown'}
+                </div>
+            </div>
+        </div>
+         <button class="btn-back" onclick="goBack()"> Back </button>
+        </div>
+        <div class="view-body">
+            <div class="section-label"> Answer </div>
+            <div class="body-text">${escapeHTML(data.Description)}</div>
+        </div>
+    `;
+    showDetailPanel();
+}
 
 function goBack(){
     document.getElementById('breadcrumb').style.display = 'none';
     document.getElementById('panel-view').classList.remove('active');
-
     document.getElementById('tabs').style.display = 'flex';
-
-    var activeTab =  document.querySelector('.tab.active');
+    var activeTab = document.querySelector('.tab.active');
     var tabName = activeTab ? activeTab.textContent.trim().toLowerCase() : 'guideline';
     document.getElementById('panel-' + tabName).classList.add('active');
 }
 
 function updateBreadcrumb(tabName,itemName){
     document.getElementById('breadcrumb').style.display = 'flex';
-    document.getElementById('breadcrumb-tab').textContent =  tabName;
-    document.getElementById('breadcrumb-title').textContent =  itemName;
+    document.getElementById('breadcrumb-tab').textContent = tabName;
+    document.getElementById('breadcrumb-title').textContent = itemName;
 }
 
 function showDetailPanel(){
      document.getElementById('tabs').style.display = 'none';
-     document.querySelectorAll ('.panel').forEach(function(panel){
+     document.querySelectorAll('.panel').forEach(function(panel){
         panel.classList.remove('active');
      });
      document.getElementById('panel-view').classList.add('active');
 }
 
 function escapeHTML(text){
-     if (!text) return '';
+    if (!text) return '';
     return String(text)
         .replace(/&/g,  '&amp;')
         .replace(/</g,  '&lt;')
