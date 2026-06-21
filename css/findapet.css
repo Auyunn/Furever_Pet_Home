@@ -150,6 +150,54 @@
 }
 
 /* ===========================
+   APPLY FOR ADOPTION
+   =========================== */
+.pet-apply {
+    margin-top: 16px;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 9px 16px;
+    background: var(--deep-brown);
+    color: var(--warm-cream);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.apply-btn:hover:not(:disabled) {
+    background: var(--amber);
+    color: var(--warm-cream);
+    transform: translateY(-1px);
+}
+
+.apply-btn:disabled {
+    background: var(--warm-tan);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.apply-banner {
+    max-width: 600px;
+    margin: 0 auto 24px;
+    padding: 12px 18px;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--deep-brown);
+    background: var(--warm-tan);
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+}
+
+/* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 768px) {
