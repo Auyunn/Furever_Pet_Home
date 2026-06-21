@@ -60,12 +60,21 @@
 
             <!---Tab Navigation-->
             <div class="nav-links">
+<<<<<<< HEAD
+                <a href="dashboard.php" class="nav-tab"> Dashboard</a>
+                <a href="usercount.html" class="nav-tab"> Users/NGOs</a>
+                <a href="Add_Report.php" class="nav-tab"> Report</a>
+                <a href="../Analytics.html" class="nav-tab"> Analytics</a>
+                <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
+                <a href="help_center.php" class="nav-tab"> Help Center</a>
+=======
             <a href="dashboard.php" class="nav-tab"> Dashboard</a>
             <a href=" " class="nav-tab"> Users/NGOs</a>
             <a href=" " class="nav-tab"> Report</a>
             <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
             <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
             <a href="help_center.html" class="nav-tab"> Help Center</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579
             </div>
     </nav>
 

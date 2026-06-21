@@ -1,3 +1,15 @@
+<<<<<<< HEAD:index.php
+<?php 
+session_start();
+
+function isLoggedIn() {
+    return isset($_SESSION["user_id"]);
+}
+
+?>
+
+=======
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
 <!Doctype html>
 <html lang="en">
 <head>
@@ -17,13 +29,26 @@
             <span>Furever Pet Home</span>
             </a>
             <div class="login">
+<<<<<<< HEAD:index.php
+                <a href="User_Login.php">Log In</a> 
+=======
                 <a href="Login.html">Log In</a> 
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
             </div>
 
         </div>
 
         <!---Tab Navigation-->
         <div class="nav-links">
+<<<<<<< HEAD:index.php
+            <a href="" class="nav-tab"> Home</a>
+            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Inbox</a>
+            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Find A Pet</a>
+            <a href="<?php if (!isLoggedIn()): echo "Sign_Up.php"; endif; ?>" class="nav-tab"> Pet Community</a>
+            <a href="<?php if (!isloggedIn()): echo "Sign_up.php"; endif; ?>" class="nav-tab"> Help Center</a>
+            <a href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>" class="nav-tab"> Analytics</a>
+            <a href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>" class="nav-tab"> Report</a>
+=======
             <a href="HomePage(unregistered).html" class="nav-tab"> Home</a>
             <a href="login.html" class="nav-tab"> Inbox</a>
             <a href="login.html" class="nav-tab"> Find A Pet</a>
@@ -31,6 +56,7 @@
             <a href="resident/help_center.php" class="nav-tab"> Help Center</a>
             <a href="Analytics.html" class="nav-tab"> Analytics</a>
             <a href="login.html" class="nav-tab"> Report</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
         </div>
         </nav>
 
@@ -42,7 +68,11 @@
         </p>
         <div class="cta-row">
             <p>For <strong>Dogs</strong> & <strong>Cats</strong> Adoption</p>
+<<<<<<< HEAD:index.php
+            <a href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>" class="button">Start Your Adoption Journey</a>
+=======
             <a href="#second-body" class="button">Start Your Adoption Journey</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
         </div>
     </section>
 
@@ -68,7 +98,11 @@
                     <h2>Pet Adoption</h2>
                     <p>Browse available pets from shelters and NGOs.</p>
                 </div>
+<<<<<<< HEAD:index.php
+                <a class="AdoptBtn" href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>">Adopt Now</a>
+=======
                 <a class="AdoptBtn" href="PetListingsPage.php">Adopt Now</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
             </div>
             <div class="service">
 
@@ -78,7 +112,11 @@
                     <h2>Report Animal</h2>
                     <p>Help keep Bandar Klang safe and clean.</p>
                 </div>
+<<<<<<< HEAD:index.php
+                <a class="ReportBtn" href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>">Report Now</a>
+=======
                 <a class="ReportBtn" href="ReportAnimalPage.php">Report Now</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
             </div>
             <div class="service">
 
@@ -88,7 +126,11 @@
                     <h2>Connect With Us</h2>
                     <p>Stay updated with events and announcements.</p>
                 </div>
+<<<<<<< HEAD:index.php
+                <a class="CommunityBtn" href="<?php if (!isloggedIn()): echo "sign_up.php"; endif; ?>">Connect Now</a>
+=======
                 <a class="CommunityBtn" href="CommunityBoardPage.php">Connect Now</a>
+>>>>>>> 8304eed7ba15cd2ed917fc7eb4bfe33478b36579:HomePage(unregistered).html
             </div>
         </div>
     </section>

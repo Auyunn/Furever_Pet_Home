@@ -1,13 +1,5 @@
-/* ============================================================
-   HOME PAGE (REGISTERED) – page-specific styles
-   All colour values use variables from base.css:
-   --warm-cream #FFF9D2 | --warm-tan #FFE0BC | --deep-brown #825540
-   --amber #d084c6      | --amber-lt #f0c080  | --sage #6b8f71
-   --rose #c97d7d       | --off-white #C8E6F5 | --text-muted #8175ba
-   --navbar-height 108px
-   ============================================================ */
 
-/* ── CANVAS ── */
+
 #hero-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -16,13 +8,13 @@
   pointer-events: none;
 }
 
-/* ── SCROLL WRAPPER ── */
+
 .scroll-container {
   position: relative;
   z-index: 10;
 }
 
-/* ── HERO ── */
+
 .hero {
   height: 100vh;
   display: flex;
