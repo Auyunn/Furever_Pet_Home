@@ -38,7 +38,7 @@
                 // User / Resident
                 $sql = "SELECT ResidentID, FirstName, Password FROM resident WHERE Email = ? AND Status = 1";
                 $role = 'user';
-                $redirect = "HomePage_Unregistered.php"; 
+                $redirect = "HomePage(registed).php"; 
             }
 
             // 2. Base on role
