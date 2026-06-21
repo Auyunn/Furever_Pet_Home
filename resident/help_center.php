@@ -1,5 +1,27 @@
 <?php
+    session_start();
     include("../db_connect.php");
+
+    $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['residentID']);
+    $resident_id = $is_logged_in ? $_SESSION['residentID'] : 'GUEST';
+
+    $firstName = 'Resident';
+    $lastName  = '';
+
+    if ($is_logged_in) {
+        $profileStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+        $profileStmt->bind_param('s', $resident_id);
+        $profileStmt->execute();
+        $residentResult = $profileStmt->get_result();
+        if ($resident = $residentResult->fetch_assoc()) {
+            $firstName = $resident['FirstName'] ?? 'Resident';
+            $lastName  = $resident['LastName'] ?? '';
+        }
+        $profileStmt->close();
+    }
+
+    $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+
 
     $search = $_GET['search'] ?? '';
 
@@ -11,10 +33,8 @@
         $stmt->execute();
         $result = $stmt->get_result();
         
-        
         $no_match = ($result->num_rows === 0) ? true : false;
     } else {
-        
         $sql = "SELECT Question, Description FROM faq LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -43,24 +63,22 @@
             </a>
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+            
+            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
+                <?= htmlspecialchars($avatarInitials) ?>
+            </div>
+            
             </div>
         </div>
 
-        <!-- NAVIGATION -->
         <div class="nav-links">
-            <?php if(isset($_SESSION['user_id'])): ?>
-
-                <a href="../HomePage(registed).html" class="nav-tab">Home</a>
-            <?php else: ?>
-                <a href="../HomePage(unregistered).html" class="nav-tab">Home</a>
-            <?php endif; ?>            
+            <a href="HomePage(registed).php" class="nav-tab">Home</a>
             <a href="inbox.php" class="nav-tab">Inbox</a>
-            <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="pet_community.php" class="nav-tab"> Pet Community</a>
             <a href="help_center.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab">Analytics</a>
-            <a href="Report.html" class="nav-tab">Report</a>
+            <a href="Analytics.php" class="nav-tab">Analytics</a>
+            <a href="Report.php" class="nav-tab">Report</a>
         </div>
                
         </nav>
