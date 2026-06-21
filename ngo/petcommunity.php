@@ -12,11 +12,11 @@ require_once "../db_connect.php"; // petcommunity.php is in /ngo, db_connect.php
    Until then, this fallback lets you test the page without
    being logged in. REMOVE the fallback block once auth exists.
 ============================================================ */
-if (!isset($_SESSION['org_id'])) {
-    $_SESSION['org_id'] = "ORG01"; // TEMP placeholder - remove after login is built
+$currentOrgID = $_SESSION['orgID'] ?? null;
+if (!$currentOrgID) {
+    header("Location: ../login.php");
+    exit();
 }
-$currentOrgID = $_SESSION['org_id'];
-
 
 /* ============================================================
    HANDLE POST ACTIONS (delete post, update post)
@@ -132,7 +132,7 @@ $photoFolder = "../image/pet_community/";
         <div class="nav-right">
         <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
         <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
-            <?= isset($_SESSION['org_id']) ? htmlspecialchars(strtoupper(substr($_SESSION['org_id'], 0, 2))) : 'AT' ?>
+            <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
         </div>
         </div>
     </div>
@@ -141,11 +141,11 @@ $photoFolder = "../image/pet_community/";
     <div class="nav-links">
             <a href="Pet_listing.php" class="nav-tab"> Home</a>
             <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="petcommunity.php" class="nav-tab"> Pet Community</a>
             <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="report..php" class="nav-tab"> Report</a>
+            <a href="Analytics.php" class="nav-tab"> Analytics</a>
+            <a href="report.php" class="nav-tab"> Report</a>
     </div>
     </nav>
 
