@@ -157,7 +157,8 @@
 
         <!---Tab Navigation-->
         <div class="nav-links">
-        <?php if($is_logged_in): ?>
+       <?php if(isset($_SESSION['user_id'])): ?>
+
             <a href="../HomePage(registed).html" class="nav-tab">Home</a>
         <?php else: ?>
             <a href="../HomePage(unregistered).html" class="nav-tab">Home</a>
