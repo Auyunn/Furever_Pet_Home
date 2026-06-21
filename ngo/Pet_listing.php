@@ -1,131 +1,129 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
     session_start();
-}
-
-
-$con = new mysqli("localhost", "root", "", "furever_pet_home");
-if($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
-}
-
-if (isset($_SESSION['orgID'])) {
-    $org_id = $_SESSION['orgID'];
-} else {
-    header("Location: ../User_Login.php");
-    exit();
-}
-
-
-$error = "";
-$success = "";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
-    // ACTION: ADD PET
-    if (isset($_POST['action_add'])) {
-        $pet_name = trim($_POST['PetName'] ?? '');
-        $pet_type = $_POST['PetType'] ?? ''; 
-        $breed = trim($_POST['Breed'] ?? '') ?: 'Unknown';
-        $age = intval($_POST['Age'] ?? 0);
-        $location = trim($_POST['Location'] ?? '');
-        $gender = $_POST['Gender'] ?? 'Male';
-        $allergies = trim($_POST['Allergies'] ?? '') ?: 'None';
-        
-        // string to tinyint
-        $neutered = (isset($_POST['Neutered']) && $_POST['Neutered'] === 'Yes') ? 1 : 0;
-        $is_available = (isset($_POST['IsAvailable']) && $_POST['IsAvailable'] === 'Available') ? 1 : 0;
-        
-        $photo_name = "default.png";
-        if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] === UPLOAD_ERR_OK) {
-            $filename = time() . '_' . basename($_FILES['Photo']['name']);
-            $target_path = "../image/pets/" . $filename;
-            if (move_uploaded_file($_FILES['Photo']['tmp_name'], $target_path)) {
-                $photo_name = $filename;
-            }
-        }
 
-        // generate pet
-        $result = $con->query("SELECT COUNT(*) as total FROM pet");
-        $row = $result->fetch_assoc();
-        $next_num = $row['total'] + 1;
-        $pet_id = "PET" . sprintf("%02d", $next_num); // format PET01
-
-        $sql = "INSERT INTO pet (PetID, OrgID, PetType, Breed, Age, Location, Neutered, Allergies, Photo, Gender, PetName, IsAvailable) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param("ssssissssssi", $pet_id, $org_id, $pet_type, $breed, $age, $location, $neutered, $allergies, $photo_name, $gender, $pet_name, $is_available);
-        
-        if ($stmt->execute()) {
-            echo "<script>alert('New pet added successfully!'); window.location.href=window.location.href;</script>";
-            exit();
-        } else {
-            $error = "Failed to add pet: " . $con->error;
-        }
+    $con = new mysqli("localhost", "root", "", "furever_pet_home");
+    if($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
     }
 
-    // ACTION: EDIT PET
-    if (isset($_POST['action_edit'])) {
-        $pet_id = $_POST['PetID'] ?? '';
-        $pet_name = trim($_POST['PetName'] ?? '');
-        $pet_type = $_POST['PetType'] ?? '';
-        $breed = trim($_POST['Breed'] ?? '') ?: 'Unknown';
-        $age = intval($_POST['Age'] ?? 0);
-        $location = trim($_POST['Location'] ?? '');
-        $gender = $_POST['Gender'] ?? 'Male';
-        $allergies = trim($_POST['Allergies'] ?? '') ?: 'None';
+    if (isset($_SESSION['orgID'])) {
+        $org_id = $_SESSION['orgID'];
+    } else {
+        header("Location: ../User_Login.php");
+        exit();
+    }
 
-        // change form to tinyint
-        $neutered = (isset($_POST['Neutered']) && $_POST['Neutered'] === 'Yes') ? 1 : 0;
-        $is_available = (isset($_POST['IsAvailable']) && $_POST['IsAvailable'] === 'Available') ? 1 : 0;
 
-        if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] === UPLOAD_ERR_OK) {
-            $filename = time() . '_' . basename($_FILES['Photo']['name']);
-            $target_path = "../image/pets/" . $filename;
-            if (move_uploaded_file($_FILES['Photo']['tmp_name'], $target_path)) {
-                $sql = "UPDATE pet SET PetName=?, PetType=?, Breed=?, Age=?, Location=?, Neutered=?, Allergies=?, Gender=?, IsAvailable=?, Photo=? WHERE PetID=? AND OrgID=?";
-                $stmt = $con->prepare($sql);
-                $stmt->bind_param("sssissssssss", $pet_name, $pet_type, $breed, $age, $location, $neutered, $allergies, $gender, $is_available, $filename, $pet_id, $org_id);
+    $error = "";
+    $success = "";
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        
+        // ACTION: ADD PET
+        if (isset($_POST['action_add'])) {
+            $pet_name = trim($_POST['PetName'] ?? '');
+            $pet_type = $_POST['PetType'] ?? ''; 
+            $breed = trim($_POST['Breed'] ?? '') ?: 'Unknown';
+            $age = intval($_POST['Age'] ?? 0);
+            $location = trim($_POST['Location'] ?? '');
+            $gender = $_POST['Gender'] ?? 'Male';
+            $allergies = trim($_POST['Allergies'] ?? '') ?: 'None';
+            
+            // string to tinyint
+            $neutered = (isset($_POST['Neutered']) && $_POST['Neutered'] === 'Yes') ? 1 : 0;
+            $is_available = (isset($_POST['IsAvailable']) && $_POST['IsAvailable'] === 'Available') ? 1 : 0;
+            
+            $photo_name = "default.png";
+            if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] === UPLOAD_ERR_OK) {
+                $filename = time() . '_' . basename($_FILES['Photo']['name']);
+                $target_path = "../image/pets/" . $filename;
+                if (move_uploaded_file($_FILES['Photo']['tmp_name'], $target_path)) {
+                    $photo_name = $filename;
+                }
             }
-        } else {
-            $sql = "UPDATE pet SET PetName=?, PetType=?, Breed=?, Age=?, Location=?, Neutered=?, Allergies=?, Gender=?, IsAvailable=? WHERE PetID=? AND OrgID=?";
+
+            // generate pet
+            $result = $con->query("SELECT COUNT(*) as total FROM pet");
+            $row = $result->fetch_assoc();
+            $next_num = $row['total'] + 1;
+            $pet_id = "PET" . sprintf("%02d", $next_num); // format PET01
+
+            $sql = "INSERT INTO pet (PetID, OrgID, PetType, Breed, Age, Location, Neutered, Allergies, Photo, Gender, PetName, IsAvailable) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $con->prepare($sql);
-            $stmt->bind_param("sssisssssss", $pet_name, $pet_type, $breed, $age, $location, $neutered, $allergies, $gender, $is_available, $pet_id, $org_id);
+            $stmt->bind_param("ssssissssssi", $pet_id, $org_id, $pet_type, $breed, $age, $location, $neutered, $allergies, $photo_name, $gender, $pet_name, $is_available);
+            
+            if ($stmt->execute()) {
+                echo "<script>alert('New pet added successfully!'); window.location.href=window.location.href;</script>";
+                exit();
+            } else {
+                $error = "Failed to add pet: " . $con->error;
+            }
         }
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Pet updated successfully!'); window.location.href=window.location.href;</script>";
-            exit();
-        } else {
-            $error = "Failed to update pet: " . $con->error;
+        // ACTION: EDIT PET
+        if (isset($_POST['action_edit'])) {
+            $pet_id = $_POST['PetID'] ?? '';
+            $pet_name = trim($_POST['PetName'] ?? '');
+            $pet_type = $_POST['PetType'] ?? '';
+            $breed = trim($_POST['Breed'] ?? '') ?: 'Unknown';
+            $age = intval($_POST['Age'] ?? 0);
+            $location = trim($_POST['Location'] ?? '');
+            $gender = $_POST['Gender'] ?? 'Male';
+            $allergies = trim($_POST['Allergies'] ?? '') ?: 'None';
+
+            // change form to tinyint
+            $neutered = (isset($_POST['Neutered']) && $_POST['Neutered'] === 'Yes') ? 1 : 0;
+            $is_available = (isset($_POST['IsAvailable']) && $_POST['IsAvailable'] === 'Available') ? 1 : 0;
+
+            if (isset($_FILES['Photo']) && $_FILES['Photo']['error'] === UPLOAD_ERR_OK) {
+                $filename = time() . '_' . basename($_FILES['Photo']['name']);
+                $target_path = "../image/pets/" . $filename;
+                if (move_uploaded_file($_FILES['Photo']['tmp_name'], $target_path)) {
+                    $sql = "UPDATE pet SET PetName=?, PetType=?, Breed=?, Age=?, Location=?, Neutered=?, Allergies=?, Gender=?, IsAvailable=?, Photo=? WHERE PetID=? AND OrgID=?";
+                    $stmt = $con->prepare($sql);
+                    $stmt->bind_param("sssissssssss", $pet_name, $pet_type, $breed, $age, $location, $neutered, $allergies, $gender, $is_available, $filename, $pet_id, $org_id);
+                }
+            } else {
+                $sql = "UPDATE pet SET PetName=?, PetType=?, Breed=?, Age=?, Location=?, Neutered=?, Allergies=?, Gender=?, IsAvailable=? WHERE PetID=? AND OrgID=?";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("sssisssssss", $pet_name, $pet_type, $breed, $age, $location, $neutered, $allergies, $gender, $is_available, $pet_id, $org_id);
+            }
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Pet updated successfully!'); window.location.href=window.location.href;</script>";
+                exit();
+            } else {
+                $error = "Failed to update pet: " . $con->error;
+            }
+        }
+
+        // delete pet
+        if (isset($_POST['action_delete'])) {
+            $pet_id = $_POST['PetID'] ?? '';
+            $sql = "DELETE FROM pet WHERE PetID = ? AND OrgID = ?";
+            $stmt = $con->prepare($sql);
+            $stmt->bind_param("ss", $pet_id, $org_id);
+            
+            if ($stmt->execute()) {
+                echo "<script>alert('Pet removed successfully!'); window.location.href=window.location.href;</script>";
+                exit();
+            } else {
+                $error = "Failed to delete pet: " . $con->error;
+            }
         }
     }
 
-    // delete pet
-    if (isset($_POST['action_delete'])) {
-        $pet_id = $_POST['PetID'] ?? '';
-        $sql = "DELETE FROM pet WHERE PetID = ? AND OrgID = ?";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param("ss", $pet_id, $org_id);
-        
-        if ($stmt->execute()) {
-            echo "<script>alert('Pet removed successfully!'); window.location.href=window.location.href;</script>";
-            exit();
-        } else {
-            $error = "Failed to delete pet: " . $con->error;
-        }
+    // 3. take data from ngo
+    $pet_list = [];
+    $get_pets = $con->prepare("SELECT * FROM pet WHERE OrgID = ?");
+    $get_pets->bind_param("s", $org_id);
+    $get_pets->execute();
+    $result_pets = $get_pets->get_result();
+    while ($row = $result_pets->fetch_assoc()) {
+        $pet_list[] = $row;
     }
-}
-
-// 3. take data from ngo
-$pet_list = [];
-$get_pets = $con->prepare("SELECT * FROM pet WHERE OrgID = ?");
-$get_pets->bind_param("s", $org_id);
-$get_pets->execute();
-$result_pets = $get_pets->get_result();
-while ($row = $result_pets->fetch_assoc()) {
-    $pet_list[] = $row;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -195,78 +193,93 @@ while ($row = $result_pets->fetch_assoc()) {
   </button>
 
   <dialog id="modal-tambah">
-    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-      <h2>Add New Pet</h2>
-      <button type="button" onclick="tutupModalTambah()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <header>
+      <div class="modal-icon">🐾</div>
+      <div class="modal-heading">
+        <h2>Add New Pet</h2>
+        <span class="modal-subtitle">Fill in the details below to list a new pet</span>
+      </div>
+      <button type="button" onclick="tutupModalTambah()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </header>
     <form id="form-tambah" method="post" action="" enctype="multipart/form-data">
       <input type="hidden" name="action_add" value="1">
-      
-      <div class="signup-field">
-        <label>Pet Name *</label>
-        <input type="text" name="PetName" required placeholder="e.g. Mochi">
-      </div>
 
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Pet Type *</label>
-          <select name="PetType" required style="width:100%; padding:8px;">
-            <option value="Cat">Cat</option>
-            <option value="Dog">Dog</option>
-          </select>
+      <fieldset>
+        <legend>Identity</legend>
+        <div class="signup-field">
+          <label>Pet Name *</label>
+          <input type="text" name="PetName" required placeholder="e.g. Mochi">
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Gender *</label>
-          <select name="Gender" required style="width:100%; padding:8px;">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Pet Type *</label>
+            <select name="PetType" required>
+              <option value="Cat">Cat</option>
+              <option value="Dog">Dog</option>
+            </select>
+          </div>
+          <div class="signup-field">
+            <label>Gender *</label>
+            <select name="Gender" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Breed</label>
-          <input type="text" name="Breed" placeholder="e.g. Persian">
+      <fieldset>
+        <legend>Physical Details</legend>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Breed</label>
+            <input type="text" name="Breed" placeholder="e.g. Persian">
+          </div>
+          <div class="signup-field">
+            <label>Age (months)</label>
+            <input type="number" name="Age" placeholder="e.g. 6" min="0">
+          </div>
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Age (months)</label>
-          <input type="number" name="Age" placeholder="e.g. 6" min="0">
+        <div class="signup-field">
+          <label>Location (Area/City) *</label>
+          <input type="text" name="Location" required placeholder="e.g. Bandar Klang, Selangor">
         </div>
-      </div>
+      </fieldset>
 
-      <div class="signup-field">
-        <label>Location (Area/City) *</label>
-        <input type="text" name="Location" required placeholder="e.g. Bandar Klang, Selangor">
-      </div>
-
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Neutered</label>
-          <select name="Neutered" style="width:100%; padding:8px;">
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
+      <fieldset>
+        <legend>Care &amp; Status</legend>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Neutered</label>
+            <select name="Neutered">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div class="signup-field">
+            <label>Status</label>
+            <select name="IsAvailable">
+              <option value="Available">Available</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Adopted">Adopted</option>
+            </select>
+          </div>
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Status</label>
-          <select name="IsAvailable" style="width:100%; padding:8px;">
-            <option value="Available">Available</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Adopted">Adopted</option>
-          </select>
+        <div class="signup-field">
+          <label>Allergies / Medical Notes</label>
+          <input type="text" name="Allergies" placeholder="None">
         </div>
-      </div>
+      </fieldset>
 
-      <div class="signup-field">
-        <label>Allergies / Medical Notes</label>
-        <input type="text" name="Allergies" placeholder="None">
-      </div>
-
-      <div class="signup-field">
-        <label>Pet Photo</label>
-        <input type="file" name="Photo" accept="image/*">
-      </div>
+      <fieldset>
+        <legend>Photo</legend>
+        <div class="signup-field">
+          <label>Pet Photo</label>
+          <input type="file" name="Photo" accept="image/*">
+        </div>
+      </fieldset>
 
       <div class="modal-footer">
         <button type="button" class="btn-batal" onclick="tutupModalTambah()">Cancel</button>
@@ -277,79 +290,94 @@ while ($row = $result_pets->fetch_assoc()) {
 
 
   <dialog id="modal-edit">
-    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-      <h2>Edit Pet Information</h2>
-      <button type="button" onclick="tutupModalEdit()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <header>
+      <div class="modal-icon">🐾</div>
+      <div class="modal-heading">
+        <h2>Edit Pet Information</h2>
+        <span class="modal-subtitle">Update the details for this pet record</span>
+      </div>
+      <button type="button" onclick="tutupModalEdit()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </header>
     <form id="form-edit" method="post" action="" enctype="multipart/form-data">
       <input type="hidden" name="action_edit" value="1">
       <input type="hidden" id="edit-id" name="PetID">
-      
-      <div class="signup-field">
-        <label>Pet Name *</label>
-        <input type="text" id="edit-nama" name="PetName" required>
-      </div>
 
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Pet Type *</label>
-          <select id="edit-jenis" name="PetType" required style="width:100%; padding:8px;">
-            <option value="Cat">Cat</option>
-            <option value="Dog">Dog</option>
-          </select>
+      <fieldset>
+        <legend>Identity</legend>
+        <div class="signup-field">
+          <label>Pet Name *</label>
+          <input type="text" id="edit-nama" name="PetName" required>
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Gender *</label>
-          <select id="edit-gender" name="Gender" required style="width:100%; padding:8px;">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Pet Type *</label>
+            <select id="edit-jenis" name="PetType" required>
+              <option value="Cat">Cat</option>
+              <option value="Dog">Dog</option>
+            </select>
+          </div>
+          <div class="signup-field">
+            <label>Gender *</label>
+            <select id="edit-gender" name="Gender" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
         </div>
-      </div>
+      </fieldset>
 
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Breed</label>
-          <input type="text" id="edit-baka" name="Breed">
+      <fieldset>
+        <legend>Physical Details</legend>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Breed</label>
+            <input type="text" id="edit-baka" name="Breed">
+          </div>
+          <div class="signup-field">
+            <label>Age (months)</label>
+            <input type="number" id="edit-umur" name="Age" min="0">
+          </div>
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Age (months)</label>
-          <input type="number" id="edit-umur" name="Age" min="0">
+        <div class="signup-field">
+          <label>Location *</label>
+          <input type="text" id="edit-lokasi" name="Location" required>
         </div>
-      </div>
+      </fieldset>
 
-      <div class="signup-field">
-        <label>Location *</label>
-        <input type="text" id="edit-lokasi" name="Location" required>
-      </div>
-
-      <div style="display:flex; gap:10px;">
-        <div class="signup-field" style="flex:1;">
-          <label>Neutered</label>
-          <select id="edit-neutered" name="Neutered" style="width:100%; padding:8px;">
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
+      <fieldset>
+        <legend>Care &amp; Status</legend>
+        <div class="modal-row">
+          <div class="signup-field">
+            <label>Neutered</label>
+            <select id="edit-neutered" name="Neutered">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div class="signup-field">
+            <label>Status</label>
+            <select id="edit-status" name="IsAvailable">
+              <option value="Available">Available</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Adopted">Adopted</option>
+            </select>
+          </div>
         </div>
-        <div class="signup-field" style="flex:1;">
-          <label>Status</label>
-          <select id="edit-status" name="IsAvailable" style="width:100%; padding:8px;">
-            <option value="Available">Available</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Adopted">Adopted</option>
-          </select>
+        <div class="signup-field">
+          <label>Allergies / Medical Notes</label>
+          <input type="text" id="edit-allergies" name="Allergies">
         </div>
-      </div>
+      </fieldset>
 
-      <div class="signup-field">
-        <label>Allergies / Medical Notes</label>
-        <input type="text" id="edit-allergies" name="Allergies">
-      </div>
-
-      <div class="signup-field">
-        <label>Update Photo (Leave empty to maintain current image)</label>
-        <input type="file" name="Photo" accept="image/*">
-      </div>
+      <fieldset>
+        <legend>Photo</legend>
+        <div class="signup-field">
+          <label>Update Photo (Leave empty to maintain current image)</label>
+          <input type="file" name="Photo" accept="image/*">
+        </div>
+      </fieldset>
 
       <div class="modal-footer">
         <button type="button" class="btn-batal" onclick="tutupModalEdit()">Cancel</button>

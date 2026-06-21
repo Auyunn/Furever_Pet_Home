@@ -1,8 +1,8 @@
 <?php
     session_start();
     
-    $con = new mysqli("localhost", "root", "", "furever_pet_home");
-    if($con->connect_error) {
+    $conn = new mysqli("localhost", "root", "", "furever_pet_home");
+    if($conn->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }
 
@@ -30,7 +30,7 @@
             } 
             elseif (str_contains($email, 'ngo.com')) {
                 // NGO / Organization Account
-                $sql = "SELECT OrgID, Password FROM organization WHERE Email = ?";
+                $sql = "SELECT OrgID, OrgName, Password FROM organization WHERE Email = ?";
                 $role = 'ngo';
                 $redirect = "ngo/Pet_listing.php"; 
             } 
@@ -38,11 +38,11 @@
                 // User / Resident
                 $sql = "SELECT ResidentID, FirstName, Password FROM resident WHERE Email = ? AND Status = 1";
                 $role = 'user';
-                $redirect = "HomePage(registed).html"; 
+                $redirect = "HomePage(registed).php"; 
             }
 
             // 2. Base on role
-            $stmt = $con->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -124,7 +124,7 @@
 
                 <div class="login-nav">
                     <a href="Sign_Up.php">Don't have an account?</a>
-                    <a href="ForgotPassword.php">Forgot Password?</a>
+                    <a href="Forgot_Password.html">Forgot Password?</a>
                 </div>
 
                 <div class="login-btn-wrap">

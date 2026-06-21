@@ -13,9 +13,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Emoji ikut jenis haiwan — dipaparkan jika foto tiada/gagal dimuatkan
+const EMOJI_PET = {
+    cat: "🐱",
+    dog: "🐶"
+};
+
+/**
+ * Helper: escape HTML supaya data daripada DB selamat disuntik ke dalam template
+ */
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 /**
  * 2. FUNGSI PAPARKAN REKOD HAIWAN (RENDER CARDS)
- * Membina elemen kad haiwan secara dinamik mengikut data yang ditarik dari pangkalan data.
+ * Membina elemen kad haiwan secara dinamik mengikut data yang ditarik dari pangkalan data,
+ * menggunakan struktur & class yang sepadan dengan Pet_Listing.css (.kad-pet, .gambar-pet, .info-pet, .aksi-pet)
  */
 function paparkanPet(data) {
     const kontena = document.getElementById("senarai-pet");
@@ -26,49 +46,69 @@ function paparkanPet(data) {
 
     // Jika NGO belum mendaftarkan mana-mana haiwan atau hasil carian kosong
     if (data.length === 0) {
-        kontena.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #8175ba; font-style: italic;">
-                No pets registered or found under this category.
-            </div>`;
+        kontena.innerHTML = `<div class="tiada-pet">No pets registered or found under this category.</div>`;
         return;
     }
 
     // Lakukan gelung (loop) untuk setiap data haiwan
     data.forEach(pet => {
         const kad = document.createElement("div");
-        kad.className = "pet-card"; // Mengikut kelas di dalam Pet_Listing.css
+        kad.className = "kad-pet"; // Sepadan dengan Pet_Listing.css
 
-        // Penukaran logik status ketersediaan tinyint(1) -> Teks paparan
-        let statusTeks = "Available";
-        if (pet.IsAvailable == 0) {
-            statusTeks = "Adopted";
+        // Penukaran logik status ketersediaan -> kelas badge + label paparan (BM)
+        let statusClass = "tersedia";
+        let statusLabel = "TERSEDIA";
+        if (pet.IsAvailable == 0 || pet.IsAvailable === "Adopted") {
+            statusClass = "dipelihara";
+            statusLabel = "DIPELIHARA";
         } else if (pet.IsAvailable == 2 || pet.IsAvailable === "In Progress") {
-            statusTeks = "In Progress";
+            statusClass = "proses";
+            statusLabel = "DALAM PROSES";
         }
 
         // Penukaran status kembiri (Neutered)
-        let statusMandul = (pet.Neutered == 1 || pet.Neutered === "Yes") ? "Yes" : "No";
+        const statusMandul = (pet.Neutered == 1 || pet.Neutered === "Yes") ? "Yes" : "No";
 
-        // Susun HTML dalaman bagi setiap kad haiwan
+        const emoji = EMOJI_PET[(pet.PetType || '').toLowerCase()] || "🐾";
+        const namaSelamat = escapeHtml(pet.PetName);
+        const bakaSelamat = escapeHtml(pet.Breed);
+
+        // Susun HTML dalaman bagi setiap kad haiwan — ikut struktur CSS sedia ada
         kad.innerHTML = `
-            <div class="pet-img-container" style="position: relative; width: 100%; height: 200px; overflow: hidden; border-radius: 12px;">
-                <img src="../image/pets/${pet.Photo}" alt="${pet.PetName}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="gambar-pet">
+                <mark class="${statusClass}">${statusLabel}</mark>
+                <img src="../image/pets/${escapeHtml(pet.Photo)}" alt="${namaSelamat}"
+                     style="width:100%; height:100%; object-fit:cover;"
+                     onerror="this.replaceWith(Object.assign(document.createElement('span'), {className:'emoji', textContent:'${emoji}'}))">
             </div>
-            <div class="pet-info" style="padding: 12px 0;">
-                <h3 style="margin-bottom: 6px; color: var(--deep-brown);">${pet.PetName}</h3>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Breed:</strong> ${pet.Breed}</p>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Age:</strong> ${pet.Age} months</p>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Gender:</strong> ${pet.Gender}</p>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Location:</strong> ${pet.Location}</p>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Neutered:</strong> ${statusMandul}</p>
-                <p style="font-size: 0.9rem; margin: 3px 0;"><strong>Status:</strong> <span class="status-tag">${statusTeks}</span></p>
-                ${pet.Allergies && pet.Allergies !== 'None' ? `<p style="font-size: 0.85rem; color: #c97d7d; margin-top: 6px;">⚠️ <em>Medical: ${pet.Allergies}</em></p>` : ''}
-            </div>
-            <div class="aksi-pet" style="display: flex; gap: 8px; margin-top: 10px;">
-                <button type="button" class="btn-edit" onclick="bukaModalEdit('${pet.PetID}')" style="flex: 1; padding: 8px; cursor: pointer;">Edit</button>
-                <button type="button" class="btn-delete" onclick="sahkanPadam('${pet.PetID}')" style="padding: 8px; background: none; border: 1px solid var(--rose); color: var(--rose); border-radius: 6px; cursor: pointer;" title="Delete Pet">
-                    🗑️
-                </button>
+            <div class="info-pet">
+                <header>
+                    <hgroup>
+                        <h3>${namaSelamat}</h3>
+                        <p>${bakaSelamat}</p>
+                    </hgroup>
+                    <strong>${parseInt(pet.Age) || 0} bulan</strong>
+                </header>
+
+                <ul>
+                    <li>${escapeHtml(pet.PetType)}</li>
+                    <li>${bakaSelamat}</li>
+                    <li>${escapeHtml(pet.Gender)}</li>
+                    <li>Mandul: ${statusMandul}</li>
+                </ul>
+
+                ${pet.Allergies && pet.Allergies !== 'None'
+                    ? `<p style="font-size:0.78rem; color:var(--rose); margin:-0.3rem 0 0;">⚠️ ${escapeHtml(pet.Allergies)}</p>`
+                    : ''}
+
+                <div class="aksi-pet">
+                    <button type="button" class="btn-pelihara" onclick="bukaModalEdit('${pet.PetID}')">
+                        Update
+                    </button>
+                    <button type="button" class="btn-info" title="Delete Pet" onclick="sahkanPadam('${pet.PetID}')">
+                        <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>
+                    </button>
+                </div>
             </div>
         `;
         kontena.appendChild(kad);
@@ -168,7 +208,7 @@ function tutupModalEdit() {
  */
 function sahkanPadam(petID) {
     const sah = confirm("Are you sure you want to remove this pet record? This action cannot be undone.");
-    
+
     if (sah) {
         const deleteInput = document.getElementById("delete-id");
         const deleteForm = document.getElementById("form-delete");

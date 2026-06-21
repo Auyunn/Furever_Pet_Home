@@ -2,6 +2,7 @@
 session_start();
 include('db_connect.php');
 
+
 $selectedType = $_GET['pet_type'] ?? '';
 $selectedOrg  = $_GET['shelter']  ?? '';
 
@@ -38,6 +39,9 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// ---------------------------------------------------------
+// Data for the two dropdowns
+// ---------------------------------------------------------
 $petTypes = [];
 $typeResult = $conn->query("SELECT DISTINCT PetType FROM pet ORDER BY PetType");
 while ($row = $typeResult->fetch_assoc()) {
@@ -50,6 +54,7 @@ while ($row = $shelterResult->fetch_assoc()) {
     $shelters[] = $row;
 }
 
+// NOTE: adjust this if your pet photos live in a different folder
 $photoFolder = "image/pet/";
 ?>
 <!DOCTYPE html>
@@ -79,9 +84,9 @@ $photoFolder = "image/pet/";
             </div>
         </div>
 
-        <!---navigation bar-->
+        <!---Tab Navigation-->
         <div class="nav-links">
-            <a href="HomePage(registed).html" class="nav-tab">🏠 Home</a>
+            <a href="HomePage(registed).php" class="nav-tab">🏠 Home</a>
             <a href="resident/inbox.php" class="nav-tab">✉️ Inbox</a>
             <a href="findapet.php" class="nav-tab">🔍 Find A Pet</a>
             <a href="resident/pet_community.html" class="nav-tab"> 🐾Pet Community</a>
@@ -91,6 +96,7 @@ $photoFolder = "image/pet/";
         </div>
         </nav>
 
+        <!--wrapper pushes all page content below the fixed navbar-->
         <div class="wrapper">
 
         <!--search-->
@@ -145,7 +151,7 @@ $photoFolder = "image/pet/";
             <?php endif; ?>
         </section>
 
-    <!--footer-->
+    <!--Footer-->
         <footer>
             <div class="footer-grid">
             <div>
