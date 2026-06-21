@@ -75,7 +75,7 @@ $photoFolder = "../image/pets/";
             <div class="nav-right">
             <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
             <div class="avatar" title="My Profile" onclick="window.location.href='../User Login.html';">
-                <?= isset($_SESSION['username']) ? htmlspecialchars(strtoupper(substr($_SESSION['username'], 0, 2))) : 'AT' ?>
+                <?= isset($_SESSION['username']) ? htmlspecialchars(strtoupper(substr($_SESSION['username'], 0, 2))) : 'OR' ?>
             </div>
             </div>
         </div>
