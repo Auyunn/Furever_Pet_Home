@@ -150,7 +150,7 @@
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">AT</div>
+            <div class="avatar" title="My Profile" onclick="window.location.href='User Login.html';">A</div>
             </div>
         </div>
 
