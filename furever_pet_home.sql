@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2026 at 06:20 PM
+-- Generation Time: Jun 21, 2026 at 10:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -288,29 +288,30 @@ CREATE TABLE `organization` (
   `OrgAddress` varchar(255) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `Password` varchar(12) NOT NULL,
-  `Description` text NOT NULL
+  `Description` text NOT NULL,
+  `Status` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `organization`
 --
 
-INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`) VALUES
-('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', ''),
-('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', ''),
-('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', ''),
-('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', ''),
-('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', ''),
-('ORG06', 'Andalas Pet Haven', '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass', ''),
-('ORG07', 'Bukit Tinggi Furry Friends', '0176663333', 'Lorong Batu Nilam 21A, Bandar Bukit Tinggi, 41200 Klang', 'btfurry@ngo.com', 'orgpass', ''),
-('ORG08', 'Kapar Stray Angels', '0112345678', 'Batu 4, Jalan Kapar, 42200 Klang', 'kaparstrays@ngo.com', 'orgpass', ''),
-('ORG09', 'Teluk Pulai Kitty Shelter', '0142223334', 'No 5, Lorong Sg. Udang, Teluk Pulai, 41100 Klang', 'tp.kitty@ngo.com', 'orgpass', ''),
-('ORG10', 'Meru Animal Welfare', '0333921111', 'Jalan Kassim, Pekan Meru, 41050 Klang', 'meru.welfare@ngo.com', 'orgpass', ''),
-('ORG11', 'Port Klang Stray Care', '0194445556', 'Jalan Pelabuhan Utara, 42000 Pelabuhan Klang', 'portcare@ngo.com', 'orgpass', ''),
-('ORG12', 'Taman Bayu Perdana Pet Shield', '0127771112', 'Jalan Prima, Taman Bayu Perdana, 41200 Klang', 'bayushield@ngo.com', 'orgpass', ''),
-('ORG13', 'Kampung Delek Cat Sanctuary', '0138889991', 'Jalan Haji Omar, Kampung Delek, 41050 Klang', 'kdelek.cat@ngo.com', 'orgpass', ''),
-('ORG14', 'Raja Muda Musa Furry Rescue', '0168882223', 'Lorong Berantas, Off Jalan Raja Muda Musa, 41100 Klang', 'rmm.rescue@ngo.com', 'orgpass', ''),
-('ORG15', 'Bukit Raja Hope Society', '0172224445', 'Jalan Singgahsana, Bandar Bukit Raja, 41050 Klang', 'braja.hope@ngo.com', 'orgpass', '');
+INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`, `Status`) VALUES
+('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 1),
+('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', '', 1),
+('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 1),
+('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', '', 1),
+('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', '', 1),
+('ORG06', 'Andalas Pet Haven', '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass', '', 1),
+('ORG07', 'Bukit Tinggi Furry Friends', '0176663333', 'Lorong Batu Nilam 21A, Bandar Bukit Tinggi, 41200 Klang', 'btfurry@ngo.com', 'orgpass', '', 1),
+('ORG08', 'Kapar Stray Angels', '0112345678', 'Batu 4, Jalan Kapar, 42200 Klang', 'kaparstrays@ngo.com', 'orgpass', '', 1),
+('ORG09', 'Teluk Pulai Kitty Shelter', '0142223334', 'No 5, Lorong Sg. Udang, Teluk Pulai, 41100 Klang', 'tp.kitty@ngo.com', 'orgpass', '', 1),
+('ORG10', 'Meru Animal Welfare', '0333921111', 'Jalan Kassim, Pekan Meru, 41050 Klang', 'meru.welfare@ngo.com', 'orgpass', '', 1),
+('ORG11', 'Port Klang Stray Care', '0194445556', 'Jalan Pelabuhan Utara, 42000 Pelabuhan Klang', 'portcare@ngo.com', 'orgpass', '', 1),
+('ORG12', 'Taman Bayu Perdana Pet Shield', '0127771112', 'Jalan Prima, Taman Bayu Perdana, 41200 Klang', 'bayushield@ngo.com', 'orgpass', '', 1),
+('ORG13', 'Kampung Delek Cat Sanctuary', '0138889991', 'Jalan Haji Omar, Kampung Delek, 41050 Klang', 'kdelek.cat@ngo.com', 'orgpass', '', 1),
+('ORG14', 'Raja Muda Musa Furry Rescue', '0168882223', 'Lorong Berantas, Off Jalan Raja Muda Musa, 41100 Klang', 'rmm.rescue@ngo.com', 'orgpass', '', 1),
+('ORG15', 'Bukit Raja Hope Society', '0172224445', 'Jalan Singgahsana, Bandar Bukit Raja, 41050 Klang', 'braja.hope@ngo.com', 'orgpass', '', 1);
 
 -- --------------------------------------------------------
 
