@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2026 at 05:36 AM
+-- Generation Time: Jun 20, 2026 at 06:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,7 +55,9 @@ INSERT INTO `admin` (`AdminID`, `FirstName`, `LastName`, `Email`, `NumberPhone`,
 ('ADM12', 'Chloe', 'Ng', 'chloe@furever.com', '0120003030', 'adminpass'),
 ('ADM13', 'Zidan', 'Fikri', 'zidan@furever.com', '0120004040', 'adminpass'),
 ('ADM14', 'Janice', 'Tan', 'janice@furever.com', '0120005050', 'adminpass'),
-('ADM15', 'Rahmat', 'Said', 'rahmat@furever.com', '0120006060', 'adminpass');
+('ADM15', 'Rahmat', 'Said', 'rahmat@furever.com', '0120006060', 'adminpass'),
+('ADM16', 'ain', 'ahmad', 'ain@furever.com', '01123456789', 'adminpass'),
+('ADM17', 'Johan', 'Razak', 'Johan@furever.com', '0134567289', 'adminpass');
 
 -- --------------------------------------------------------
 
@@ -149,21 +151,21 @@ CREATE TABLE `community_board` (
 --
 
 INSERT INTO `community_board` (`BoardID`, `OrgID`, `Title`, `Content`, `Photo`, `Date`) VALUES
-('BRD01', 'ORG01', 'Spay & Neuter Campaign for Cats & Dogs Klang 2026', 'Come neuter your pets at subsidized price RM50 this Saturday!', 'camp01.jpg', '2026-05-01 09:00:00'),
-('BRD02', 'ORG02', 'Adopt Don\'t Shop Awareness Day Botanic', 'Join us at Central Park Botanic for pet adoption session.', 'camp02.jpg', '2026-05-03 10:00:00'),
-('BRD03', 'ORG05', 'Pandamaran Shelter Cleanup Volunteer Day', 'Volunteers needed to paint and clean dog cages.', 'camp03.jpg', '2026-05-05 08:30:00'),
-('BRD04', 'ORG07', 'Pet Food Donation Drive Needed', 'Our Bukit Tinggi shelter food stock only lasts 3 days.', 'camp04.jpg', '2026-05-10 14:00:00'),
-('BRD05', 'ORG12', 'Stray Management Talk for Bayu Perdana Residents', 'Learn stray control using TNR method.', 'camp05.jpg', '2026-05-12 15:00:00'),
-('BRD06', 'ORG03', 'Rocky Medical Fund Assistance', 'Dog Rocky needs RM800 for surgery.', 'camp06.jpg', '2026-05-14 11:00:00'),
-('BRD07', 'ORG09', 'Teluk Pulai Adoption Day Session', 'Bring home a cute pet today for free.', 'camp07.jpg', '2026-05-15 09:00:00'),
-('BRD08', 'ORG15', 'Bukit Raja Animal Community Club Launch', 'Official pet lovers community platform.', 'camp08.jpg', '2026-05-16 16:00:00'),
-('BRD09', 'ORG13', 'Tips for Managing Cats Urinating Indoors', 'Informational article from admin.', NULL, '2026-05-17 20:00:00'),
-('BRD10', 'ORG04', 'Meru Wire Fence Donation Drive', 'Looking for donated wire fencing materials.', 'camp09.jpg', '2026-05-18 10:30:00'),
-('BRD11', 'ORG06', 'Missing Cat Found in Andalas', 'Red collar cat found near mosque.', 'camp10.jpg', '2026-05-19 12:00:00'),
-('BRD12', 'ORG08', 'Street Feeding Volunteers Needed', 'Weekend volunteers needed for stray feeding.', NULL, '2026-05-20 13:00:00'),
-('BRD13', 'ORG11', 'Toxic Waste Warning Affecting Strays', 'Cases of poisoned strays reported.', NULL, '2026-05-21 08:00:00'),
-('BRD14', 'ORG10', 'Animal Awareness School Talk', 'Education program for students.', 'camp11.jpg', '2026-05-22 09:30:00'),
-('BRD15', 'ORG14', 'RM1 Weekly Donation Campaign', 'Emergency food fund for street cats.', 'camp12.jpg', '2026-05-23 11:00:00');
+('BRD01', 'ORG01', 'Spray & Neuter Campaign for Cats & Dogs Klang 2026', 'Come neuter your pets at subsidized price RM50 this Saturday!', 'camp01.jpg', '2026-05-01 09:00:00'),
+('BRD02', 'ORG02', 'Adopt Don\'t Stop Awareness Day Botanic', 'Join us at Central Park Botanic for pet adoption session.', 'camp02.png', '2026-05-03 10:00:00'),
+('BRD03', 'ORG05', 'Pandamaran Shelter Cleanup Volunteer Day', 'Volunteers needed to paint and clean dog cages.', 'camp03.png', '2026-05-05 08:30:00'),
+('BRD04', 'ORG07', 'Pet Food Donation Drive Needed', 'Our Bukit Tinggi shelter food stock only lasts 3 days.', 'camp04.png', '2026-05-10 14:00:00'),
+('BRD05', 'ORG12', 'Stray Management Talk for Bayu Perdana Residents', 'Learn stray control using TNR method.', 'camp05.png', '2026-05-12 15:00:00'),
+('BRD06', 'ORG03', 'Rocky Medical Fund Assistance', 'Dog Rocky needs RM800 for surgery.', 'camp06.png', '2026-05-14 11:00:00'),
+('BRD07', 'ORG09', 'Teluk Pulai Adoption Day Session', 'Bring home a cute pet today for free.', 'camp07.png', '2026-05-15 09:00:00'),
+('BRD08', 'ORG15', 'Bukit Raja Animal Community Club Launch', 'Official pet lovers community platform.', 'camp08.png', '2026-05-16 16:00:00'),
+('BRD09', 'ORG13', 'Tips for Managing Cats Urinating Indoors', 'Informational article from admin.', 'camp09.png', '2026-05-17 20:00:00'),
+('BRD10', 'ORG04', 'Meru Wire Fence Donation Drive', 'Looking for donated wire fencing materials.', 'camp10.png', '2026-05-18 10:30:00'),
+('BRD11', 'ORG06', 'Missing Cat Found in Andalas', 'Red collar cat found near mosque.', 'camp11.jpg', '2026-05-19 12:00:00'),
+('BRD12', 'ORG08', 'Street Feeding Volunteers Needed', 'Weekend volunteers needed for stray feeding.', 'camp12.jpg', '2026-05-20 13:00:00'),
+('BRD13', 'ORG11', 'Toxic Waste Warning Affecting Strays', 'Cases of poisoned strays reported.', 'camp13.jpg', '2026-05-21 08:00:00'),
+('BRD14', 'ORG10', 'Animal Awareness School Talk', 'Education program for students.', 'camp14.jpg', '2026-05-22 09:30:00'),
+('BRD15', 'ORG14', 'RM1 Weekly Donation Campaign', 'Emergency food fund for street cats.', 'camp15.jpg', '2026-05-23 11:00:00');
 
 -- --------------------------------------------------------
 
@@ -186,7 +188,7 @@ INSERT INTO `faq` (`FaqID`, `OrgID`, `Question`, `Description`) VALUES
 (1, 'ORG01', 'What are the basic requirements for pet adoption?', 'Applicant must be 18 years and above, have stable income, and obtain family/landlord permission.'),
 (2, 'ORG01', 'Is there any adoption fee?', 'No selling fee, but voluntary donations are encouraged for previous neutering medical costs.'),
 (3, 'ORG02', 'Can I return the pet if it is not compatible?', 'We recommend a 2-week trial period. If unsuccessful, the pet may be returned for its safety.'),
-(4, 'ORG03', 'How to report animal emergencies outside office hours?', 'Please submit a report in the system using the "Emergency" button or contact the NGO hotline.'),
+(4, 'ORG03', 'How to report animal emergencies outside office hours?', 'Please submit a report in the system using the \"Emergency\" button or contact the NGO hotline.'),
 (5, 'ORG05', 'Are adopted dogs vaccinated?', 'Yes, all adult dogs available for adoption have received at least the first vaccine dose.'),
 (6, 'ORG06', 'Are local breed cats easy to care for?', 'Very easy! Local cats have strong immunity and lower genetic disease risks.'),
 (7, 'ORG07', 'Can I visit the animals before applying?', 'Yes, please make an appointment at least 1 day before visiting.'),
@@ -293,22 +295,22 @@ CREATE TABLE `organization` (
 -- Dumping data for table `organization`
 --
 
-INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`) VALUES
-('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass'),
-('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass'),
-('ORG03', 'Paws and Claws Klang NGO',  '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass'),
-('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass'),
-('ORG05', 'Pandamaran Dog Hope Sanctuary','0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass'),
-('ORG06', 'Andalas Pet Haven',  '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass'),
-('ORG07', 'Bukit Tinggi Furry Friends', '0176663333', 'Lorong Batu Nilam 21A, Bandar Bukit Tinggi, 41200 Klang', 'btfurry@ngo.com', 'orgpass'),
-('ORG08', 'Kapar Stray Angels',  '0112345678', 'Batu 4, Jalan Kapar, 42200 Klang', 'kaparstrays@ngo.com', 'orgpass'),
-('ORG09', 'Teluk Pulai Kitty Shelter',  '0142223334', 'No 5, Lorong Sg. Udang, Teluk Pulai, 41100 Klang', 'tp.kitty@ngo.com', 'orgpass'),
-('ORG10', 'Meru Animal Welfare', '0333921111', 'Jalan Kassim, Pekan Meru, 41050 Klang', 'meru.welfare@ngo.com', 'orgpass'),
-('ORG11', 'Port Klang Stray Care', '0194445556', 'Jalan Pelabuhan Utara, 42000 Pelabuhan Klang', 'portcare@ngo.com', 'orgpass'),
-('ORG12', 'Taman Bayu Perdana Pet Shield',  '0127771112', 'Jalan Prima, Taman Bayu Perdana, 41200 Klang', 'bayushield@ngo.com', 'orgpass'),
-('ORG13', 'Kampung Delek Cat Sanctuary',  '0138889991', 'Jalan Haji Omar, Kampung Delek, 41050 Klang', 'kdelek.cat@ngo.com', 'orgpass'),
-('ORG14', 'Raja Muda Musa Furry Rescue', '0168882223', 'Lorong Berantas, Off Jalan Raja Muda Musa, 41100 Klang', 'rmm.rescue@ngo.com', 'orgpass'),
-('ORG15', 'Bukit Raja Hope Society',  '0172224445', 'Jalan Singgahsana, Bandar Bukit Raja, 41050 Klang', 'braja.hope@ngo.com', 'orgpass');
+INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`) VALUES
+('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', ''),
+('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', ''),
+('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', ''),
+('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', ''),
+('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', ''),
+('ORG06', 'Andalas Pet Haven', '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass', ''),
+('ORG07', 'Bukit Tinggi Furry Friends', '0176663333', 'Lorong Batu Nilam 21A, Bandar Bukit Tinggi, 41200 Klang', 'btfurry@ngo.com', 'orgpass', ''),
+('ORG08', 'Kapar Stray Angels', '0112345678', 'Batu 4, Jalan Kapar, 42200 Klang', 'kaparstrays@ngo.com', 'orgpass', ''),
+('ORG09', 'Teluk Pulai Kitty Shelter', '0142223334', 'No 5, Lorong Sg. Udang, Teluk Pulai, 41100 Klang', 'tp.kitty@ngo.com', 'orgpass', ''),
+('ORG10', 'Meru Animal Welfare', '0333921111', 'Jalan Kassim, Pekan Meru, 41050 Klang', 'meru.welfare@ngo.com', 'orgpass', ''),
+('ORG11', 'Port Klang Stray Care', '0194445556', 'Jalan Pelabuhan Utara, 42000 Pelabuhan Klang', 'portcare@ngo.com', 'orgpass', ''),
+('ORG12', 'Taman Bayu Perdana Pet Shield', '0127771112', 'Jalan Prima, Taman Bayu Perdana, 41200 Klang', 'bayushield@ngo.com', 'orgpass', ''),
+('ORG13', 'Kampung Delek Cat Sanctuary', '0138889991', 'Jalan Haji Omar, Kampung Delek, 41050 Klang', 'kdelek.cat@ngo.com', 'orgpass', ''),
+('ORG14', 'Raja Muda Musa Furry Rescue', '0168882223', 'Lorong Berantas, Off Jalan Raja Muda Musa, 41100 Klang', 'rmm.rescue@ngo.com', 'orgpass', ''),
+('ORG15', 'Bukit Raja Hope Society', '0172224445', 'Jalan Singgahsana, Bandar Bukit Raja, 41050 Klang', 'braja.hope@ngo.com', 'orgpass', '');
 
 -- --------------------------------------------------------
 
@@ -336,21 +338,38 @@ CREATE TABLE `pet` (
 --
 
 INSERT INTO `pet` (`PetID`, `OrgID`, `PetType`, `Breed`, `Age`, `Location`, `Neutered`, `Allergies`, `Photo`, `Gender`, `PetName`, `IsAvailable`) VALUES
-('PET01', 'ORG01', 'Dog', 'Local Mixed', 2, 'Pusat Bandar Klang', 1, 'None', 'dog01.jpg', 'Male', 'Rocky', 1),
-('PET02', 'ORG01', 'Cat', 'Domestic Short Hair', 1, 'Taman Sri Andalas', 1, 'Sensitive Stomach', 'cat01.jpg', 'Female', 'Luna', 1),
-('PET03', 'ORG02', 'Cat', 'Persian Mix', 3, 'Bandar Botanic', 1, 'None', 'cat02.jpg', 'Male', 'Simba', 1),
-('PET04', 'ORG03', 'Dog', 'Stray Mongrel', 1, 'Telok Gong', 0, 'Skin Allergy', 'dog02.jpg', 'Female', 'Bella', 1),
-('PET05', 'ORG04', 'Cat', 'Siamese Mix', 2, 'Taman Meru', 1, 'None', 'cat03.jpg', 'Male', 'Milo', 1),
-('PET06', 'ORG05', 'Dog', 'German Shepherd Mix', 4, 'Pandamaran', 1, 'None', 'dog03.jpg', 'Male', 'Max', 1),
-('PET07', 'ORG06', 'Cat', 'Tabby Cat', 1, 'Taman Sri Andalas', 1, 'Chicken Allergy', 'cat04.jpg', 'Female', 'Oyen', 1),
-('PET08', 'ORG07', 'Dog', 'Terrier Mix', 2, 'Bandar Bukit Tinggi', 1, 'None', 'dog04.jpg', 'Female', 'Daisy', 1),
-('PET09', 'ORG08', 'Dog', 'Local Breed', 3, 'Pekan Kapar', 0, 'None', 'dog05.jpg', 'Male', 'Bruno', 1),
-('PET10', 'ORG09', 'Cat', 'Calico Cat', 1, 'Teluk Pulai', 1, 'None', 'cat05.jpg', 'Female', 'Cookie', 1),
-('PET11', 'ORG10', 'Cat', 'Mainecoon Mix', 2, 'Pekan Meru', 1, 'Flies Bites Sensitive', 'cat06.jpg', 'Male', 'Tigger', 1),
-('PET12', 'ORG11', 'Dog', 'Hound Mix', 3, 'Pelabuhan Klang', 1, 'None', 'dog06.jpg', 'Female', 'Lucky', 1),
-('PET13', 'ORG12', 'Cat', 'Tuxedo Cat', 1, 'Taman Bayu Perdana', 1, 'None', 'cat07.jpg', 'Male', 'Felix', 1),
-('PET14', 'ORG13', 'Cat', 'Kampung Cat', 0, 'Kampung Delek', 0, 'None', 'cat08.jpg', 'Female', 'Comel', 1),
-('PET15', 'ORG15', 'Dog', 'Retriever Mix', 2, 'Bandar Bukit Raja', 1, 'None', 'dog07.jpg', 'Male', 'Buddy', 1);
+('PET01', 'ORG01', 'Dog', 'Local Mixed', 26, 'Pusat Bandar Klang', 1, 'None', '1781968283_RockyORG1.jpg', 'Male', 'Rocky', 1),
+('PET02', 'ORG01', 'Cat', 'Domestic Short Hair', 28, 'Taman Sri Andalas', 1, 'Sensitive Stomach', '1781968304_LunaORG1.jpg', 'Female', 'Luna', 1),
+('PET03', 'ORG02', 'Cat', 'Persian Mix', 3, 'Bandar Botanic', 1, 'None', '1781967640_SimbaORG2.jpg', 'Male', 'Simba', 1),
+('PET04', 'ORG03', 'Dog', 'Stray Mongrel', 3, 'Telok Gong', 0, 'Skin Allergy', '1781968575_BellaORG3.webp', 'Female', 'Bella', 1),
+('PET05', 'ORG04', 'Cat', 'Siamese Mix', 30, 'Taman Meru', 1, 'None', '1781969146_MiloORG4.webp', 'Male', 'Milo', 1),
+('PET06', 'ORG05', 'Dog', 'German Shepherd Mix', 44, 'Pandamaran', 1, 'None', '1781970403_MaxORG5.jpg', 'Male', 'Max', 1),
+('PET07', 'ORG06', 'Cat', 'Tabby Cat', 1, 'Taman Sri Andalas', 1, 'Chicken Allergy', '1781970485_OyenORG6.webp', 'Female', 'Oyen', 1),
+('PET08', 'ORG07', 'Dog', 'Terrier Mix', 14, 'Bandar Bukit Tinggi', 1, 'None', '1781970552_DaisyORG7.jpg', 'Female', 'Daisy', 1),
+('PET09', 'ORG08', 'Dog', 'Local Breed', 17, 'Pekan Kapar', 0, 'None', '1781970755_BrunoORG8.jpg', 'Male', 'Bruno', 1),
+('PET10', 'ORG09', 'Cat', 'Calico Cat', 4, 'Teluk Pulai', 1, 'None', '1781970856_CookieORG9.jpg', 'Female', 'Cookie', 1),
+('PET11', 'ORG10', 'Cat', 'Mainecoon Mix', 2, 'Pekan Meru', 1, 'Flies Bites Sensitive', '1781970991_TigerORG10.jpg', 'Male', 'Tigger', 1),
+('PET12', 'ORG11', 'Dog', 'Hound Mix', 27, 'Pelabuhan Klang', 1, 'None', '1781971387_LuckyORG11 (2).jpg', 'Female', 'Lucky', 1),
+('PET13', 'ORG12', 'Cat', 'Tuxedo Cat', 21, 'Taman Bayu Perdana', 1, 'None', '1781971492_FelixORG12.webp', 'Male', 'Felix', 1),
+('PET14', 'ORG13', 'Cat', 'Kampung Cat', 35, 'Kampung Delek', 0, 'None', '1781971668_ComelORG13.webp', 'Female', 'Comel', 1),
+('PET15', 'ORG15', 'Dog', 'Retriever Mix', 25, 'Bandar Bukit Raja', 1, 'None', '1781972201_BuddyORG15.jpg', 'Male', 'Buddy', 1),
+('PET16', 'ORG05', 'Dog', 'Dog', 32, 'Kawasan Perindustrian Pandamaran, 42000 Klang', 1, 'Allergy to human male', '1781956237_Lokey.jpg', 'Male', 'Lokey', 1),
+('PET17', 'ORG02', 'Cat', 'Maine Coon', 26, 'Bandar Botanic', 1, 'None', '1781967661_LucyORG2.jpg', 'Female', 'Lucy', 1),
+('PET18', 'ORG02', 'Cat', 'Maine Coon', 9, 'Bandar Botanic', 1, 'None', '1781967683_CymbaORG2.jpg', 'Male', 'Cymba', 1),
+('PET19', 'ORG02', 'Dog', 'Golden Retriever', 24, 'Kawasan Perindustrian Pandamaran, 42000 Klang', 1, 'Allergy to butterflies', '1781967700_RockyORG2.jpg', 'Male', 'Rocky', 1),
+('PET20', 'ORG01', 'Cat', 'Local Mixed', 22, 'Bandar Botanic', 1, 'Allergy to cucumber', '1781968351_MinieORG1.jpg', 'Male', 'Minie', 1),
+('PET21', 'ORG03', 'Dog', 'Maltipoos', 5, 'Bandar Botanic', 1, 'None', '1781968709_FinnORG3.png', 'Male', 'Finn', 1),
+('PET22', 'ORG03', 'Dog', 'Maltipoos', 5, 'Bandar Botanic', 1, 'None', '1781968735_FionaORG3.jpg', 'Female', 'Fiona', 1),
+('PET23', 'ORG03', 'Dog', 'Pug', 3, 'Bandar Botanic', 0, 'None', '1781968874_SushiORG3.jpg', 'Male', 'Sushi', 1),
+('PET24', 'ORG04', 'Cat', 'Siamese Mix', 5, 'Jalan Meru Utama', 1, 'Need flees oinment', '1781969705_KowORG4.jpg', 'Male', 'Kow', 1),
+('PET25', 'ORG04', 'Cat', 'Siamese Mix', 15, 'Taman Meru', 1, 'None', '1781970283_FirawnORG4.jpg', 'Male', 'Firawn', 1),
+('PET26', 'ORG07', 'Dog', 'Terrier Mix', 20, 'Bukit Tinggi', 1, 'None', '1781970627_ChibiORG7.webp', 'Female', 'Chibi', 1),
+('PET27', 'ORG10', 'Cat', 'British Short Hair', 23, 'Pekan Meru', 0, 'None', '1781971146_AbuORG10.jpg', 'Male', 'Abu', 1),
+('PET28', 'ORG11', 'Dog', 'Sphered', 30, 'Pelabuhan Klang', 0, 'None', '1781971325_HopeORG11.jpg', 'Male', 'Hope', 1),
+('PET29', 'ORG14', 'Cat', 'Kampung Cat', 17, 'Jalan Raja Muda Musa', 0, 'None', '1781971906_SweepyORG14.webp', 'Female', 'Sweepy', 1),
+('PET30', 'ORG14', 'Dog', 'Sphered', 17, 'Jalan Raja Muda Musa', 0, 'None', '1781971948_SunnyORG14.webp', 'Male', 'Sunny', 1),
+('PET31', 'ORG15', 'Dog', 'Bulldog', 30, 'Bandar Bukti Raja', 1, 'Need flees oinment', '1781972059_GoofyORG15.webp', 'Male', 'Goofy', 1),
+('PET32', 'ORG15', 'Cat', 'British Short Hair', 23, 'Bandar Bukti Raja', 0, 'None', '1781972122_GrumpyORG15.jpg', 'Female', 'Grumpy', 1);
 
 -- --------------------------------------------------------
 
@@ -412,22 +431,25 @@ CREATE TABLE `resident` (
 -- Dumping data for table `resident`
 --
 
-INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `Email`, `Password`, `Address`, `Status`) VALUES
-('R0001', 'Ahmad', 'Faizal', '0123456789', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1),
-('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'pass123', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1),
-('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 1),
-('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 1),
-('R0005', 'Muhammad', 'Amir', '0112223334', 'amir.res@gmail.com', 'pass123', 'No 7, Jalan Haji Sirat, Kampung Delek Kanan, 41050 Klang', 1),
-('R0006', 'Chong', 'Wei', '0198887776', 'chong.wei@gmail.com', 'pass123', 'No 15, Jalan Kasuarina 4, Bandar Botanic, 41200 Klang', 1),
-('R0007', 'Fatima', 'Zahra', '0145556667', 'fatima.z@gmail.com', 'pass123', 'No 23, Jalan Teluk Pulai, 41100 Klang', 1),
-('R0008', 'Suresh', 'Maniam', '0129998887', 'suresh.m@gmail.com', 'pass123', 'No 4, Jalan Melawis, Taman Melawis, 41100 Klang', 1),
-('R0009', 'Nurul', 'Huda', '0134443332', 'nurul.huda@gmail.com', 'pass123', 'No 19, Jalan Sungai Udang, Kampung Sungai Udang, 41000 Klang', 1),
-('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'pass123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 1),
-('R0011', 'Zulkifli', 'Rahman', '0115554443', 'zul.rahman@gmail.com', 'pass123', 'No 33, Jalan Meru, Taman Meru, 41050 Klang', 1),
-('R0012', 'Grace', 'Anand', '0162229991', 'grace.a@gmail.com', 'pass123', 'No 56, Jalan Langat, Bandar Puteri, 41200 Klang', 1),
-('R0013', 'Asraf', 'Ghani', '0173338882', 'asraf.g@gmail.com', 'pass123', 'No 14, Jalan Kapar, Pekan Kapar, 42200 Klang', 1),
-('R0014', 'Michelle', 'Wong', '0124441119', 'michelle.w@gmail.com', 'pass123', 'No 8, Jalan Zapin 2, Bandar Bukit Raja, 41050 Klang', 1),
-('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 1);
+INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `Email`, `Password`, `Address`, `Status`, `Salary`) VALUES
+('R0001', 'Ahmad', 'Faizal', '0123456789', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1, 0.00),
+('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'pass123', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1, 0.00),
+('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 1, 0.00),
+('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 1, 0.00),
+('R0005', 'Muhammad', 'Amir', '0112223334', 'amir.res@gmail.com', 'pass123', 'No 7, Jalan Haji Sirat, Kampung Delek Kanan, 41050 Klang', 1, 0.00),
+('R0006', 'Chong', 'Wei', '0198887776', 'chong.wei@gmail.com', 'pass123', 'No 15, Jalan Kasuarina 4, Bandar Botanic, 41200 Klang', 1, 0.00),
+('R0007', 'Fatima', 'Zahra', '0145556667', 'fatima.z@gmail.com', 'pass123', 'No 23, Jalan Teluk Pulai, 41100 Klang', 1, 0.00),
+('R0008', 'Suresh', 'Maniam', '0129998887', 'suresh.m@gmail.com', 'pass123', 'No 4, Jalan Melawis, Taman Melawis, 41100 Klang', 1, 0.00),
+('R0009', 'Nurul', 'Huda', '0134443332', 'nurul.huda@gmail.com', 'pass123', 'No 19, Jalan Sungai Udang, Kampung Sungai Udang, 41000 Klang', 1, 0.00),
+('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'pass123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 1, 0.00),
+('R0011', 'Zulkifli', 'Rahman', '0115554443', 'zul.rahman@gmail.com', 'pass123', 'No 33, Jalan Meru, Taman Meru, 41050 Klang', 1, 0.00),
+('R0012', 'Grace', 'Anand', '0162229991', 'grace.a@gmail.com', 'pass123', 'No 56, Jalan Langat, Bandar Puteri, 41200 Klang', 1, 0.00),
+('R0013', 'Asraf', 'Ghani', '0173338882', 'asraf.g@gmail.com', 'pass123', 'No 14, Jalan Kapar, Pekan Kapar, 42200 Klang', 1, 0.00),
+('R0014', 'Michelle', 'Wong', '0124441119', 'michelle.w@gmail.com', 'pass123', 'No 8, Jalan Zapin 2, Bandar Bukit Raja, 41050 Klang', 1, 0.00),
+('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 1, 0.00),
+('R0016', 'Mia', 'Rahman', '01123456789', 'Mia@gmailcom', 'userpass', NULL, 1, 0.00),
+('R0017', 'Mia', 'Rahman', '01123456789', '', '', 'No. 12, Jalan Meranti 5/3 Taman Klang Jaya 41200 Klang Selangor, Malaysia', 1, 0.00),
+('R0018', 'Lily', 'Michelle', '0156789234', 'Lily@gmail.com', 'userpass', 'No. 5054, Lorong Dato’ Ahmad Razali Taman Dato’ Ahmad Razali, Pulau Indah 42800 Klang Selangor, Malaysia', 1, 0.00);
 
 --
 -- Indexes for dumped tables

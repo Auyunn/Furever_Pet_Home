@@ -345,8 +345,8 @@ window.viewReport = function(reportID)
     if (photo) {
         photoHTML = `<div>
             <p class="panel-label">Photo</p>
-            <img src="../uploads/${photo}" alt="Report Photo"
-                 style="width:100%;border-radius:14px;margin-top:0.4rem;object-fit:cover;max-height:180px;">
+                <img src="../image/report/${photo}" alt="Report Photo"
+                style="width:100%;border-radius:14px;margin-top:0.4rem;object-fit:cover;max-height:180px;">
         </div>`;
     }
 

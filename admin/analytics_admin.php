@@ -157,13 +157,12 @@
 
         <!---Tab Navigation-->
         <div class="nav-links">
-            <a href="HomePage(registed).html" class="nav-tab"> Home</a>
-            <a href="resident/inbox.php" class="nav-tab"> Inbox</a>
-            <a href="resident/findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="resident/pet_community.html" class="nav-tab"> Pet Community</a>
-            <a href="resident/help_center.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="resident/Report.html" class="nav-tab"> Report</a>
+            <a href="dashboard.php" class="nav-tab"> Dashboard</a>
+            <a href=" " class="nav-tab"> Users/NGOs</a>
+            <a href=" " class="nav-tab"> Report</a>
+            <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
+            <a href="pet_communityadmin.php" class="nav-tab">  Pet Community</a>
+            <a href="help_center.html" class="nav-tab"> Help Center</a>
         </div>
         </nav>
     </div>
