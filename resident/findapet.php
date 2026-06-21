@@ -59,8 +59,8 @@ $photoFolder = "image/pets/";
         <meta charset="UTF-8">
         <title> Find A Pet </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/findapet.css">
+        <link rel="stylesheet" href="../css/base.css">
+        <link rel="stylesheet" href="../css/findapet.css">
     </head>
 
     <!--body -->
