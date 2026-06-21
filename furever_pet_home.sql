@@ -151,21 +151,21 @@ CREATE TABLE `community_board` (
 --
 
 INSERT INTO `community_board` (`BoardID`, `OrgID`, `Title`, `Content`, `Photo`, `Date`) VALUES
-('BRD01', 'ORG01', 'Spay & Neuter Campaign for Cats & Dogs Klang 2026', 'Come neuter your pets at subsidized price RM50 this Saturday!', 'camp01.jpg', '2026-05-01 09:00:00'),
-('BRD02', 'ORG02', 'Adopt Don\'t Shop Awareness Day Botanic', 'Join us at Central Park Botanic for pet adoption session.', 'camp02.jpg', '2026-05-03 10:00:00'),
-('BRD03', 'ORG05', 'Pandamaran Shelter Cleanup Volunteer Day', 'Volunteers needed to paint and clean dog cages.', 'camp03.jpg', '2026-05-05 08:30:00'),
-('BRD04', 'ORG07', 'Pet Food Donation Drive Needed', 'Our Bukit Tinggi shelter food stock only lasts 3 days.', 'camp04.jpg', '2026-05-10 14:00:00'),
-('BRD05', 'ORG12', 'Stray Management Talk for Bayu Perdana Residents', 'Learn stray control using TNR method.', 'camp05.jpg', '2026-05-12 15:00:00'),
-('BRD06', 'ORG03', 'Rocky Medical Fund Assistance', 'Dog Rocky needs RM800 for surgery.', 'camp06.jpg', '2026-05-14 11:00:00'),
-('BRD07', 'ORG09', 'Teluk Pulai Adoption Day Session', 'Bring home a cute pet today for free.', 'camp07.jpg', '2026-05-15 09:00:00'),
-('BRD08', 'ORG15', 'Bukit Raja Animal Community Club Launch', 'Official pet lovers community platform.', 'camp08.jpg', '2026-05-16 16:00:00'),
-('BRD09', 'ORG13', 'Tips for Managing Cats Urinating Indoors', 'Informational article from admin.', NULL, '2026-05-17 20:00:00'),
-('BRD10', 'ORG04', 'Meru Wire Fence Donation Drive', 'Looking for donated wire fencing materials.', 'camp09.jpg', '2026-05-18 10:30:00'),
-('BRD11', 'ORG06', 'Missing Cat Found in Andalas', 'Red collar cat found near mosque.', 'camp10.jpg', '2026-05-19 12:00:00'),
-('BRD12', 'ORG08', 'Street Feeding Volunteers Needed', 'Weekend volunteers needed for stray feeding.', NULL, '2026-05-20 13:00:00'),
-('BRD13', 'ORG11', 'Toxic Waste Warning Affecting Strays', 'Cases of poisoned strays reported.', NULL, '2026-05-21 08:00:00'),
-('BRD14', 'ORG10', 'Animal Awareness School Talk', 'Education program for students.', 'camp11.jpg', '2026-05-22 09:30:00'),
-('BRD15', 'ORG14', 'RM1 Weekly Donation Campaign', 'Emergency food fund for street cats.', 'camp12.jpg', '2026-05-23 11:00:00');
+('BRD01', 'ORG01', 'Spray & Neuter Campaign for Cats & Dogs Klang 2026', 'Come neuter your pets at subsidized price RM50 this Saturday!', 'camp01.jpg', '2026-05-01 09:00:00'),
+('BRD02', 'ORG02', 'Adopt Don\'t Stop Awareness Day Botanic', 'Join us at Central Park Botanic for pet adoption session.', 'camp02.png', '2026-05-03 10:00:00'),
+('BRD03', 'ORG05', 'Pandamaran Shelter Cleanup Volunteer Day', 'Volunteers needed to paint and clean dog cages.', 'camp03.png', '2026-05-05 08:30:00'),
+('BRD04', 'ORG07', 'Pet Food Donation Drive Needed', 'Our Bukit Tinggi shelter food stock only lasts 3 days.', 'camp04.png', '2026-05-10 14:00:00'),
+('BRD05', 'ORG12', 'Stray Management Talk for Bayu Perdana Residents', 'Learn stray control using TNR method.', 'camp05.png', '2026-05-12 15:00:00'),
+('BRD06', 'ORG03', 'Rocky Medical Fund Assistance', 'Dog Rocky needs RM800 for surgery.', 'camp06.png', '2026-05-14 11:00:00'),
+('BRD07', 'ORG09', 'Teluk Pulai Adoption Day Session', 'Bring home a cute pet today for free.', 'camp07.png', '2026-05-15 09:00:00'),
+('BRD08', 'ORG15', 'Bukit Raja Animal Community Club Launch', 'Official pet lovers community platform.', 'camp08.png', '2026-05-16 16:00:00'),
+('BRD09', 'ORG13', 'Tips for Managing Cats Urinating Indoors', 'Informational article from admin.', 'camp09.png', '2026-05-17 20:00:00'),
+('BRD10', 'ORG04', 'Meru Wire Fence Donation Drive', 'Looking for donated wire fencing materials.', 'camp10.png', '2026-05-18 10:30:00'),
+('BRD11', 'ORG06', 'Missing Cat Found in Andalas', 'Red collar cat found near mosque.', 'camp11.jpg', '2026-05-19 12:00:00'),
+('BRD12', 'ORG08', 'Street Feeding Volunteers Needed', 'Weekend volunteers needed for stray feeding.', 'camp12.jpg', '2026-05-20 13:00:00'),
+('BRD13', 'ORG11', 'Toxic Waste Warning Affecting Strays', 'Cases of poisoned strays reported.', 'camp13.jpg', '2026-05-21 08:00:00'),
+('BRD14', 'ORG10', 'Animal Awareness School Talk', 'Education program for students.', 'camp14.jpg', '2026-05-22 09:30:00'),
+('BRD15', 'ORG14', 'RM1 Weekly Donation Campaign', 'Emergency food fund for street cats.', 'camp15.jpg', '2026-05-23 11:00:00');
 
 -- --------------------------------------------------------
 
