@@ -39,9 +39,6 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// ---------------------------------------------------------
-// Data for the two dropdowns
-// ---------------------------------------------------------
 $petTypes = [];
 $typeResult = $conn->query("SELECT DISTINCT PetType FROM pet ORDER BY PetType");
 while ($row = $typeResult->fetch_assoc()) {
@@ -54,7 +51,6 @@ while ($row = $shelterResult->fetch_assoc()) {
     $shelters[] = $row;
 }
 
-// NOTE: adjust this if your pet photos live in a different folder
 $photoFolder = "image/pets/";
 ?>
 <!DOCTYPE html>
@@ -67,7 +63,7 @@ $photoFolder = "image/pets/";
         <link rel="stylesheet" href="css/findapet.css">
     </head>
 
-    <!--body-->
+    <!--body -->
     <body>
         <nav class="navbar" id="navbar">
         <!--logo and profile-->
@@ -88,11 +84,11 @@ $photoFolder = "image/pets/";
         <div class="nav-links">
             <a href="HomePage(registed).php" class="nav-tab">🏠 Home</a>
             <a href="resident/inbox.php" class="nav-tab">✉️ Inbox</a>
-            <a href="findapet.php" class="nav-tab">🔍 Find A Pet</a>
-            <a href="resident/pet_community.html" class="nav-tab"> 🐾Pet Community</a>
+            <a href="resident/findapet.php" class="nav-tab">🔍 Find A Pet</a>
+            <a href="resident/pet_community.php" class="nav-tab"> 🐾Pet Community</a>
             <a href="resident/help_center.php" class="nav-tab">❓ Help Center</a>
-            <a href="Analytics.html" class="nav-tab">📊 Analytics</a>
-            <a href="resident/Report.html" class="nav-tab">🚨 Report</a>
+            <a href="resident/Analytics.php" class="nav-tab">📊 Analytics</a>
+            <a href="resident/Report.php" class="nav-tab">🚨 Report</a>
         </div>
         </nav>
 

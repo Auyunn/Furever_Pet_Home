@@ -23,32 +23,27 @@ if (!$conn) {
 }
 mysqli_set_charset($conn, 'utf8mb4');
 
-// ── AUTH CHECK (login identified by EMAIL) ──
-// Login script must set $_SESSION['Email'] after verifying the password.
-// TEMPORARY TESTING LINE — remove this once your real login page sets $_SESSION['Email']:
-if (empty($_SESSION['Email'])) {
-    $_SESSION['Email'] = 'ahmad.faizal@gmail.com'; // ← TESTING ONLY, delete this line later
+if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+    header('Location: User_Login.php');
+    exit;
 }
 
-$residentEmail = $_SESSION['Email'];
+$residentID = $_SESSION['residentID'];
 
-$stmt = mysqli_prepare($conn, "SELECT ResidentID FROM resident WHERE Email = ? AND Status = 1");
-mysqli_stmt_bind_param($stmt, 's', $residentEmail);
+// Pastikan resident masih aktif
+$stmt = mysqli_prepare($conn, "SELECT ResidentID FROM resident WHERE ResidentID = ? AND Status = 1");
+mysqli_stmt_bind_param($stmt, 's', $residentID);
 mysqli_stmt_execute($stmt);
 $authResult = mysqli_stmt_get_result($stmt);
 $authRow = mysqli_fetch_assoc($authResult);
 mysqli_stmt_close($stmt);
 
 if (!$authRow) {
-    // Email in session doesn't match an active resident — force re-login.
     session_unset();
     session_destroy();
     header('Location: User_Login.php');
     exit;
 }
-
-$residentID = $authRow['ResidentID']; // used by every query below
-
 // ── FETCH RESIDENT INFO (for greeting + avatar initials) ──
 $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
 mysqli_stmt_bind_param($stmt, 's', $residentID);
@@ -235,7 +230,6 @@ $totalAvailablePets = $availableNow;
         <a href="#pets" class="btn-primary">Browse Available Pets →</a>
         <a href="#dashboard" class="btn-ghost">My Dashboard</a>
       </div>
-      <div class="scroll-hint">Scroll to explore</div>
     </section>
 
     <!-- STATS STRIP -->
