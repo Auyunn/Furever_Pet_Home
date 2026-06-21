@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2026 at 10:34 AM
+-- Generation Time: Jun 21, 2026 at 03:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -297,9 +297,9 @@ CREATE TABLE `organization` (
 --
 
 INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`, `Status`) VALUES
-('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 1),
+('ORG01', 'Klang Stray Rescue', '0333445566', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 0),
 ('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', '', 1),
-('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 1),
+('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 0),
 ('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', '', 1),
 ('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', '', 1),
 ('ORG06', 'Andalas Pet Haven', '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass', '', 1),
@@ -433,25 +433,21 @@ CREATE TABLE `resident` (
 --
 
 INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `Email`, `Password`, `Address`, `Status`, `Salary`) VALUES
-('R0001', 'Ahmad', 'Faizal', '0123456789', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1, 0.00),
-('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'pass123', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1, 0.00),
-('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 1, 0.00),
-('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 1, 0.00),
-('R0005', 'Muhammad', 'Amir', '0112223334', 'amir.res@gmail.com', 'pass123', 'No 7, Jalan Haji Sirat, Kampung Delek Kanan, 41050 Klang', 1, 0.00),
-('R0006', 'Chong', 'Wei', '0198887776', 'chong.wei@gmail.com', 'pass123', 'No 15, Jalan Kasuarina 4, Bandar Botanic, 41200 Klang', 1, 0.00),
-('R0007', 'Fatima', 'Zahra', '0145556667', 'fatima.z@gmail.com', 'pass123', 'No 23, Jalan Teluk Pulai, 41100 Klang', 1, 0.00),
-('R0008', 'Suresh', 'Maniam', '0129998887', 'suresh.m@gmail.com', 'pass123', 'No 4, Jalan Melawis, Taman Melawis, 41100 Klang', 1, 0.00),
-('R0009', 'Nurul', 'Huda', '0134443332', 'nurul.huda@gmail.com', 'pass123', 'No 19, Jalan Sungai Udang, Kampung Sungai Udang, 41000 Klang', 1, 0.00),
-('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'pass123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 1, 0.00),
-('R0011', 'Zulkifli', 'Rahman', '0115554443', 'zul.rahman@gmail.com', 'pass123', 'No 33, Jalan Meru, Taman Meru, 41050 Klang', 1, 0.00),
-('R0012', 'Grace', 'Anand', '0162229991', 'grace.a@gmail.com', 'pass123', 'No 56, Jalan Langat, Bandar Puteri, 41200 Klang', 1, 0.00),
-('R0013', 'Asraf', 'Ghani', '0173338882', 'asraf.g@gmail.com', 'pass123', 'No 14, Jalan Kapar, Pekan Kapar, 42200 Klang', 1, 0.00),
-('R0014', 'Michelle', 'Wong', '0124441119', 'michelle.w@gmail.com', 'pass123', 'No 8, Jalan Zapin 2, Bandar Bukit Raja, 41050 Klang', 1, 0.00),
-('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 1, 0.00),
-('R0016', 'Mia', 'Rahman', '01123456789', 'Mia@gmailcom', 'userpass', NULL, 1, 0.00),
-('R0017', 'Mia', 'Rahman', '01123456789', '', '', 'No. 12, Jalan Meranti 5/3 Taman Klang Jaya 41200 Klang Selangor, Malaysia', 1, 0.00),
-('R0018', 'Lily', 'Michelle', '0156789234', 'Lily@gmail.com', 'userpass', 'No. 5054, Lorong Dato’ Ahmad Razali Taman Dato’ Ahmad Razali, Pulau Indah 42800 Klang Selangor, Malaysia', 1, 0.00);
-
+('R0001', 'Ahmad', 'Faizal', '0123456789', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 0, 0.00),
+('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'pass123', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 0, 0.00),
+('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 0, 0.00),
+('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 0, 0.00),
+('R0005', 'Muhammad', 'Amir', '0112223334', 'amir.res@gmail.com', 'pass123', 'No 7, Jalan Haji Sirat, Kampung Delek Kanan, 41050 Klang', 0, 0.00),
+('R0006', 'Chong', 'Wei', '0198887776', 'chong.wei@gmail.com', 'pass123', 'No 15, Jalan Kasuarina 4, Bandar Botanic, 41200 Klang', 0, 0.00),
+('R0007', 'Fatima', 'Zahra', '0145556667', 'fatima.z@gmail.com', 'pass123', 'No 23, Jalan Teluk Pulai, 41100 Klang', 0, 0.00),
+('R0008', 'Suresh', 'Maniam', '0129998887', 'suresh.m@gmail.com', 'pass123', 'No 4, Jalan Melawis, Taman Melawis, 41100 Klang', 0, 0.00),
+('R0009', 'Nurul', 'Huda', '0134443332', 'nurul.huda@gmail.com', 'pass123', 'No 19, Jalan Sungai Udang, Kampung Sungai Udang, 41000 Klang', 0, 0.00),
+('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'pass123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 0, 0.00),
+('R0011', 'Zulkifli', 'Rahman', '0115554443', 'zul.rahman@gmail.com', 'pass123', 'No 33, Jalan Meru, Taman Meru, 41050 Klang', 0, 0.00),
+('R0012', 'Grace', 'Anand', '0162229991', 'grace.a@gmail.com', 'pass123', 'No 56, Jalan Langat, Bandar Puteri, 41200 Klang', 0, 0.00),
+('R0013', 'Asraf', 'Ghani', '0173338882', 'asraf.g@gmail.com', 'pass123', 'No 14, Jalan Kapar, Pekan Kapar, 42200 Klang', 0, 0.00),
+('R0014', 'Michelle', 'Wong', '0124441119', 'michelle.w@gmail.com', 'pass123', 'No 8, Jalan Zapin 2, Bandar Bukit Raja, 41050 Klang', 0, 0.00),
+('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 0, 0.00);
 --
 -- Indexes for dumped tables
 --

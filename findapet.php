@@ -55,7 +55,7 @@ while ($row = $shelterResult->fetch_assoc()) {
 }
 
 // NOTE: adjust this if your pet photos live in a different folder
-$photoFolder = "image/pet/";
+$photoFolder = "image/pets/";
 ?>
 <!DOCTYPE html>
 <html lang="en">

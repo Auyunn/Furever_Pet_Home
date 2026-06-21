@@ -1,0 +1,173 @@
+/* Push content below fixed navbar */
+.wrapper {
+    margin-top: var(--navbar-height);
+    padding-top: 20px;
+}
+
+/* ===========================
+   SEARCH SECTION
+   =========================== */
+.search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    padding: 36px 20px 28px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.search-section select {
+    padding: 9px 16px;
+    width: 180px;
+    border: 1px solid var(--deep-brown);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background-color: var(--warm-cream);
+    color: var(--deep-brown);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: auto;
+}
+
+.search-section select:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--amber-lt);
+}
+
+.search-section .search-btn {
+    padding: 9px 26px;
+    background: var(--deep-brown);
+    color: var(--warm-cream);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.search-section .search-btn:hover {
+    background: var(--amber);
+    color: var(--warm-cream);
+    transform: translateY(-1px);
+}
+
+/* ===========================
+   PET GRID
+   =========================== */
+.pet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 0 80px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.pet-card {
+    background: var(--warm-cream);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--warm-tan);
+    border-radius: 14px;
+    padding: 20px 20px 24px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pet-card:hover {
+    transform: translateY(-6px);
+    background: var(--warm-tan);
+    box-shadow: 0 12px 32px var(--warm-tan);
+}
+
+.pet-image {
+    height: 140px;
+    border: 1.5px solid var(--warm-tan);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    background: var(--off-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+}
+
+.pet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pet-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--deep-brown);
+    margin: 6px 0 14px;
+}
+
+/* ── PET INFO LIST (Type/Breed/Age/Gender/Location) ── */
+.pet-info {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--deep-brown);
+}
+
+.pet-info li {
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.pet-info li:last-child {
+  border-bottom: none;
+}
+
+.pet-info-label {
+  font-weight: bold;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+  font-size: 1.1rem;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 768px) {
+    .pet-grid {
+        grid-template-columns: 1fr 1fr;
+        padding: 0 20px 40px;
+        gap: 16px;
+    }
+    .search-section {
+        flex-wrap: wrap;
+        padding: 24px 20px;
+    }
+    .search-section select { width: 100%; }
+    .search-section .search-btn { width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .pet-grid {
+        grid-template-columns: 1fr;
+    }
+}
