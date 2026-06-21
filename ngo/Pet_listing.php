@@ -44,10 +44,10 @@
             }
 
             // generate pet
-            $result = $con->query("SELECT COUNT(*) as total FROM pet");
-            $row = $result->fetch_assoc();
-            $next_num = $row['total'] + 1;
-            $pet_id = "PET" . sprintf("%02d", $next_num); // format PET01
+           $result = $con->query("SELECT MAX(CAST(SUBSTRING(PetID, 4) AS UNSIGNED)) as max_num FROM pet");
+        $row = $result->fetch_assoc();
+        $next_num = ($row['max_num'] ?? 0) + 1;
+        $pet_id = "PET" . sprintf("%02d", $next_num);
 
             $sql = "INSERT INTO pet (PetID, OrgID, PetType, Breed, Age, Location, Neutered, Allergies, Photo, Gender, PetName, IsAvailable) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -131,6 +131,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NGO Dashboard - Manage Pets</title>
+  <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/Pet_Listing.css">
 </head>
@@ -150,18 +151,31 @@
         </a>
         <div class="nav-right">
           <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-          <div class="avatar" title="My Profile">AT</div>
+          <div class="profile-dropdown">
+         <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+              <?php echo htmlspecialchars(strtoupper(substr($org_id, 0, 2))); ?>
+          </div>
+          <div class="dropdown-menu" id="profileDropdown">
+            <div class="dropdown-user-info">
+              <strong><?php echo htmlspecialchars($org_id); ?></strong>
+              <span>NGO Account</span>
+            </div>
+            <form method="post" action="../logout.php" style="margin:0;">
+              <button type="submit" class="logout-btn">&#128274; Log Out</button>
+            </form>
+          </div>
+        </div>
         </div>
       </div>
 
       <div class="nav-links">
             <a href="Pet_listing.php" class="nav-tab"> Home</a>
             <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="petcommunity.php" class="nav-tab"> Pet Community</a>
             <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="report..php" class="nav-tab"> Report</a>
+            <a href="Analytics.php" class="nav-tab"> Analytics</a>
+            <a href="report.php" class="nav-tab"> Report</a>
       </div>
     </nav>
   </header>
