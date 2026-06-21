@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('db_connect.php');
+include('../db_connect.php');
 
 
 $selectedType = $_GET['pet_type'] ?? '';
@@ -82,13 +82,13 @@ $photoFolder = "image/pets/";
 
         <!---Tab Navigation-->
         <div class="nav-links">
-            <a href="HomePage(registed).php" class="nav-tab">🏠 Home</a>
-            <a href="resident/inbox.php" class="nav-tab">✉️ Inbox</a>
-            <a href="resident/findapet.php" class="nav-tab">🔍 Find A Pet</a>
-            <a href="resident/pet_community.php" class="nav-tab"> 🐾Pet Community</a>
-            <a href="resident/help_center.php" class="nav-tab">❓ Help Center</a>
-            <a href="resident/Analytics.php" class="nav-tab">📊 Analytics</a>
-            <a href="resident/Report.php" class="nav-tab">🚨 Report</a>
+            <a href="Pet_listing.php" class="nav-tab"> Home</a>
+            <a href="inbox.php" class="nav-tab"> Inbox</a>
+            <a href="findapet.php" class="nav-tab"> Find A Pet</a>
+            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
+            <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
+            <a href="Analytics.html" class="nav-tab"> Analytics</a>
+            <a href="report..php" class="nav-tab"> Report</a>
         </div>
         </nav>
 

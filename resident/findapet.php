@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('db_connect.php');
+include('../db_connect.php');
 
 
 $selectedType = $_GET['pet_type'] ?? '';
