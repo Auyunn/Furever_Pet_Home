@@ -74,9 +74,9 @@ $result_board = mysqli_query($conn, $query_board);
     <!---Tab Navigation-->
     <div class="nav-links">
         <?php if($is_logged_in): ?>
-            <a href="../HomePage(registed).html" class="nav-tab">🏠 Home</a>
+            <a href="../HomePage(registed).html" class="nav-tab"> Home</a>
         <?php else: ?>
-            <a href="../HomePage(unregistered).html" class="nav-tab">🏠 Home</a>
+            <a href="../HomePage(unregistered).html" class="nav-tab"> Home</a>
         <?php endif; ?>
             <a href="inbox.php" class="nav-tab">Inbox</a>
             <a href="../findapet.html" class="nav-tab"> Find A Pet</a>
