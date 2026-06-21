@@ -51,7 +51,7 @@ while ($row = $shelterResult->fetch_assoc()) {
     $shelters[] = $row;
 }
 
-$photoFolder = "image/pets/";
+$photoFolder = "../image/pets/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +69,7 @@ $photoFolder = "image/pets/";
         <!--logo and profile-->
         <div class="navbar-top">
             <a href="#" class="nav-logo">
-            <img src="image/icons/logo.png" alt="Furever Pet Home">
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
