@@ -34,20 +34,22 @@
 </head>
 
 <body>
-<div class="container">
-
-    <nav class="navbar" id="navbar">
+    <div class="bar">
+        <nav class="navbar" id="navbar">
+        <!--logo and profile-->
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="login-btn-nav" title="Log In" onclick="window.location.href='User_Login.php';">Log In</button>
+            <div class="login">
+                <a href="User_Login.php" title="Log In">Log In</a>
             </div>
-        </div>
+            </div>
+            </div>
 
-        <!-- NAVIGATION -->
+        <!---Tab Navigation-->
         <div class="nav-links">
             <a href="HomePage_Unregistered.php" class="nav-tab"> Home</a>
             <a href="Sign_Up.php" class="nav-tab"> Inbox</a>
@@ -57,9 +59,8 @@
             <a href="analytics_unregister.php" class="nav-tab"> Analytics</a>
             <a href="Sign_Up.php" class="nav-tab"> Report</a>
         </div>
-               
         </nav>
-
+    </div>
          <section class="sub-navbar">
 
         <button class = "guidelines-btn" onclick="window.location.href='guidelines_unregister.php';">Guidelines</button>
@@ -68,7 +69,7 @@
         </section>
 
     <div class="search-container">
-        <form method="GET" action="help_center.php">
+        <form method="GET" action="helpcenter_unregister.php">
             <input type="text" name="search" placeholder="Search Your Question Here..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>

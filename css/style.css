@@ -175,6 +175,21 @@ body {
     font-weight: 600;
   }
 
+.login {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background-color: rgb(255, 246, 187); 
+    border-radius: 50px;                 
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(44,26,14,0.15);
+}
+
+.login a {
+    text-decoration: none;
+    color: var(--deep-brown); 
+}
+
 /* ── UNREGISTERED HOMEPAGE STYLE ── */
 .first-body {
   height: 85vh; 
