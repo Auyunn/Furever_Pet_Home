@@ -250,7 +250,7 @@
         <?php endif; ?>
 
         <div class="signup-nav" style="margin-top: 1.5rem;">
-            <a href="Login.php">Already have an account? Login here</a>
+            <a href="User_Login.php">Already have an account? Login here</a>
         </div>
 
     </div>

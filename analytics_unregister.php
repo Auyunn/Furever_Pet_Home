@@ -164,12 +164,12 @@
         <!---Tab Navigation-->
         <div class="nav-links">
             <a href="HomePage_Unregistered.php" class="nav-tab"> Home</a>
-            <a href="Sign_Up.php" class="nav-tab"> Inbox</a>
-            <a href="Sign_Up.php" class="nav-tab"> Find A Pet</a>
-            <a href="Sign_Up.php" class="nav-tab"> Pet Community</a>
+            <a href="User_Login.php" class="nav-tab"> Inbox</a>
+            <a href="User_Login.php" class="nav-tab"> Find A Pet</a>
+            <a href="User_Login.php" class="nav-tab"> Pet Community</a>
             <a href="helpcenter_unregister.php" class="nav-tab"> Help Center</a>
             <a href="analytics_unregister.php" class="nav-tab"> Analytics</a>
-            <a href="Sign_Up.php" class="nav-tab"> Report</a>
+            <a href="User_Login.php" class="nav-tab"> Report</a>
         </div>
         </nav>
     </div>
