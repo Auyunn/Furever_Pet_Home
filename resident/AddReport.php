@@ -57,13 +57,13 @@ if (empty($_SESSION['residentID'])) {
         </div>
 
         <div class="nav-links">
-            <a href="../HomePage(registed).php" class="nav-tab">Home</a>
-            <a href="inbox.php" class="nav-tab">Inbox</a>
-            <a href="findapet.php" class="nav-tab">Find A Pet</a>
-            <a href="pet_community.php" class="nav-tab">Pet Community</a>
-            <a href="help_center.php" class="nav-tab">Help Center</a>
-            <a href="Analytics.php" class="nav-tab">Analytics</a>
-            <a href="Report.php" class="nav-tab active">Report</a>
+             <a href="HomePage(registed).php" class="nav-tab">Home</a>
+                <a href="inbox.php" class="nav-tab">Inbox</a>
+                <a href="findapet.php" class="nav-tab">Find A Pet</a>
+                <a href="pet_community.php" class="nav-tab">Pet Community</a>
+                <a href="help_center.php" class="nav-tab">Help Center</a>
+                <a href="Analytics.php" class="nav-tab">Analytics</a>
+                <a href="Report.php" class="nav-tab">Report</a>
         </div>
     </nav>
 
