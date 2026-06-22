@@ -10,6 +10,26 @@ if (empty($_SESSION['residentID'])) {
     exit();
 }
 $residentID = $_SESSION['residentID'];
+if (isset($_POST['delete_report'])) {
+
+    $reportID = $_POST['reportID'];
+
+    $stmtDelete = $conn->prepare(
+        "DELETE FROM report 
+         WHERE ReportID = ? 
+         AND ResidentID = ?"
+    );
+
+    $stmtDelete->bind_param("ss", $reportID, $residentID);
+
+    if ($stmtDelete->execute()) {
+        echo "success";
+    } else {
+        echo "error";
+    }
+
+    exit();
+}
 
 // Fetch nama untuk avatar initials
 $stmtAvatar = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
@@ -115,6 +135,7 @@ function jsStr(?string $val): string
 }
 
 
+
 const REPORT_PHOTO_DIR = '../image/report/';
 ?>
 <!DOCTYPE html>
@@ -215,8 +236,7 @@ const REPORT_PHOTO_DIR = '../image/report/';
                                     <button class="btn-action btn-view"
                                         onclick="openModal(<?= jsStr($status) ?>, <?= jsStr($row['PetName']) ?>, <?= jsStr($modalDesc) ?>, <?= jsStr($row['Location']) ?>, <?= jsStr($dateFiled) ?>, <?= jsStr($row['ReportID']) ?>)">View
                                         Details</button>
-                                    <button class="btn-action btn-remove"
-                                        data-report-id="<?= htmlspecialchars($row['ReportID']) ?>">Remove</button>
+                                    <button class="btn-action btn-remove" onclick="deleteReport('<?= $row['ReportID'] ?>', this)">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +269,7 @@ const REPORT_PHOTO_DIR = '../image/report/';
                 <div class="modal-timeline" id="modalTimeline"></div>
             </div>
         </div>
-
+  
         <footer>
             <div class="footer-grid">
                 <div>
@@ -291,7 +311,9 @@ const REPORT_PHOTO_DIR = '../image/report/';
                 <span>Made with ❤️ for Bandar Klang</span>
             </div>
         </footer>
-
-    </div></body>
+        
+    </div>
+<script src="../js/script.js?v=<?= time(); ?>"></script>
+</body>
 </html>
 <?php $conn->close(); ?>

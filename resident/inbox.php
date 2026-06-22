@@ -86,6 +86,34 @@
         }
     }
     $stmt->close();
+
+    $conn->begin_transaction();
+
+try {
+
+    $stmt1 = $conn->prepare(
+        "DELETE FROM inbox WHERE ReportID = ?"
+    );
+    $stmt1->bind_param("s", $reportID);
+    $stmt1->execute();
+
+    $stmt2 = $conn->prepare(
+        "DELETE FROM report 
+         WHERE ReportID = ? 
+         AND ResidentID = ?"
+    );
+    $stmt2->bind_param("ss", $reportID, $residentID);
+    $stmt2->execute();
+
+    $conn->commit();
+
+    echo "success";
+
+} catch (Exception $e) {
+
+    $conn->rollback();
+    echo "error";
+}
 ?>
 <!Doctype html>
 <html lang="en">

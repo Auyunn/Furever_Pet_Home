@@ -99,7 +99,40 @@ if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
     alert("Sorry, no results found for your search. Please try again with different keywords or try contacting our customer service.");
 }
 
+//== RESIDENT REPORT=====
+ function deleteReport(reportID, btn) {
 
+            if (!confirm("Are you sure you want to delete this report?")) {
+                return;
+            }
+
+            fetch("Report.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "delete_report=1&reportID=" + encodeURIComponent(reportID)
+            })
+            .then(response => response.text())
+            .then(data => {
+
+                if (data.trim() === "success") {
+
+                    const card = btn.closest(".report-card");
+                    card.remove();
+
+                    alert("Report deleted successfully!");
+
+                } else {
+                    alert("Failed to delete report.");
+                }
+
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Error occurred.");
+            });
+        }
 //====|NGO|====
 //====INBOX NGOS====
 window.applyFilter = function() {
