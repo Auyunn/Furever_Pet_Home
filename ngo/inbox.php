@@ -1,11 +1,12 @@
 <?php
-session_start();
+session_start();//session start
 
-$conn = new mysqli("localhost", "root", "", "furever_pet_home");
+$conn = new mysqli("localhost", "root", "", "furever_pet_home");//connect database
 if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
+//ngo id
 if (!isset($_SESSION['orgID'])) {
     $_SESSION['orgID'] = "ORG01"; 
 }
@@ -29,6 +30,7 @@ $where = " WHERE p.OrgID = ? ";
 $params = [$org_id];
 $types = "s";
 
+//for filter date
 switch ($filter) {
     case 'yesterday':
         $where .= " AND DATE(a.RequestDate) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
@@ -51,6 +53,7 @@ switch ($filter) {
         $where .= " AND DATE(a.RequestDate) = CURDATE()";
 }
 
+//make query
 $sql = "
 SELECT 
     a.AdoptionID,
@@ -68,6 +71,7 @@ $where
 ORDER BY a.RequestDate DESC
 ";
 
+//get result
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($types, ...$params);
 $stmt->execute();
@@ -84,13 +88,14 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
+        <!-- Top Bar-->
         <nav class="navbar" id="navbar">
         <div class="navbar-top">
             <a href="#" class="nav-logo">
                 <img src="../image/icons/logo.png" alt="Furever Pet Home">
                 <span>Furever Pet Home</span>
             </a>
+            <!-- display avatar base on first letter of first name and last name of the current ngo -->
             <div class="nav-right">
                 <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
                 <div class="avatar" title="My Profile">
@@ -99,6 +104,7 @@ $result = $stmt->get_result();
             </div>
         </div>
 
+        <!--navigation-->
         <div class="nav-links">
             <a href="Pet_listing.php" class="nav-tab"> Home</a>
             <a href="inbox.php" class="nav-tab"> Inbox</a>
@@ -110,9 +116,11 @@ $result = $stmt->get_result();
         </div>
         </nav>
 
+        <!--filter-->
 <div class="filter-box">
     <label for="filter">Show:</label>
     <select id="filter" class="select-filter" onchange="window.applyFilter()">
+        <!-- get result base on filter date-->
         <option value="today" <?php echo ($filter=='today') ? 'selected' : ''; ?>>Today</option>
         <option value="yesterday" <?php echo ($filter=='yesterday') ? 'selected' : ''; ?>>Yesterday</option>
         <option value="this_week" <?php echo ($filter=='this_week') ? 'selected' : ''; ?>>This Week</option>
@@ -121,6 +129,7 @@ $result = $stmt->get_result();
     </select>
 </div>
 
+<!--display inbox msg-->
 <div class="ngo-inbox-container">
     <div class="inbox-table-wrap">
         <table class="inbox-table">
@@ -135,6 +144,7 @@ $result = $stmt->get_result();
                 </tr>
             </thead>
             <tbody>
+                <!-- show status-->
             <?php while($row = $result->fetch_assoc()) { 
                 $status = isset($row['Status']) ? $row['Status'] : 'Pending';
                 if($status == 'Approved') {
@@ -171,6 +181,7 @@ $result = $stmt->get_result();
             </tbody>
         </table>
 
+        <!-- right inbox to see view details-->
         <div class="inbox-right" id="side-panel">
             <div id="panel-content" class="panel-empty">
                 Click "View" on a request to see details here.

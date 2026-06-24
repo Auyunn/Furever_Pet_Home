@@ -1,4 +1,5 @@
 <?php
+    //start session and connect db
     session_start();
     header('Content-Type: application/json; charset=utf-8');
 
@@ -9,11 +10,13 @@
         exit;
     }
 
+
     $input  = json_decode(file_get_contents('php://input'), true);
     $id     = $input['id']     ?? null;
     $status = $input['status'] ?? null;
     $reason = $input['reason'] ?? null;
 
+    //if system couldnt find id and status
     if (!$id || !$status) {
         http_response_code(400);
         echo json_encode(['ok' => false, 'error' => 'Missing id or status']);
@@ -31,7 +34,7 @@
         $conn->begin_transaction();
         $hide_pet = false;
 
-        // UPDATE adopt_application — guna column 'Reason'
+        // UPDATE adopt_application  guna column 'Reason'
         $updateApp = $conn->prepare("UPDATE adopt_application SET Status = ?, Reason = ? WHERE AdoptionID = ?");
         $updateApp->bind_param("sss", $status, $reason, $id);
         if (!$updateApp->execute()) throw new Exception("Error adopt_application: " . $updateApp->error);
@@ -44,7 +47,7 @@
         $updateInbox->close();
 
         if ($status === 'Approved') {
-            // Sembunyikan pet
+            // hide pet
             $setPet = $conn->prepare("
                 UPDATE pet p
                 JOIN adopt_application a ON p.PetID = a.PetID
@@ -56,7 +59,7 @@
             $setPet->close();
             $hide_pet = true;
 
-            // Tolak permohonan lain — guna column 'Reason'
+            // reject other application
             $rejectOthers = $conn->prepare("
                 UPDATE adopt_application
                 SET Status = 'Rejected', Reason = 'Pet has been adopted by someone else.'
@@ -68,7 +71,7 @@
             if (!$rejectOthers->execute()) throw new Exception("Error reject others: " . $rejectOthers->error);
             $rejectOthers->close();
 
-            // Update inbox untuk permohonan lain yang ditolak
+            // update application
             $rejectInboxOthers = $conn->prepare("
                 UPDATE inbox 
                 SET Status = 'Rejected'

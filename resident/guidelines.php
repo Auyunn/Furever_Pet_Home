@@ -1,6 +1,7 @@
 <?php
-    include("../db_connect.php");
+    include("../db_connect.php"); //call database
 
+    //for search bar
     $search = $_GET['search'] ?? '';
 
     if ($search !== '') {
@@ -14,7 +15,7 @@
         
         $no_match = ($result->num_rows === 0) ? true : false;
     } else {
-        
+        //onlu show 4 guidelines
         $sql = "SELECT Title, Description FROM guidelines LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -35,6 +36,7 @@
 <body>
 <div class="container">
 
+    <!--Top bar-->
     <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
@@ -72,15 +74,16 @@
 
         </section>
         
+        <!-- sarh bar-->
     <div class="search-container">
         <form method="GET" action="guidelines.php">
-            <input type="text" name="search" placeholder="Cari soalan anda di sini..." value="<?php echo htmlspecialchars($search); ?>">
+            <input type="text" name="search" placeholder="Find Your Quetsion..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
     </div>
 
     <div class="help-center">
-        <h2><?php echo ($search !== '') ? 'Hasil Carian Guidelines' : 'Guidelines'; ?></h2>
+        <h2><?php echo ($search !== '') ? 'Result Of Search' : 'Guidelines'; ?></h2>
 
         <ul class="guidelines-list">
             <?php
@@ -93,7 +96,7 @@
                 }
             } else {
                 echo "<li class='guidelines-item' style='border-left: 4px solid var(--rose);'>";
-                echo "<p class='guidelines-description'>Tiada maklumat Guidelines ditemui bagi kata kunci ini.</p>";
+                echo "<p class='guidelines-description'>No Information For This Keyword.</p>";
                 echo "</li>";
             }
             ?>

@@ -1,8 +1,9 @@
 <?php
     session_start();
 
-    // Selaraskan sesi dengan residentID dari findapet.php
+    // base on user that currenlty logged in
     $is_logged_in = isset($_SESSION['residentID']) && !empty($_SESSION['residentID']);
+
 
     if ($is_logged_in) {
         $resident_id = $_SESSION['residentID']; 
@@ -16,7 +17,7 @@
         die("DB connection failed: " . $conn->connect_error);
     }
 
-    // QUERY BARU: Memastikan permohonan baru yang berstatus 'Pending' terus masuk ke inbox user
+    // create query
     $sql = "
     SELECT 
         i.InboxID, 
@@ -35,6 +36,7 @@
     ORDER BY i.DateTime DESC
     ";
 
+    
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $resident_id, $resident_id); 
     $stmt->execute();

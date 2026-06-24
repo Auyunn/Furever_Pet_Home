@@ -1,7 +1,10 @@
+/* ── Import Google Fonts ── */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap");
 
+/* ── Reset ── */
  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+ /* ── Root Variables (colors, sizes) ── */
   :root {
   --warm-cream: #FFF9D2;
   --warm-tan:   #FFE0BC;
@@ -14,7 +17,7 @@
   --text-muted: #8175ba;
   --navbar-height: 108px; /*navigation height*/
 }
-
+/* ── Body Background & Typography ── */
 body {
   background: linear-gradient(160deg, #FFF9D2 0%, #FFE0BC 40%, #C8E6F5 75%, #AECFEA 100%);
   background-attachment: fixed;
@@ -50,6 +53,7 @@ body {
     width: 100%;
   }
 
+  /* ── NAVLOGO ── */
   .nav-logo {
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
@@ -61,19 +65,20 @@ body {
     text-decoration: none;
   }
 
+  /* ── NAV LOGO IMAGE ── */
   .nav-logo img {
     width: auto;
     height: 40px;
     object-fit: contain;
     display: block;
   }
-
+/* ── LEFT NAV ── */
   .nav-right {
     display: flex;
     align-items: center;
     gap: 0.8rem;
   }
-
+/* ── NOTIFICTION BUTTON ── */
   .notif-btn {
     position: relative;
     width: 38px; height: 38px;
@@ -86,7 +91,7 @@ body {
     color: var(--deep-brown);
     transition: background 0.2s;
   }
-
+/* ── HOVER EEFECT ── */
   .notif-btn:hover { background: var(--warm-tan); }
 
   .notif-dot {
@@ -96,7 +101,7 @@ body {
     border-radius: 50%;
     border: 1.5px solid var(--warm-cream);
   }
-
+/* ── AVATAR ── */
   .avatar {
     width: 38px; height: 38px;
     border-radius: 50%;
@@ -130,7 +135,7 @@ body {
     border: 1px solid rgba(130,85,64,0.12);
     z-index: 200;
   }
-
+/* ── DROP DOWN STYLE WHEN AVATAR IS CLICKED ── */
   .dropdown-menu.show {
     display: block;
   }
@@ -153,7 +158,7 @@ body {
     font-size: 0.78rem;
     color: var(--text-muted);
   }
-
+/* ── LOGOUT ── */
   .logout-btn {
     width: 100%;
     padding: 0.4rem 0;

@@ -1,4 +1,5 @@
 <?php
+    //start session n connect db
     session_start();
     include __DIR__ . '/../db_connect.php';
 
@@ -15,6 +16,7 @@
         exit;
     }
 
+    //update if pet is aavailable after the rejection
     $stmt = $conn->prepare("UPDATE pet SET IsAvailable=1 WHERE PetID=?");
     $stmt->bind_param("s", $petID);
 
