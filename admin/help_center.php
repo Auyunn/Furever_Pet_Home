@@ -2,7 +2,7 @@
 session_start();
 include('../db_connect.php');
 
-//================ FETCH GUIDELINE DATA ============
+//fetching guideline
 $guideline ="SELECT g.GuidelineID, g.Title, g.PetType, g.Description, g.Budget, o.OrgName
             FROM guidelines g
             LEFT JOIN organization o ON g.OrgID= o.OrgID
@@ -11,7 +11,7 @@ $guideline ="SELECT g.GuidelineID, g.Title, g.PetType, g.Description, g.Budget, 
 $result_guideline= mysqli_query($conn, $guideline);
 $total_guideline = mysqli_num_rows($result_guideline);
 
-//==================== FETCH FAQ DATA ===========
+//fetching faq
 $faq = "SELECT f.FaqID, f.Question, f.Description, o.OrgName
         FROM faq f
         LEFT JOIN organization o
@@ -30,9 +30,8 @@ $total_faq = mysqli_num_rows($result_faq);
     <link rel="stylesheet" href="../css/help_centeradmin.css">
 </head>
 <body>
-    <!-- Header -->
+
    <nav class="navbar" id="navbar">
-        <!--logo and profile-->
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
@@ -43,10 +42,10 @@ $total_faq = mysqli_num_rows($result_faq);
             </div>
         </div>
 
-        <!---Tab Navigation-->
+        <!navigation bar->
         <div class="nav-links">
             <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-                <a href="usercount.php" class="nav-tab"> Users/NGOs</a>
+                <a href="usercount.php" class="nav-tab"> Residents/NGOs</a>
                 <a href="Add_Report.php" class="nav-tab"> Report</a>
                 <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
                 <a href="pet_communityadmin.php" class="nav-tab"> Pet Community</a>
@@ -62,12 +61,12 @@ $total_faq = mysqli_num_rows($result_faq);
             <span>,</span>
             <span class="crumb-current" id="breadcrumb-title"></span>
         </div>
-    <!=== Tab =====>
+    <!tab faq guideline>
         <div class="tabs" id="tabs">
             <button class="tab active" onclick="switchTab('guideline', this)">Guideline</button>
             <button class="tab" onclick="switchTab('faq', this)">FAQ</button>
         </div>
-     <!=== Guideline =====>
+     <!guideline>
         <div id="panel-guideline" class="panel active">
             <div class="section-header">
                 <span class="section-title">Guidelines</span>
@@ -124,7 +123,7 @@ $total_faq = mysqli_num_rows($result_faq);
         ?>
         </div>
     </div>
-<!===================== FAQ =============>
+        <!faq>
         <div id="panel-faq" class="panel">
                 <div class="section-header">
                     <span class="section-title">Frequently Asked Questions</span>
@@ -178,7 +177,7 @@ $total_faq = mysqli_num_rows($result_faq);
         </div>
     </div>
 
-<!=============== View Detail ================= >
+        <!view detail >
         <div id="panel-view" class="panel">
             <div class="view-card" id="view-content"></div>
         </div>
