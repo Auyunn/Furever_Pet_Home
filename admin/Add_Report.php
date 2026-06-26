@@ -18,7 +18,7 @@ function mapStatus(array $row): string
     return (isset($row['ReportStatus']) && $row['ReportStatus'] === 'Resolved') ? 'resolved' : 'pending';
 }
 
-// ── AJAX MODE: search/filter request from admin_report.js ──
+// using ajax, search request from admin_report.js
 if (isset($_GET['ajax'])) {
     header('Content-Type: application/json');
 
@@ -74,7 +74,7 @@ if (isset($_GET['ajax'])) {
     exit;
 }
 
-// --- Fetch reports + latest inbox update for each -----------------
+// fetching reports, latest inbox update for each 
 $sql = "
     SELECT
         r.ReportID,
@@ -160,7 +160,7 @@ foreach ($reports as $rep) {
 
             <div class="nav-links">
                 <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-                <a href="usercount.php" class="nav-tab"> Users/NGOs</a>
+                <a href="usercount.php" class="nav-tab"> Residents/NGOs</a>
                 <a href="Add_Report.php" class="nav-tab"> Report</a>
                 <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
                 <a href="pet_communityadmin.php" class="nav-tab"> Pet Community</a>

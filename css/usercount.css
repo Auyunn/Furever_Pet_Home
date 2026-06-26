@@ -1,13 +1,12 @@
-/* Pastikan content turun bawah navbar */
 body {
-  padding-top: 100px; /* adjust ikut tinggi navbar */
+  padding-top: 100px;
 }
 
-/* Kotak Tab Users | NGOs di belah kiri */
+/* table resident/ngos */
 .tab-box {
   display: flex;
-  justify-content: flex-start; /* ubah dari center ke kiri */
-  margin: 20px 40px;           /* bagi margin kiri supaya ada ruang */
+  justify-content: flex-start;
+  margin: 20px 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
@@ -38,23 +37,39 @@ body {
   background: #ddd;
 }
 
-/* Table Section */
+/* table */
 .table-section {
   padding: 20px 40px;
 }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .admin-table {
   width: 100%;
+  min-width: 1000px; /* elakkan column dari sempit */
   border-collapse: collapse;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.admin-table th, .admin-table td {
+.admin-table th,
+.admin-table td {
   border: 1px solid #ccc;
-  padding: 12px;
+  padding: 10px 12px;
   text-align: center;
+  white-space: nowrap;        
+  vertical-align: middle;
+}
+
+/* make address cell not too long */
+.admin-table td.wrap {
+  white-space: normal;
+  min-width: 160px;
+  text-align: left;
 }
 
 .admin-table th {
@@ -77,6 +92,20 @@ body {
 
 .admin-table button:hover {
   background: #ddd;
+}
+
+/* edit mode */
+.admin-table input[type="text"],
+.admin-table input[type="email"],
+.admin-table input[type="number"],
+.admin-table select {
+  width: 100%;
+  min-width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.88rem;
 }
 
 .save-btn {

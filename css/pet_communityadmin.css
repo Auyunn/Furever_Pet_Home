@@ -1,5 +1,3 @@
-
-/*-----------------------header---------------------------------------------*/
         .page-header{
             margin-top: 140px;
             padding: 1.5rem 0 0.5rem;
@@ -19,7 +17,6 @@
             margin: 0;
         }
 
-/*------------------------ main warpper -------------------------------------------*/
         .wrapper{
             margin:auto;
             width: 80%;
@@ -32,8 +29,6 @@
             color: #999;
             font-size: 1rem;
         }
-
-/*------------------------ content -------------------------------------------*/
 
         .box{
             display: flex;
@@ -82,13 +77,11 @@
             align-items: center;
         }
 
-
         .org-name{
             font-size: 0.82rem;
             color: var(--amber,#d084c6);
             margin: 2px 0;
             font-weight: 500;
-
         }
 
         .date{
@@ -102,9 +95,9 @@
             color: #666;
             margin : 4px 0 0;
             line-height: 1.5;
-           
         }
-/*------------------------ BUTTON ----------------*/
+
+/*post grid (view only)*/
         .actions{
             display:flex;
             flex-direction: row;
@@ -112,9 +105,9 @@
             flex-shrink: 0;
         }
 
-        .btn-view, .btn-delete{
+        .btn-view{
             cursor: pointer;
-            background: none;
+            background: #fdf5ef;
             border: none;
             font-size: 1.1rem;
             padding: 6px;
@@ -126,20 +119,10 @@
             justify-content: center;
             transition: background 0.2s;
         }
-        .btn-view {
-            background: #fdf5ef;
-        }
         .btn-view:hover{
             background: rgba(130,85,64,0.1);
         }
-        .btn-delete {
-            background: #fdeaea;
-        }
-        .btn-delete:hover{
-            background: rgba(204,0,0,0.1);
-        }
 
-/*------ View -------*/
         .modal-overlay{
             display:none;
             position: fixed;
@@ -158,7 +141,7 @@
         }
 
         .modal{
-           background: #ffffff;
+            background: #ffffff;
             width: 100%;
             max-width: 600px;
             max-height: 85vh; 
@@ -166,7 +149,7 @@
             display: flex;
             flex-direction: column; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: none
+            border: none;
         }
 
         .modal-header{
@@ -192,8 +175,7 @@
             color: #555;
         }
 
-        .modal-body
-        {
+        .modal-body{
             padding    : 20px;
             overflow-y : auto;
             flex       : 1;
@@ -247,7 +229,8 @@
             border-left   : 3px solid var(--deep-brown, #825540);
             border-radius : 0 8px 8px 0;
         }
-/*-------------Comment-----------------------*/
+
+/*comment section*/
         .comment-section h5{
             font-size: 0.82rem;
             text-transform: uppercase;
@@ -256,7 +239,7 @@
             margin: 0 0 12px;
         }
 
-       .comment-item {
+        .comment-item {
             padding       : 10px 12px;
             background    : #f9f7f4;
             border-radius : 8px;
@@ -264,37 +247,63 @@
             border        : 1px solid rgba(130,85,64,0.07);
         }
 
-    .comment-item.is-reply {
-        margin-left : 20px;
-        background  : #f3f0ff;
-    }
+        .comment-item.is-reply {
+            margin-left : 20px;
+            background  : #f3f0ff;
+        }
 
-    .comment-meta {
-        display         : flex;
-        justify-content : space-between;
-        margin-bottom   : 4px;
-    }
+        .comment-meta {
+            display         : flex;
+            justify-content : space-between;
+            align-items     : center;
+            margin-bottom   : 4px;
+        }
 
-    .comment-user {
-        font-size  : 0.78rem;
-        font-weight: 600;
-        color      : var(--deep-brown, #825540);
-    }
+        .comment-user {
+            font-size  : 0.78rem;
+            font-weight: 600;
+            color      : var(--deep-brown, #825540);
+            flex       : 1;
+        }
 
-    .comment-date { font-size: 0.75rem; color: #bbb; }
+        .comment-right {
+            display     : flex;
+            align-items : center;
+            gap         : 8px;
+            flex-shrink : 0;
+        }
 
-    .comment-text {
-        font-size   : 0.85rem;
-        color       : #555;
-        line-height : 1.5;
-        margin      : 0;
-    }
+        .comment-date { font-size: 0.75rem; color: #bbb; }
 
-    .reply-label  { font-size: 0.72rem; color: #aaa; margin-bottom: 4px; }
-    .no-comments  { font-size: 0.85rem; color: #bbb; text-align: center; padding: 16px 0; }
+        /* every comment delete button */
+        .btn-delete-comment {
+            cursor        : pointer;
+            background    : #fdeaea;
+            border        : 1px solid rgba(204,0,0,0.15);
+            font-size     : 0.82rem;
+            padding       : 3px 7px;
+            border-radius : 5px;
+            color         : #cc0000;
+            line-height   : 1;
+            transition    : background 0.15s;
+            display       : inline-flex;
+            align-items   : center;
+        }
+        .btn-delete-comment:hover {
+            background  : rgba(204, 0, 0, 0.15);
+        }
 
-/*----- Confrimation -------*/
+        .comment-text {
+            font-size   : 0.85rem;
+            color       : #555;
+            line-height : 1.5;
+            margin      : 0;
+        }
 
+        .reply-label  { font-size: 0.72rem; color: #aaa; margin-bottom: 4px; }
+        .no-comments  { font-size: 0.85rem; color: #bbb; text-align: center; padding: 16px 0; }
+
+/*confirmation box*/
         .confirm-box{
             background: white;
             padding: 32px 28px 24px;
@@ -357,4 +366,3 @@
         .confirm:hover{
             background: #990000;
         }
-

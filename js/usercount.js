@@ -1,4 +1,4 @@
-// Toggle between Users and NGOs tables
+// toggle between table resident ngo
 function showTable(tableId) {
   document.getElementById('residents').style.display = 'none';
   document.getElementById('ngos').style.display = 'none';
@@ -13,7 +13,7 @@ function showTable(tableId) {
   }
 }
 
-// Switch a row from view mode to edit mode (reveals inputs + Save button)
+// switching dari view to edit mode
 function editAccount(rowId) {
   const row = document.getElementById(rowId);
   if (!row) return;
@@ -22,10 +22,7 @@ function editAccount(rowId) {
   row.querySelectorAll('.edit-mode').forEach(el => el.style.display = '');
 }
 
-// Confirmation before permanently deleting an account. This is a real,
-// irreversible delete - it also removes all of that account's related
-// records (applications, comments, reports, posts, etc. depending on
-// account type). Wired via onsubmit="return confirmDelete('...')".
+// confirming before truly delete
 function confirmDelete(label) {
   return confirm("Permanently delete " + label + "? This cannot be undone.");
 }
