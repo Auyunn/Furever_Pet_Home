@@ -207,7 +207,7 @@
         <!-- NAVIGATION TABs-->
         <div class="nav-links">
             <a href="dashboard.php" class="nav-tab active">Dashboard</a>
-            <a href="usercount.php" class="nav-tab">Users/NGOs</a>
+            <a href="usercount.php" class="nav-tab">Residents/NGOs</a>
             <a href="Add_Report.php" class="nav-tab">Report</a>
             <a href="analytics_admin.php" class="nav-tab">Analytics</a>
             <a href="pet_communityadmin.php" class="nav-tab">Pet Community</a>
