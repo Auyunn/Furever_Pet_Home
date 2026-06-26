@@ -68,6 +68,7 @@
 
         </section>
 
+        <!--search-->
     <div class="search-container">
         <form method="GET" action="helpcenter_unregister.php">
             <input type="text" name="search" placeholder="Search Your Question Here..." value="<?php echo htmlspecialchars($search); ?>">
@@ -75,6 +76,7 @@
         </form>
     </div>
 
+    <!-- show result-->
     <div class="help-center">
         <h2><?php echo ($search !== '') ? 'Result FAQ' : 'Frequent Ask Question (FAQ)'; ?></h2>
 

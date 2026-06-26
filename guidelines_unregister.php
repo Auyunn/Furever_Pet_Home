@@ -68,13 +68,14 @@
         <button class = "faq-btn" onclick="window.location.href='helpcenter_unregister.php';">FAQ</button>
 
         </section>
-        
+       <!--search --> 
     <div class="search-container">
         <form method="GET" action="guidelines_unregister.php">
             <input type="text" name="search" placeholder="Search Your Guideline..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
     </div>
+    <!--search result-->
 
     <div class="help-center">
         <h2><?php echo ($search !== '') ? 'Result Of Search Guidelines' : 'Guidelines'; ?></h2>
