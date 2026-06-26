@@ -5,27 +5,26 @@
     include("../db_connect.php");
 
     //check current user id
-    $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['residentID']);
-    $resident_id = $is_logged_in ? $_SESSION['residentID'] : 'GUEST';
-
-    //to display later
-    $firstName = 'Resident';
-    $lastName  = '';
-
-    //get first name and last name
-    if ($is_logged_in) {
-        $profileStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
-        $profileStmt->bind_param('s', $resident_id);
-        $profileStmt->execute();
-        $residentResult = $profileStmt->get_result();
-        if ($resident = $residentResult->fetch_assoc()) {
-            $firstName = $resident['FirstName'] ?? 'Resident';
-            $lastName  = $resident['LastName'] ?? '';
-        }
-        $profileStmt->close();
+    if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+        header('Location: ../User_Login.php');
+        exit;
     }
-    //take first letter from name and capitalised
+
+    $residentID = $_SESSION['residentID'];
+    $is_logged_in = true; //check log in
+    
+    // ── FETCH RESIDENT INFO ──
+    $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    mysqli_stmt_bind_param($stmt, 's', $residentID);
+    mysqli_stmt_execute($stmt);
+    $residentResult = mysqli_stmt_get_result($stmt);
+    $resident = mysqli_fetch_assoc($residentResult);
+    mysqli_stmt_close($stmt);
+
+    $firstName = $resident['FirstName'] ?? 'Resident';
+    $lastName  = $resident['LastName'] ?? '';
     $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+    
 
     ///for search bar
     $search = $_GET['search'] ?? '';
@@ -47,6 +46,7 @@
         $result = $stmt->get_result();
         $no_match = false;
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -56,24 +56,33 @@
     <title>Help Center - Furever Pet Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
 </head>
 
 <body>
 <div class="container">
     <!--top bar -->
-    <nav class="navbar" id="navbar">
+        <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
-                <?= htmlspecialchars($avatarInitials) ?>
-            </div>
-            
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div id="profileDropdown" class="dropdown-menu">
+                        <div class="dropdown-user-info">
+                            <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+                            <span><?php echo htmlspecialchars($residentID); ?></span>
+                        </div>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
         <!--navigation-->

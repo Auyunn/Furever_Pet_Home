@@ -399,6 +399,7 @@ function getBadgeClass(status) {
 //====|ADMIN|====
 //====PROFILE DROPDOWN====
 function toggleProfileDropdown() {
+      event.stopPropagation();
     const dropdown = document.getElementById('profileDropdown');
     dropdown.classList.toggle('show');
 }

@@ -1,5 +1,27 @@
 <?php
+    session_start();
     include("../db_connect.php"); //call database
+
+    //check current user id
+    if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+        header('Location: ../User_Login.php');
+        exit;
+    }
+
+    $residentID = $_SESSION['residentID'];
+    $is_logged_in = true; //check log in
+    
+    // ── FETCH RESIDENT INFO ──
+    $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    mysqli_stmt_bind_param($stmt, 's', $residentID);
+    mysqli_stmt_execute($stmt);
+    $residentResult = mysqli_stmt_get_result($stmt);
+    $resident = mysqli_fetch_assoc($residentResult);
+    mysqli_stmt_close($stmt);
+
+    $firstName = $resident['FirstName'] ?? 'Resident';
+    $lastName  = $resident['LastName'] ?? '';
+    $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
 
     //for search bar
     $search = $_GET['search'] ?? '';
@@ -37,15 +59,27 @@
 <div class="container">
 
     <!--Top bar-->
-    <nav class="navbar" id="navbar">
+        <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div id="profileDropdown" class="dropdown-menu">
+                        <div class="dropdown-user-info">
+                            <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+                            <span><?php echo htmlspecialchars($residentID); ?></span>
+                        </div>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
 

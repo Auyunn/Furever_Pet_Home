@@ -1,5 +1,5 @@
 <?php
-session_start();//session start
+session_start();
 
 $conn = new mysqli("localhost", "root", "", "furever_pet_home");//connect database
 if ($conn->connect_error) {
@@ -7,16 +7,12 @@ if ($conn->connect_error) {
 }
 
 //ngo id
-if (!isset($_SESSION['orgID'])) {
-    $_SESSION['orgID'] = "ORG01"; 
-}
-
-$org_id = $_SESSION['orgID'];
-
-if (!$org_id) {
-    die("Unauthorized: NGO not logged in.");
-}
-
+    if (isset($_SESSION['orgID'])) {
+        $org_id = $_SESSION['orgID'];
+    } else {
+        header("Location: ../User_Login.php");
+        exit();
+    }
 $allowed = ['today', 'yesterday', 'this_week', 'this_month', 'this_year'];
 
 $filter = $_GET['filter'] ?? 'today';
@@ -86,23 +82,37 @@ $result = $stmt->get_result();
     <title>NGO Inbox</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
+     <script src="../js/script.js ?>"></script>
 </head>
 <body>
-        <!-- Top Bar-->
-        <nav class="navbar" id="navbar">
-        <div class="navbar-top">
-            <a href="#" class="nav-logo">
-                <img src="../image/icons/logo.png" alt="Furever Pet Home">
-                <span>Furever Pet Home</span>
-            </a>
-            <!-- display avatar base on first letter of first name and last name of the current ngo -->
-            <div class="nav-right">
-                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-                <div class="avatar" title="My Profile">
-                    <?= htmlspecialchars(strtoupper(substr($_SESSION['orgID'], 0, 2))) ?>
+   
+<!-- Top Bar-->
+<nav class="navbar" id="navbar">
+    <div class="navbar-top">
+        <a href="#" class="nav-logo">
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <span>Furever Pet Home</span>
+        </a>
+ 
+        <div class="nav-right">
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+ 
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()">
+                    <?php echo "OR"?>
+                </div>
+                <div id="profileDropdown" class="dropdown-menu">
+                    <div class="dropdown-user-info">
+              <strong><?php echo htmlspecialchars($org_id); ?></strong>
+                <span>NGO Account</span>
+                </div>
+                <form method="post" action="../logout.php" style="margin:0;">
+                <button type="submit" class="logout-btn">&#128274; Log Out</button>
+                </form>
                 </div>
             </div>
         </div>
+    </div>
 
         <!--navigation-->
         <div class="nav-links">
@@ -231,6 +241,6 @@ $result = $stmt->get_result();
     </div>
 </footer>
 
-<script src="../js/script.js?v=<?= time(); ?>"></script>
+ <script src="../js/script.js?v=<?= time(); ?>"></script>
 </body>
 </html>

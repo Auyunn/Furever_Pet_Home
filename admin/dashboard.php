@@ -92,67 +92,6 @@
     <!-- Main stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
 
-    <style>
-        /* PROFILE DROPDOWN STYLES */
-
-        .profile-dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: rgba(250,246,240,0.98);
-            backdrop-filter: blur(16px);
-            border-radius: 16px;
-            padding: 1rem;
-            min-width: 190px;
-            box-shadow: 0 10px 30px rgba(44,26,14,0.14);
-            border: 1px solid rgba(130,85,64,0.12);
-            z-index: 200;
-        }
-
-        .dropdown-menu.show {
-            display: block;
-        }
-
-        .dropdown-user-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid rgba(130,85,64,0.1);
-            margin-bottom: 0.8rem;
-        }
-
-        .dropdown-user-info strong {
-            font-size: 0.9rem;
-            color: var(--deep-brown);
-        }
-
-        .dropdown-user-info span {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .logout-btn {
-            width: 100%;
-            padding: 0.4rem 0;
-            background: transparent;
-            color: #c0392b;
-            border: none;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .logout-btn:hover {
-            color: #e74c3c;
-        }
-    </style>
 </head>
 
 <body>
@@ -171,8 +110,9 @@
 
             <!-- Admin Profile Section -->
             <div class="nav-right">
-                <div class="profile-dropdown">
 
+                <div class="profile-dropdown">
+                    
                     <!-- Profile Avatar -->
                     <div class="avatar"
                          title="My Profile"
