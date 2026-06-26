@@ -1,9 +1,8 @@
-/* Pastikan content turun bawah navbar */
 body {
   padding-top: 100px;
 }
 
-/* Kotak Tab Users | NGOs di belah kiri */
+/* table resident/ngos */
 .tab-box {
   display: flex;
   justify-content: flex-start;
@@ -38,12 +37,11 @@ body {
   background: #ddd;
 }
 
-/* Table Section */
+/* table */
 .table-section {
   padding: 20px 40px;
 }
 
-/* Wrapper enables horizontal scrolling when table is wider than viewport */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -51,7 +49,7 @@ body {
 
 .admin-table {
   width: 100%;
-  min-width: 1000px; /* prevents columns from getting too squished */
+  min-width: 1000px; /* elakkan column dari sempit */
   border-collapse: collapse;
   background: #fff;
   border-radius: 8px;
@@ -63,11 +61,11 @@ body {
   border: 1px solid #ccc;
   padding: 10px 12px;
   text-align: center;
-  white-space: nowrap;        /* keeps ID / phone / status on one line */
+  white-space: nowrap;        
   vertical-align: middle;
 }
 
-/* Address cells can wrap — they tend to be long */
+/* make address cell not too long */
 .admin-table td.wrap {
   white-space: normal;
   min-width: 160px;
@@ -96,7 +94,7 @@ body {
   background: #ddd;
 }
 
-/* Edit-mode inputs */
+/* edit mode */
 .admin-table input[type="text"],
 .admin-table input[type="email"],
 .admin-table input[type="number"],
