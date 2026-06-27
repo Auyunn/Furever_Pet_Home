@@ -1,22 +1,56 @@
 <?php
+// ── START SESSION ──
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
-    // Selaraskan sesi dengan residentID dari findapet.php
-    $is_logged_in = isset($_SESSION['residentID']) && !empty($_SESSION['residentID']);
+// ── DATABASE CONNECTION ──
+$DB_HOST = 'localhost';
+$DB_USER = 'root';
+$DB_PASS = '';
+$DB_NAME = 'furever_pet_home';
 
-    if ($is_logged_in) {
-        $resident_id = $_SESSION['residentID']; 
-    } else {
-        $resident_id = 'GUEST'; 
-    }
+$conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+if (!$conn) {
+    die('Database connection failed: ' . mysqli_connect_error());
+}
+mysqli_set_charset($conn, 'utf8mb4');
 
-    $conn = new mysqli("localhost", "root", "", "Furever_Pet_Home");
+if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+    header('Location: ../User_Login.php');
+    exit;
+}
 
-    if($conn->connect_error) {
-        die("DB connection failed: " . $conn->connect_error);
-    }
+$residentID = $_SESSION['residentID'];
+$is_logged_in = true; //check log in
 
-    // QUERY BARU: Memastikan permohonan baru yang berstatus 'Pending' terus masuk ke inbox user
+$stmt = mysqli_prepare($conn, "SELECT ResidentID FROM resident WHERE ResidentID = ? AND Status = 1");
+mysqli_stmt_bind_param($stmt, 's', $residentID);
+mysqli_stmt_execute($stmt);
+$authResult = mysqli_stmt_get_result($stmt);
+$authRow = mysqli_fetch_assoc($authResult);
+mysqli_stmt_close($stmt);
+
+if (!$authRow) {
+    session_unset();
+    session_destroy();
+    header('Location: ../User_Login.php');
+    exit;
+}
+
+// ── FETCH RESIDENT INFO ──
+$stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+mysqli_stmt_bind_param($stmt, 's', $residentID);
+mysqli_stmt_execute($stmt);
+$residentResult = mysqli_stmt_get_result($stmt);
+$resident = mysqli_fetch_assoc($residentResult);
+mysqli_stmt_close($stmt);
+
+$firstName = $resident['FirstName'] ?? 'Resident';
+$lastName  = $resident['LastName'] ?? '';
+$avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+
+    // create query
     $sql = "
     SELECT 
         i.InboxID, 
@@ -35,8 +69,9 @@
     ORDER BY i.DateTime DESC
     ";
 
+    
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $resident_id, $resident_id); 
+    $stmt->bind_param("ss", $residentID, $residentID); //call resident
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -87,9 +122,11 @@
     }
     $stmt->close();
 
+    // block code will always run when load 
     $conn->begin_transaction();
 
 try {
+    $reportID = $_GET['reportID'] ?? ''; // avoid undefined variable
 
     $stmt1 = $conn->prepare(
         "DELETE FROM inbox WHERE ReportID = ?"
@@ -107,12 +144,8 @@ try {
 
     $conn->commit();
 
-    echo "success";
-
 } catch (Exception $e) {
-
     $conn->rollback();
-    echo "error";
 }
 ?>
 <!Doctype html>
@@ -123,11 +156,11 @@ try {
         <title>Resident Inbox</title>
         <link rel="stylesheet" href="../css/style.css">
         <script src="../js/script.js" defer></script>
+        
 
     </head>
 
     <body>
-        <!-- LOGO and LOGIN -->
         <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
@@ -135,14 +168,33 @@ try {
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div id="profileDropdown" class="dropdown-menu">
+                        <div class="dropdown-user-info">
+                            <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+                            <span><?php echo htmlspecialchars($residentID); ?></span>
+                        </div>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">&#128274;Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- NAVIGATION -->
         <div class="nav-links">
+<<<<<<< HEAD
             <a href="HomePage(registed).php" class="nav-tab">Home</a>
+=======
+            <?php if($is_logged_in): ?>
+                <a href="HomePage(registed).php" class="nav-tab">Home</a>
+            <?php else: ?>
+                <a href="../HomePage_Unregistered.php" class="nav-tab">Home</a>
+            <?php endif; ?>
+>>>>>>> bfe5bb892a676920afaf7a5a334b7d894c5e5c3a
             <a href="inbox.php" class="nav-tab">Inbox</a>
             <a href="findapet.php" class="nav-tab"> Find A Pet</a>
             <a href="pet_community.php" class="nav-tab"> Pet Community</a>
@@ -153,13 +205,11 @@ try {
                
         </nav>
 
-        <!--Notifications-->
         <div class="notif-container">
 
-            <!--Left: Notification List-->
             <div class="notif-list">
 
-                <!--Today-->
+            <!--today outpu-->
                 <div class="notif-group">
                     <div class="notif-group-header" onclick="toggleGroup('today')">
                         <span>Today (<?= count($today) ?>)</span>
@@ -177,8 +227,8 @@ try {
                         <?php endforeach; ?>
                     </div>
                 </div>
-
-                <!--Yesterday-->
+                
+                <!--yesterday outpu-->
                 <div class="notif-group">
                     <div class="notif-group-header" onclick="toggleGroup('yesterday')">
                         <span>Yesterday (<?= count($yesterday) ?>)</span>
@@ -197,7 +247,7 @@ try {
                     </div>
                 </div>
 
-                <!--This Week-->
+                <!--week outpu-->
                 <div class="notif-group">
                     <div class="notif-group-header" onclick="toggleGroup('week')">
                         <span>This Week (<?= count($week) ?>)</span>
@@ -216,7 +266,7 @@ try {
                     </div>
                 </div>
 
-                <!--This Month-->
+                <!--month outpu-->
                 <div class="notif-group">
                     <div class="notif-group-header" onclick="toggleGroup('month')">
                         <span>This Month (<?= count($month) ?>)</span>
@@ -235,7 +285,7 @@ try {
                     </div>
                 </div>
 
-                <!--This Year-->
+                <!--year outpu-->
                 <div class="notif-group" >
                     <div class="notif-group-header" onclick="toggleGroup('year')">
                         <span>This Year (<?= count($year) ?>)</span>
@@ -256,15 +306,13 @@ try {
 
             </div>
 
-            <!--Right: Content-->
-            
             <div class="notif-content" id="notif-content">
                 <div class="content-empty">Select a notification to view</div>
             </div>
 
         </div>
 
-        <!--Footer-->
+        <!--footer-->
         <footer>
             <div class="footer-grid">
             <div>
@@ -314,7 +362,5 @@ try {
             year: <?= json_encode($year) ?>
         };
         </script>
-
-
     </body>
 </html>

@@ -27,7 +27,7 @@ function time_ago($datetime) {
     return floor($diff / 86400) . ' days ago';
 }
 
-// ── STATS STRIP ──
+//  STATS STRIP 
 $petsAdoptedRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM adopt_application WHERE Status = 'Approved'"));
 $petsAdopted = (int) $petsAdoptedRow['cnt'];
 
@@ -39,7 +39,7 @@ $sheltersRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FR
 $membersRow = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS cnt FROM resident WHERE Status = 1"));
 $memberCount = (int) $membersRow['cnt'];
 
-// ── FEATURED PETS ──
+//  FEATURED PETS 
 $petsResult = mysqli_query($conn, "
     SELECT PetID, PetType, Breed, Age, Location, Photo, Gender, PetName
     FROM pet
@@ -51,7 +51,7 @@ $petsResult = mysqli_query($conn, "
 $petTypeEmoji = ['Dog' => '🐕', 'Cat' => '🐈'];
 $cardColors = ['#ead9c8', '#d9c8d4', '#c8d9d0', '#d4c8e0'];
 
-// ── COMMUNITY POSTS ──
+//  COMMUNITY POSTS 
 $postsResult = mysqli_query($conn, "
     SELECT cb.BoardID,
            cb.Title,
@@ -104,10 +104,11 @@ $totalAvailablePets = $availableNow;
         <span>Furever Pet Home</span>
       </a>
       <div class="login">
-                <a href="User_Login.php" title="Log In">Log In</a>
+                <a href="User_Login.php" title="Log In">Log In</a> <!--log in icon -->
       </div>
     </div>
 
+    <!-- navigation -->
     <div class="nav-links">
       <a href="HomePage_Unregistered.php" class="nav-tab">Home</a>
       <a href="User_Login.php" class="nav-tab">Inbox</a>
@@ -119,6 +120,7 @@ $totalAvailablePets = $availableNow;
     </div>
   </nav>
 
+  <!-- banner -->
   <div class="scroll-container">
     <section class="hero" id="hero">
       <p class="hero-eyebrow">Welcome to Furever Pet Home 🌿</p>
@@ -130,6 +132,7 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
+    <!-- show overview -->
     <div class="stats-strip reveal">
       <div class="stat-item">
         <div class="stat-num" data-target="<?php echo $petsAdopted; ?>"><?php echo $petsAdopted; ?></div>
@@ -149,13 +152,14 @@ $totalAvailablePets = $availableNow;
       </div>
     </div>
 
+    <!-- show newest pet -->
     <section class="section" id="pets" style="background:var(--warm-tan);padding-top:5rem;padding-bottom:6rem;">
       <div class="section-header reveal">
         <div>
           <p class="section-eyebrow">New Arrivals</p>
           <h2 class="section-title">Pets Looking<br>for a Family</h2>
         </div>
-        <a href="User/findapet.php" class="section-link">See all <?php echo $totalAvailablePets; ?> pets →</a>
+        <a href="User_Login.php" class="section-link">See all <?php echo $totalAvailablePets; ?> pets →</a>
       </div>
       <div class="pets-grid">
         <?php
@@ -194,6 +198,7 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
+    <!-- Show map -->
     <div class="map-section reveal">
       <div class="map-blob"></div>
       <div class="map-content">
@@ -229,6 +234,7 @@ $totalAvailablePets = $availableNow;
               $initials = org_initials($post['OrgName']);
               $j++;
           ?>
+          <!-- comment -->
             <div class="post-card reveal">
               <span class="post-emoji-big"></span>
               <div class="post-header">
@@ -246,6 +252,7 @@ $totalAvailablePets = $availableNow;
       </div>
     </section>
 
+    <!-- Footer -->
     <footer>
       <div class="footer-grid">
         <div>

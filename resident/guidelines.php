@@ -1,6 +1,29 @@
 <?php
-    include("../db_connect.php");
+    session_start();
+    include("../db_connect.php"); //call database
 
+    //check current user id
+    if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+        header('Location: ../User_Login.php');
+        exit;
+    }
+
+    $residentID = $_SESSION['residentID'];
+    $is_logged_in = true; //check log in
+    
+    // ── FETCH RESIDENT INFO ──
+    $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    mysqli_stmt_bind_param($stmt, 's', $residentID);
+    mysqli_stmt_execute($stmt);
+    $residentResult = mysqli_stmt_get_result($stmt);
+    $resident = mysqli_fetch_assoc($residentResult);
+    mysqli_stmt_close($stmt);
+
+    $firstName = $resident['FirstName'] ?? 'Resident';
+    $lastName  = $resident['LastName'] ?? '';
+    $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+
+    //for search bar
     $search = $_GET['search'] ?? '';
 
     if ($search !== '') {
@@ -14,7 +37,7 @@
         
         $no_match = ($result->num_rows === 0) ? true : false;
     } else {
-        
+        //onlu show 4 guidelines
         $sql = "SELECT Title, Description FROM guidelines LIMIT 4";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -35,15 +58,28 @@
 <body>
 <div class="container">
 
-    <nav class="navbar" id="navbar">
+    <!--Top bar-->
+        <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile">AT</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div id="profileDropdown" class="dropdown-menu">
+                        <div class="dropdown-user-info">
+                            <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+                            <span><?php echo htmlspecialchars($residentID); ?></span>
+                        </div>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -72,15 +108,16 @@
 
         </section>
         
+        <!-- sarh bar-->
     <div class="search-container">
         <form method="GET" action="guidelines.php">
-            <input type="text" name="search" placeholder="Cari soalan anda di sini..." value="<?php echo htmlspecialchars($search); ?>">
+            <input type="text" name="search" placeholder="Find Your Quetsion..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
     </div>
 
     <div class="help-center">
-        <h2><?php echo ($search !== '') ? 'Hasil Carian Guidelines' : 'Guidelines'; ?></h2>
+        <h2><?php echo ($search !== '') ? 'Result Of Search' : 'Guidelines'; ?></h2>
 
         <ul class="guidelines-list">
             <?php
@@ -93,7 +130,7 @@
                 }
             } else {
                 echo "<li class='guidelines-item' style='border-left: 4px solid var(--rose);'>";
-                echo "<p class='guidelines-description'>Tiada maklumat Guidelines ditemui bagi kata kunci ini.</p>";
+                echo "<p class='guidelines-description'>No Information For This Keyword.</p>";
                 echo "</li>";
             }
             ?>

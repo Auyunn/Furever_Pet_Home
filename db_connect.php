@@ -13,6 +13,7 @@
             die("Connection failed: ".$conn->connect_error);
         }
 
+    //for more secure
     try 
     {
     $pdo = new PDO("mysql:host=$servername;dbname=$database;charset=utf8", $username, $password);

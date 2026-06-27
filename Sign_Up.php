@@ -1,4 +1,5 @@
 <?php
+    //session
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -21,7 +22,7 @@
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
-        // ================= ACTION STEP 1: BUTTON NEXT =================
+        // ================= BUTTON NEXT =================
         if (isset($_POST['action_next'])) {
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
@@ -29,7 +30,7 @@
             if ($email === "" || $password === "") {
                 $error = "Please fill in both Email and Password.";
             } else {
-                // Semak jika emel sudah wujud dalam mana-mana table
+                //check if email exist
                 $check_admin = $con->prepare("SELECT Email FROM admin WHERE Email = ?");
                 $check_admin->bind_param("s", $email); $check_admin->execute(); $res_admin = $check_admin->get_result();
 
@@ -64,7 +65,7 @@
             }
         }
         
-        // ================= ACTION STEP 2: SUBMIT & REGISTER =================
+        // ================= SUBMIT & REGISTER =================
         elseif (isset($_POST['action_register'])) {
             $email = $_SESSION['reg_email'] ?? '';
             $password = $_SESSION['reg_password'] ?? '';
@@ -94,7 +95,7 @@
                 $result = $con->query("SELECT COUNT(*) as total FROM organization");
                 $row = $result->fetch_assoc();
                 $next_num = $row['total'] + 1;
-                $unique_id = "ORG" . sprintf("%02d", $next_num); // Menghasilkan ORG16, ORG17 dll
+                $unique_id = "ORG" . sprintf("%02d", $next_num); //create id
 
                 //insert data
                 $sql = "INSERT INTO organization (OrgID, OrgName, NumberPhone, OrgAddress, Email, Password, Description) VALUES (?, ?, ?, ?, ?, ?, '')";
@@ -167,6 +168,7 @@
             <p class="error" style="color: red; margin-bottom: 1rem;"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
 
+        <!-- show form 1 -->
         <?php if ($step === 1): ?>
             <form method="post" action="">
                 <div class="signup-field">
@@ -186,7 +188,7 @@
 
         <?php else: ?>
             <form method="post" action="">
-                
+                <!-- detect ngo-->
                 <input type="hidden" name="detected_role" value="<?php echo $detected_role; ?>">
 
                 <?php if ($detected_role === 'ngo'): ?>
@@ -205,6 +207,7 @@
                         <input type="text" name="OrgAddress" required placeholder="Enter office address">
                     </div>
 
+                    <!--detect admin-->
                 <?php elseif ($detected_role === 'admin'): ?>
                     <p style="font-size:0.9rem; margin-bottom:1rem; color:brown; font-weight:bold;">Account Type: Internal Admin</p>
                     
@@ -222,6 +225,7 @@
                     </div>
 
                 <?php else: ?>
+                    <!-- detect user-->
                     <p style="font-size:0.9rem; margin-bottom:1rem; color:pink; font-weight:bold;">Account Type: Public User / Resident</p>
                     
                     <div class="signup-field">

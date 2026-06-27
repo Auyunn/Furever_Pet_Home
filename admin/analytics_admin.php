@@ -143,7 +143,6 @@
 
     <div class="bar">
         <nav class="navbar" id="navbar">
-        <!--logo and profile-->
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
@@ -154,10 +153,10 @@
             </div>
         </div>
 
-        <!---Tab Navigation-->
+        <!---navigation bar-->
         <div class="nav-links">
             <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-                <a href="usercount.php" class="nav-tab"> Users/NGOs</a>
+                <a href="usercount.php" class="nav-tab"> Residents/NGOs</a>
                 <a href="Add_Report.php" class="nav-tab"> Report</a>
                 <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
                 <a href="pet_communityadmin.php" class="nav-tab"> Pet Community</a>
@@ -169,12 +168,11 @@
         <h2>Pet Adoption Insights: Bandar Klang</h2>
         
         <div class="dashboard-container">
-    <!-- Graph Section (top) -->
+    <!-- graph -->
     <div class="chart-wrapper">
         <canvas id="adoptionRateChart"></canvas>
     </div>
 
-    <!-- Insights Section moved below chart -->
     <div class="reasons-container">
         <h3>Primary Drivers</h3>
         <div class="reason-grid">
@@ -197,8 +195,6 @@
                 <div class="status-dot"></div>
                 <p><strong>Health & Wellness Trends:</strong> Growing awareness of the mental health benefits of pets—such as reducing stress and loneliness—encourages adoption, particularly among urban residents seeking companionship.</p>
             </div>
-
-            
 
             <div class="reason-card">
                 <div class="status-dot"></div>
@@ -249,7 +245,6 @@
     </footer>
 
 
-    <!-- Internal Script for Chart-->
     <script>
         const ctx = document.getElementById('adoptionRateChart').getContext('2d');
         new Chart(ctx, {

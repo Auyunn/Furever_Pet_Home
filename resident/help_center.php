@@ -1,30 +1,35 @@
 <?php
+    //start session
     session_start();
+    //call db connect
     include("../db_connect.php");
 
-    $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['residentID']);
-    $resident_id = $is_logged_in ? $_SESSION['residentID'] : 'GUEST';
-
-    $firstName = 'Resident';
-    $lastName  = '';
-
-    if ($is_logged_in) {
-        $profileStmt = $conn->prepare("SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
-        $profileStmt->bind_param('s', $resident_id);
-        $profileStmt->execute();
-        $residentResult = $profileStmt->get_result();
-        if ($resident = $residentResult->fetch_assoc()) {
-            $firstName = $resident['FirstName'] ?? 'Resident';
-            $lastName  = $resident['LastName'] ?? '';
-        }
-        $profileStmt->close();
+    //check current user id
+    if (empty($_SESSION['loggedin']) || empty($_SESSION['residentID']) || ($_SESSION['role'] ?? '') !== 'user') {
+        header('Location: ../User_Login.php');
+        exit;
     }
 
+    $residentID = $_SESSION['residentID'];
+    $is_logged_in = true; //check log in
+    
+    // ── FETCH RESIDENT INFO ──
+    $stmt = mysqli_prepare($conn, "SELECT FirstName, LastName FROM resident WHERE ResidentID = ?");
+    mysqli_stmt_bind_param($stmt, 's', $residentID);
+    mysqli_stmt_execute($stmt);
+    $residentResult = mysqli_stmt_get_result($stmt);
+    $resident = mysqli_fetch_assoc($residentResult);
+    mysqli_stmt_close($stmt);
+
+    $firstName = $resident['FirstName'] ?? 'Resident';
+    $lastName  = $resident['LastName'] ?? '';
     $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+    
 
-
+    ///for search bar
     $search = $_GET['search'] ?? '';
 
+    //search and display by keyword
     if ($search !== '') {
         $sql = "SELECT Question, Description FROM faq WHERE Question LIKE ?";
         $stmt = $conn->prepare($sql);
@@ -41,6 +46,7 @@
         $result = $stmt->get_result();
         $no_match = false;
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -50,27 +56,36 @@
     <title>Help Center - Furever Pet Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
 </head>
 
 <body>
 <div class="container">
-
-    <nav class="navbar" id="navbar">
+    <!--top bar -->
+        <nav class="navbar" id="navbar">
         <div class ="navbar-top">
             <a href="#" class="nav-logo">
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
-                <?= htmlspecialchars($avatarInitials) ?>
-            </div>
-            
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div id="profileDropdown" class="dropdown-menu">
+                        <div class="dropdown-user-info">
+                            <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
+                            <span><?php echo htmlspecialchars($residentID); ?></span>
+                        </div>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">Logout</button>
+                    </div>
+                </div>
             </div>
         </div>
-
+        <!--navigation-->
         <div class="nav-links">
             <a href="HomePage(registed).php" class="nav-tab">Home</a>
             <a href="inbox.php" class="nav-tab">Inbox</a>
@@ -84,22 +99,24 @@
         </nav>
 
          <section class="sub-navbar">
-
+        <!-- button for guidelinesor faq-->
         <button class = "guidelines-btn" onclick="window.location.href='guidelines.php';">Guidelines</button>
         <button class = "faq-btn" onclick="window.location.href='help_center.php';">FAQ</button>
 
         </section>
 
+        <!-- search bar-->
     <div class="search-container">
         <form method="GET" action="help_center.php">
-            <input type="text" name="search" placeholder="Cari soalan anda di sini..." value="<?php echo htmlspecialchars($search); ?>">
+            <input type="text" name="search" placeholder="Find Your Questions..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit">Search</button>
         </form>
     </div>
 
     <div class="help-center">
-        <h2><?php echo ($search !== '') ? 'Hasil Carian FAQ' : 'Soalan Lazim (FAQ)'; ?></h2>
+        <h2><?php echo ($search !== '') ? 'Result Of Search FAQ' : 'Frequently Asked Question (FAQ)'; ?></h2>
 
+        <!-- display result-->
         <ul class="faq-list">
             <?php
             if ($result->num_rows > 0) {
@@ -111,7 +128,7 @@
                 }
             } else {
                 echo "<li class='faq-item' style='border-left: 4px solid var(--rose);'>";
-                echo "<p class='faq-answer'>Tiada maklumat FAQ ditemui bagi kata kunci ini.</p>";
+                echo "<p class='faq-answer'>No Information FOund.</p>";
                 echo "</li>";
             }
             ?>

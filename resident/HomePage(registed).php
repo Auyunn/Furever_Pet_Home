@@ -194,7 +194,7 @@ $totalAvailablePets = $availableNow;
       <div class="nav-right">
         <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
    <div class="profile-dropdown">
-  <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer; position: relative;">
+    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer; position: relative;">
     <?php echo htmlspecialchars($avatarInitials); ?>
   </div>
  

@@ -1,4 +1,5 @@
 <?php
+    //session
     session_start();
     
     $conn = new mysqli("localhost", "root", "", "furever_pet_home");
@@ -13,6 +14,7 @@
         exit;
     }
 
+    //check by email and password
     $error = "";
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = trim($_POST['email'] ?? '');
@@ -21,7 +23,7 @@
         if ($email === "" || $password === "") {
             $error = "Please enter both email and password.";
         } else {
-            // 1. IDENTIFY USER TYPE BASED ON EMAIL DOMAIN
+            // IDENTIFY USER TYPE BASED ON EMAIL DOMAIN
             if (str_contains($email, 'furever.com')) {
                 // Admin Account
                 $sql = "SELECT AdminID, FirstName, Password FROM admin WHERE Email = ?";
@@ -95,6 +97,7 @@
         <span>Furever Pet Home</span>
         </div>
 
+        <!-- if success-->
         <?php if (!empty($_SESSION['loggedin'])): ?>
             <div class="welcome-box">
                 <h2>Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?>!</h2>
@@ -112,6 +115,8 @@
                 <p class="error" style="color: #d43f3a;"><?php echo htmlspecialchars($error); ?></p>
             <?php endif; ?>
 
+            <!-- field-->
+
             <form method="post" action="">
                 
                 <div class="login-field">
@@ -122,6 +127,7 @@
                     <input type="password" name="password" placeholder="Password" required>
                 </div>
 
+                <!-- form -->
                 <div class="login-nav">
                     <a href="Sign_Up.php">Don't have an account?</a>
                     <a href="ForgotPassword.php">Forgot Password?</a>

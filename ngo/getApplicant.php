@@ -1,4 +1,5 @@
 <?php
+//start session and connect db
 session_start();
 include __DIR__ . '/../db_connect.php';
 
@@ -12,6 +13,7 @@ $row = null;
 if (isset($_GET['id'])) {
     $adoptionID = trim($_GET['id']);
 
+    //create query
     $stmt = $conn->prepare("SELECT a.AdoptionID, a.Status, a.Reason, a.RequestDate,
                                    r.ResidentID, r.FirstName, r.LastName, r.Email, r.NumberPhone, r.Address,
                                    p.PetID, p.PetName, p.PetType, p.Age, p.Gender, p.Photo, p.IsAvailable, p.OrgID
@@ -24,6 +26,7 @@ if (isset($_GET['id'])) {
         die("Prepared failed: " . $conn->error);
     }
 
+    //prepare statement and execute
     $stmt->bind_param("s", $adoptionID);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -40,7 +43,7 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 $requestDate = isset($row['RequestDate']) ? date("d/m/Y H:i", strtotime($row['RequestDate'])) : '-';
 ?>
 
-
+<!--display all information-->
 <div class="applicant-details" data-current-id="<?= e($row['AdoptionID']) ?>">
     <button class = "close-btn" onclick="closePanel()" style="float:right; margin:4px;">× Close</button>
     <h3>Applicant Details</h3>
@@ -62,6 +65,7 @@ $requestDate = isset($row['RequestDate']) ? date("d/m/Y H:i", strtotime($row['Re
     <p><strong>Status:</strong> <?= e($row['Status']) ?></p>
     <p><strong>Reason:</strong><br><?= nl2br(e($row['Reason'])) ?></p>
 
+    <!-- create button in the panel-->
     <button class="btn-approve"
         onclick="updateStatus('<?php echo htmlspecialchars($row['AdoptionID']); ?>','Approved')">
         Approve
