@@ -142,11 +142,7 @@ try {
 
         <!-- NAVIGATION -->
         <div class="nav-links">
-            <?php if($is_logged_in): ?>
-                <a href="../HomePage(registed).php" class="nav-tab">Home</a>
-            <?php else: ?>
-                <a href="../HomePage_Unregistered.html" class="nav-tab">Home</a>
-            <?php endif; ?>
+            <a href="HomePage(registed).php" class="nav-tab">Home</a>
             <a href="inbox.php" class="nav-tab">Inbox</a>
             <a href="findapet.php" class="nav-tab"> Find A Pet</a>
             <a href="pet_community.php" class="nav-tab"> Pet Community</a>

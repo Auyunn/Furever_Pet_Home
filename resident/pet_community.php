@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION)) {
+    $_SESSION = [];
+}
 
 include '../db_connect.php';
 
@@ -56,7 +59,7 @@ if(isset($_POST['submit_comment'])){
 $query_board = "SELECT pc.*, o.OrgName 
                 FROM community_board pc
                 LEFT JOIN organization o ON pc.OrgID = o.OrgID
-                ORDER BY pc.BoardID ASC";
+                ORDER BY pc.Date DESC";
 $result_board = mysqli_query($conn, $query_board);
 ?>
 
@@ -75,11 +78,23 @@ $result_board = mysqli_query($conn, $query_board);
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
         </a>
+
         <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
             
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
-                <?= htmlspecialchars($avatarInitials) ?>
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars($avatarInitials) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
+                        <span>Resident Account</span>
+                    </div>
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">🔒 Log Out</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
