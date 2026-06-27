@@ -5,6 +5,8 @@ if (!isset($_SESSION)) {
 }
 
 include '../db_connect.php';
+/** @var mysqli $conn */
+/** @var PDO $pdo */
 
 
 $is_logged_in = (!empty($_SESSION['loggedin']) && !empty($_SESSION['residentID']) && ($_SESSION['role'] ?? '') === 'user');
