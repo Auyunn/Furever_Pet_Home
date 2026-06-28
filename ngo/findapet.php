@@ -2,7 +2,11 @@
 session_start();
 include('../db_connect.php');
 
-
+$currentOrgID = $_SESSION['orgID'] ?? null;
+if (!$currentOrgID) {
+    header("Location: ../login.php");
+    exit();
+}
 $selectedType = $_GET['pet_type'] ?? '';
 $selectedOrg  = $_GET['shelter']  ?? '';
 
@@ -73,9 +77,21 @@ $photoFolder = "../image/pets/";
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile" onclick="window.location.href='../User Login.html';">
-                <?= isset($_SESSION['username']) ? htmlspecialchars(strtoupper(substr($_SESSION['username'], 0, 2))) : 'OR' ?>
+        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+    
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                        <span>NGO Account</span>
+                    </div>
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">🔒 Log Out</button>
+                    </form>
+                </div>
             </div>
             </div>
         </div>
@@ -190,5 +206,7 @@ $photoFolder = "../image/pets/";
         </footer>
 
         </div><!--/wrapper-->
+        <script src="../js/script.js"></script>
+
     </body>
 </html>

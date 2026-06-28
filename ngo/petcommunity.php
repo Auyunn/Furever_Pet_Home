@@ -142,7 +142,7 @@ $photoFolder = "../image/pet_community/";
         <span>Furever Pet Home</span>
         </a>
        <div class="nav-right">
-    <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
     
         <div class="profile-dropdown">
             <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
@@ -158,7 +158,7 @@ $photoFolder = "../image/pet_community/";
                 </form>
             </div>
         </div>
-    </div>
+        </div>
     </div>
 
     <!---Tab Navigation-->

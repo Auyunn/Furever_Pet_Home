@@ -6,18 +6,13 @@ if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
-/*if (!isset($_SESSION['orgID'])) {
-   if($_SERVER['REQUEST_METHOD']=='POST'){
-    header('Content-Type: application/json');
-    echo json_encode(['success'=> false, 'message'=> 'Unauthorized']);
-    exit;
-   }
-   header("Location:../User_Login.php");
-   exit;
+$currentOrgID = $_SESSION['orgID'] ?? null;
+if (!$currentOrgID) {
+    header("Location: ../login.php");
+    exit();
 }
+$org_id = $currentOrgID;
 
-$org_id = $_SESSION['orgID'];*/
-$org_id = "ORG05"; // TEST
 if($_SERVER['REQUEST_METHOD']==='POST'){
     header('Content-Type: application/json');
     $input    = json_decode(file_get_contents('php://input'), true);
@@ -124,6 +119,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NGO Report</title>
+    <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/ngo_report.css">
 </head>
@@ -138,8 +134,21 @@ $conn->close();
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile"> OR</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                            <span>NGO Account</span>
+                        </div>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 

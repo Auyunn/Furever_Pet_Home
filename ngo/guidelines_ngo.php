@@ -1,6 +1,12 @@
 <?php
+    session_start();
     include("../db_connect.php");
 
+    $currentOrgID = $_SESSION['orgID'] ?? null;
+    if (!$currentOrgID) {
+        header("Location: ../login.php");
+        exit();
+    }
     $search = $_GET['search'] ?? '';
 
     if ($search !== '') {
@@ -27,6 +33,7 @@
     <meta charset="UTF-8">
     <title>Help Center - Furever Pet Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
         .fab-add {
@@ -62,9 +69,22 @@
                 <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-                <div class="avatar" title="My Profile">OR</div>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                        <span>NGO Account</span>
+                    </div>
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">🔒 Log Out</button>
+                    </form>
+                </div>
             </div>
+        </div>
         </div>
 
         <div class="nav-links">
