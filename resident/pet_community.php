@@ -119,12 +119,13 @@ $result_board = mysqli_query($conn, $query_board);
         <?php while($post = mysqli_fetch_assoc($result_board)) : ?>
             <?php 
             $board_id = $post['BoardID'];
-            $query_comment = "SELECT c.CommentID, c.Content, c.Date, CONCAT(r.FirstName,' ', r.LastName) AS ResidentName
-                                FROM comment c
-                                LEFT JOIN resident r ON c.ResidentID = r.ResidentID
-                                WHERE c.BoardID = '$board_id'
-                                AND c.ReplyID IS NULL
-                                ORDER BY c.Date ASC";
+           $query_comment = "SELECT c.CommentID, c.Content, c.Date, c.ReplyID,
+                    COALESCE(CONCAT(r.FirstName,' ', r.LastName), o.OrgName) AS ResidentName
+                    FROM comment c
+                    LEFT JOIN resident r ON c.ResidentID = r.ResidentID
+                    LEFT JOIN organization o ON c.OrgID = o.OrgID
+                    WHERE c.BoardID = '$board_id'
+                    ORDER BY c.Date ASC";
             $result_comment = mysqli_query($conn, $query_comment);
             $comment_count = mysqli_num_rows($result_comment);
             ?>
@@ -144,7 +145,10 @@ $result_board = mysqli_query($conn, $query_board);
                         <div class="list">
                             <?php if($comment_count > 0): ?>
                                 <?php while($comment = mysqli_fetch_assoc($result_comment)) : ?>
-                                    <div class="comment-item">
+                                    <div class="comment-item <?= $comment['ReplyID'] ? 'comment-reply' : '' ?>">
+                                        <?php if($comment['ReplyID']): ?>
+                                            <small style="color:#aaa;">↳ reply</small>
+                                        <?php endif; ?>
                                         <div class="author">
                                             <?php echo htmlspecialchars($comment['ResidentName'] ?? 'Unknown');?>
                                         </div>

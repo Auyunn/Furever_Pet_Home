@@ -394,8 +394,42 @@ function getBadgeClass(status) {
     if (status === 'In Progress') return 'badge_inprogress';
     return 'badge_pending';
 }
+//=========== NGO PET COMMUNITY=================
+function toggleComments(boardID) {
+    const panel = document.getElementById('panel-' + boardID);
+    panel.classList.toggle('open');
+}
 
+function toggleEdit(boardID) {
+    const viewEl = document.querySelector('.view-mode[data-board="' + boardID + '"]');
+    const editEl = document.querySelector('.edit-mode[data-board="' + boardID + '"]');
 
+    if (editEl.style.display === 'none') {
+        viewEl.style.display = 'none';
+        editEl.style.display = 'block';
+    } else {
+        viewEl.style.display = 'block';
+        editEl.style.display = 'none';
+    }
+}
+
+function openNgoReply(boardID, commentID, authorName) {
+    document.getElementById('ngo-reply-id-' + boardID).value = commentID;
+    document.getElementById('ngo-reply-label-' + boardID).textContent = '↳ Replying to ' + authorName + ':';
+    document.getElementById('ngo-reply-form-' + boardID).style.display = 'block';
+    document.getElementById('ngo-reply-input-' + boardID).focus();
+
+    const panel = document.getElementById('panel-' + boardID);
+    if (panel && !panel.classList.contains('open')) {
+        panel.classList.add('open');
+    }
+}
+
+function cancelNgoReply(boardID) {
+    document.getElementById('ngo-reply-form-' + boardID).style.display = 'none';
+    document.getElementById('ngo-reply-id-' + boardID).value = '';
+    document.getElementById('ngo-reply-label-' + boardID).textContent = '';
+}
 //====|ADMIN|====
 //====PROFILE DROPDOWN====
 function toggleProfileDropdown() {

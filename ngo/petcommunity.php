@@ -2,32 +2,26 @@
 session_start();
 require_once "../db_connect.php"; // petcommunity.php is in /ngo, db_connect.php is one level up in project root
 
-/* ============================================================
-   CURRENT NGO (logged-in organization)
-   ------------------------------------------------------------
-   TODO: Once login is wired up, your login.php should set:
-       $_SESSION['org_id'] = $row['OrgID'];
-   on successful NGO login. This page just reads it from there.
 
-   Until then, this fallback lets you test the page without
-   being logged in. REMOVE the fallback block once auth exists.
-============================================================ */
 $currentOrgID = $_SESSION['orgID'] ?? null;
 if (!$currentOrgID) {
     header("Location: ../login.php");
     exit();
 }
+// ---- DELETE COMMENT ----
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_comment') {
+    $commentID = $_POST['CommentID'];
 
-/* ============================================================
-   HANDLE POST ACTIONS (delete post, update post)
-   These run before any HTML is output, then redirect back to
-   this same page (prevents form re-submission on refresh).
+    $stmt = $conn->prepare("DELETE FROM comment WHERE CommentID = ?");
+    $stmt->bind_param("s", $commentID);
+    $stmt->execute();
+    $stmt->close();
 
-   Both actions check OrgID = $currentOrgID in the WHERE clause
-   so an NGO can never edit/delete another NGO's post, even if
-   someone tampers with the hidden BoardID field in devtools.
-============================================================ */
+    header("Location: petcommunity.php");
+    exit();
+}
 
+// ---- DELETE POST ----
 // ---- DELETE POST ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_post') {
     $boardID = $_POST['BoardID'];
@@ -56,11 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
-
-/* ============================================================
-   FETCH POSTS - only this NGO's own posts
-   community_board columns: BoardID, OrgID, Title, Content, Photo, Date
-============================================================ */
 $posts = [];
 $stmt = $conn->prepare("
     SELECT cb.BoardID, cb.Title, cb.Content, cb.Photo, cb.Date, cb.OrgID,
@@ -79,11 +68,6 @@ while ($row = $postResult->fetch_assoc()) {
 $stmt->close();
 
 
-/* ============================================================
-   FETCH COMMENTS for those posts (read-only display)
-   comment columns: CommentID, BoardID, ResidentID, Content, Date, ReplyID
-   Residents add these from a different page - this page only displays them.
-============================================================ */
 $commentsByBoard = [];
 if (!empty($posts)) {
     $boardIDs = array_column($posts, 'BoardID');
@@ -91,13 +75,17 @@ if (!empty($posts)) {
     $types = str_repeat('s', count($boardIDs));
 
     $sql = "
-        SELECT c.CommentID, c.BoardID, c.ResidentID, c.Content, c.Date, c.ReplyID,
-               CONCAT(r.FirstName, ' ', r.LastName) AS CommenterName
-        FROM comment c
-        LEFT JOIN resident r ON c.ResidentID = r.ResidentID
-        WHERE c.BoardID IN ($placeholders)
-        ORDER BY c.Date ASC
-    ";
+    SELECT c.CommentID, c.BoardID, c.ResidentID, c.OrgID, c.Content, c.Date, c.ReplyID,
+        COALESCE(CONCAT(r.FirstName, ' ', r.LastName), o.OrgName) AS CommenterName,
+        COALESCE(CONCAT(rp.FirstName, ' ', rp.LastName), op.OrgName) AS ReplyToName
+    FROM comment c
+    LEFT JOIN resident r ON c.ResidentID = r.ResidentID
+    LEFT JOIN organization o ON c.OrgID = o.OrgID
+    LEFT JOIN comment parent ON c.ReplyID = parent.CommentID
+    LEFT JOIN resident rp ON parent.ResidentID = rp.ResidentID
+    LEFT JOIN organization op ON parent.OrgID = op.OrgID
+    WHERE c.BoardID IN ($placeholders)
+    ORDER BY COALESCE(c.ReplyID, c.CommentID), c.Date ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param($types, ...$boardIDs);
     $stmt->execute();
@@ -108,6 +96,30 @@ if (!empty($posts)) {
     $stmt->close();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ngo_reply') {
+    $boardID  = $_POST['BoardID'];
+    $replyID  = $_POST['ReplyID'];
+    $content  = trim($_POST['Content']);
+    $date     = date('Y-m-d H:i:s');
+
+    // Generate new CommentID
+    $result_max = $conn->query("SELECT MAX(CAST(SUBSTRING(CommentID,4) AS UNSIGNED)) AS maxNum FROM comment");
+    $row_max    = $result_max->fetch_assoc();
+    $next_num   = ($row_max['maxNum'] !== NULL) ? $row_max['maxNum'] + 1 : 1;
+    $comment_id = "COM" . str_pad($next_num, 2, "0", STR_PAD_LEFT);
+
+
+   $stmt = $conn->prepare("
+    INSERT INTO comment (CommentID, ResidentID, OrgID, BoardID, Content, Date, ReplyID)
+    VALUES (?, NULL, ?, ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("ssssss", $comment_id, $currentOrgID, $boardID, $content, $date, $replyID);
+        $stmt->execute();
+    $stmt->close();
+
+    header("Location: petcommunity.php");
+    exit();
+}
 // NOTE: adjust this if your community post photos live in a different folder
 $photoFolder = "../image/pet_community/";
 ?>
@@ -129,12 +141,24 @@ $photoFolder = "../image/pet_community/";
         <img src="../image/icons/logo.png" alt="Furever Pet Home">
         <span>Furever Pet Home</span>
         </a>
-        <div class="nav-right">
-        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-        <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
-            <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+       <div class="nav-right">
+    <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+    
+        <div class="profile-dropdown">
+            <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+            </div>
+            <div class="dropdown-menu" id="profileDropdown">
+                <div class="dropdown-user-info">
+                    <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                    <span>NGO Account</span>
+                </div>
+                <form method="post" action="../logout.php" style="margin:0;">
+                    <button type="submit" class="logout-btn">🔒 Log Out</button>
+                </form>
+            </div>
         </div>
-        </div>
+    </div>
     </div>
 
     <!---Tab Navigation-->
@@ -197,20 +221,75 @@ $photoFolder = "../image/pet_community/";
 
                         <!-- ===== COMMENT PANEL (read-only - residents comment elsewhere) ===== -->
                         <div class="panel" id="panel-<?= htmlspecialchars($boardID) ?>">
-                            <div class="comment-list">
+                           <div class="comment-list">
                                 <?php if (empty($comments)): ?>
                                     <p class="no-comments">No comments yet.</p>
                                 <?php else: ?>
                                     <?php foreach ($comments as $comment): ?>
-                                        <div class="comment-item">
-                                            <strong><?= htmlspecialchars($comment['CommenterName'] ?? $comment['ResidentID']) ?>:</strong>
-                                            <span><?= htmlspecialchars($comment['Content']) ?></span>
-                                            <span class="comment-date"><?= date('d M Y, g:i A', strtotime($comment['Date'])) ?></span>
+                                        <div class="comment-item <?= $comment['ReplyID'] ? 'comment-reply' : '' ?>"
+                                            id="comment-<?= htmlspecialchars($comment['CommentID']) ?>">
+
+                                            <!-- VIEW MODE -->
+                                            <div class="comment-view" data-comment="<?= htmlspecialchars($comment['CommentID']) ?>">
+                                                <?php if ($comment['ReplyID']): ?>
+                                                    <span class="reply-badge">↳ replying to <?= htmlspecialchars($comment['ReplyToName'] ?? $comment['ReplyID']) ?></span>
+                                                <?php endif; ?>
+                                                <div>
+                                                    <strong><?= htmlspecialchars($comment['CommenterName'] ?? $comment['ResidentID']) ?>:</strong>
+                                                    <span><?= htmlspecialchars($comment['Content']) ?></span>
+                                                </div>
+                                                <div class="comment-footer">
+                                                    <span class="comment-date"><?= date('d M Y, g:i A', strtotime($comment['Date'])) ?></span>
+                                                    <div class="comment-actions">
+                                                    <button type="button"
+                                                        onclick="openNgoReply('<?= htmlspecialchars($boardID) ?>', '<?= htmlspecialchars($comment['CommentID']) ?>', '<?= htmlspecialchars($comment['CommenterName']) ?>')">
+                                                        ↩ Reply
+                                                    </button>
+                                                    <form method="POST" action="petcommunity.php" onsubmit="return confirm('Delete this comment?');" style="display:inline;">
+                                                        <input type="hidden" name="action" value="delete_comment">
+                                                        <input type="hidden" name="CommentID" value="<?= htmlspecialchars($comment['CommentID']) ?>">
+                                                        <button type="submit" title="Delete">🗑️</button>
+                                                    </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- EDIT MODE -->
+                                            <form class="comment-edit" data-comment="<?= htmlspecialchars($comment['CommentID']) ?>"
+                                                method="POST" action="petcommunity.php" style="display:none;">
+                                                <input type="hidden" name="action" value="update_comment">
+                                                <input type="hidden" name="CommentID" value="<?= htmlspecialchars($comment['CommentID']) ?>">
+                                                <input type="text" name="Content" class="edit-title-input"
+                                                    value="<?= htmlspecialchars($comment['Content']) ?>" required>
+                                                <div class="edit-actions">
+                                                    <button type="submit" class="save-btn">Save</button>
+                                                    <button type="button" class="cancel-btn"
+                                                            onclick="toggleCommentEdit('<?= htmlspecialchars($comment['CommentID']) ?>')">Cancel</button>
+                                                </div>
+                                            </form>
+
                                         </div>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </div>
-                        </div>
+
+            <!-- NGO REPLY FORM (one per board, hidden until Reply clicked) -->
+                            <form class="ngo-reply-form" id="ngo-reply-form-<?= htmlspecialchars($boardID) ?>"
+                                method="POST" action="petcommunity.php" style="display:none;">
+                                <input type="hidden" name="action" value="ngo_reply">
+                                <input type="hidden" name="BoardID" value="<?= htmlspecialchars($boardID) ?>">
+                                <input type="hidden" name="ReplyID" id="ngo-reply-id-<?= htmlspecialchars($boardID) ?>" value="">
+                                <div class="comment-input-row">
+                                    <span class="reply-to-label" id="ngo-reply-label-<?= htmlspecialchars($boardID) ?>"></span>
+                                    <input type="text" name="Content" class="comment-input"
+                                        id="ngo-reply-input-<?= htmlspecialchars($boardID) ?>"
+                                        placeholder="Write your reply..." required>
+                                    <button type="button" class="cancel-reply-btn"
+                                            onclick="cancelNgoReply('<?= htmlspecialchars($boardID) ?>')">✕</button>
+                                    <button type="submit" class="comment-send">➤</button>
+                                </div>
+                            </form>
+                            </div>
 
                     </div>
 
@@ -276,27 +355,7 @@ $photoFolder = "../image/pet_community/";
 
     </div><!--/wrapper-->
 
-<script>
-// Toggle the comment panel open/closed for a given post
-function toggleComments(boardID) {
-    const panel = document.getElementById('panel-' + boardID);
-    panel.classList.toggle('open');
-}
-
-// Toggle between view mode and inline edit mode for a given post
-function toggleEdit(boardID) {
-    const viewEl = document.querySelector('.view-mode[data-board="' + boardID + '"]');
-    const editEl = document.querySelector('.edit-mode[data-board="' + boardID + '"]');
-
-    if (editEl.style.display === 'none') {
-        viewEl.style.display = 'none';
-        editEl.style.display = 'block';
-    } else {
-        viewEl.style.display = 'block';
-        editEl.style.display = 'none';
-    }
-}
-</script>
+<script src="../js/script.js"></script>
 
 </body>
 </html>

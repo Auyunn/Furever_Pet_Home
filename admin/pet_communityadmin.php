@@ -24,10 +24,16 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
             exit();
         }
 
-        $sql_comments = "SELECT c.CommentID, c.Content, c.Date, c.ReplyID, c.ResidentID, r.FirstName, r.LastName, c2.Content AS ReplyContent
+       $sql_comments = "SELECT c.CommentID, c.Content, c.Date, c.ReplyID, c.ResidentID, c.OrgID,
+        COALESCE(CONCAT(r.FirstName, ' ', r.LastName), o.OrgName) AS CommenterName,
+        COALESCE(CONCAT(rp.FirstName, ' ', rp.LastName), op.OrgName) AS ReplyToName,
+        c2.Content AS ReplyContent
         FROM comment c
         LEFT JOIN resident r ON c.ResidentID = r.ResidentID
+        LEFT JOIN organization o ON c.OrgID = o.OrgID
         LEFT JOIN comment c2 ON c.ReplyID = c2.CommentID
+        LEFT JOIN resident rp ON c2.ResidentID = rp.ResidentID
+        LEFT JOIN organization op ON c2.OrgID = op.OrgID
         WHERE c.BoardID = '". $boardID . "'
         ORDER BY c.Date ASC";
         $result_comments = mysqli_query($conn, $sql_comments);
