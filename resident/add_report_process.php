@@ -137,16 +137,15 @@ if ($orgID === null) {
     exit;
 }
 
-$status = 'Submit';
-
 // ── INSERT INTO report ──
+$reportStatus = 'Pending';
 $query = "INSERT INTO report (ReportID, ResidentID, OrgID, PetName, Location, Description, Status, Photo)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param(
     $stmt,
     'ssssssss',
-    $reportID, $residentID, $orgID, $reportName, $reportLocation, $reportDesc, $status, $photo
+    $reportID, $residentID, $orgID, $reportName, $reportLocation, $reportDesc, $reportStatus, $photo
 );
 $success = mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
@@ -167,7 +166,7 @@ if ($success) {
     $inboxTitle  = $reportName . " Report";
     $inboxMsg    = "Report received. Awaiting action from NGO.";
     $inboxType   = "Pet Report";
-    $inboxStatus = "Submit";
+    $inboxStatus = "Pending";
 
     $stmtInbox = mysqli_prepare($conn,
         "INSERT INTO inbox (InboxID, ReportID, AdoptionID, Title, Message, DateTime, Type, Status)
