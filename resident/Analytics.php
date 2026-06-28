@@ -6,7 +6,7 @@
     $is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['residentID']);
     $resident_id = $is_logged_in ? $_SESSION['residentID'] : 'GUEST';
 
-    // ── QUERY 1: AMBIL DATA PROFILE USER YANG LOGIN (UNTUK AVATAR) ──
+    // ── QUERY 1: AMBIL DATA PROFILE USER YANG LOGIN  ──
     $firstName = 'Resident';
     $lastName  = '';
 
@@ -22,7 +22,7 @@
         $profileStmt->close();
     }
 
-    // Sediakan data avatar initials (Huruf pertama FirstName + Huruf pertama LastName)
+    // Sediakan data initials (Huruf pertama FirstName + Huruf pertama LastName)
     $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
 ?>
 
