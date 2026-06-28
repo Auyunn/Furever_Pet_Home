@@ -86,9 +86,7 @@ if (isset($_FILES['reportPhoto']) && $_FILES['reportPhoto']['error'] === UPLOAD_
 // ── GET OrgID based on location (match against OrgAddress, active orgs only) ──
 $orgID = null;
 
-// Cuba match: kawasan dalam OrgAddress wujud dalam Location yang user taip,
-// ATAU location yang user taip wujud dalam OrgAddress.
-// Hanya organisasi aktif (Status = 1) yang dipertimbangkan.
+
 $orgStmt = mysqli_prepare(
     $conn,
     "SELECT OrgID FROM organization
@@ -104,11 +102,10 @@ mysqli_stmt_close($orgStmt);
 if ($orgResult) {
     $orgID = $orgResult['OrgID'];
 } else {
-    // Takde match terus — cuba match per-perkataan kawasan dalam Location
-    // (cth: user taip "Bandar Botanic" je, tanpa alamat penuh)
+
     $locationWords = preg_split('/[\s,]+/', $reportLocation, -1, PREG_SPLIT_NO_EMPTY);
     foreach ($locationWords as $word) {
-        if (mb_strlen($word) < 4) continue; // skip perkataan terlalu pendek (cth: "no", "41200")
+        if (mb_strlen($word) < 4) continue; 
         $wordStmt = mysqli_prepare(
             $conn,
             "SELECT OrgID FROM organization WHERE Status = 1 AND OrgAddress LIKE CONCAT('%', ?, '%') LIMIT 1"
@@ -124,15 +121,13 @@ if ($orgResult) {
     }
 }
 
-// Kalau masih takde match, fallback: organisasi aktif pertama
 if ($orgID === null) {
     $orgQuery = mysqli_query($conn, "SELECT OrgID FROM organization WHERE Status = 1 LIMIT 1");
     $orgRow   = $orgQuery ? mysqli_fetch_assoc($orgQuery) : null;
     $orgID    = $orgRow['OrgID'] ?? null;
 }
 
-// Kalau betul-betul takde organisasi aktif langsung, jangan crash —
-// bagi error jelas kat user supaya admin boleh tambah/aktifkan organization.
+
 if ($orgID === null) {
     $_SESSION['report_errors'] = [
         'Unable to submit report: no active organization is registered in the system yet. Please contact the administrator.'
