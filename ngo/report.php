@@ -1,50 +1,46 @@
 <?php
 session_start();
+/** @var array $_SERVER */
 
 $conn = new mysqli("localhost", "root", "", "furever_pet_home");
 if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
-/*if (!isset($_SESSION['orgID'])) {
-   if($_SERVER['REQUEST_METHOD']=='POST'){
-    header('Content-Type: application/json');
-    echo json_encode(['success'=> false, 'message'=> 'Unauthorized']);
-    exit;
-   }
-   header("Location:../User_Login.php");
-   exit;
+$currentOrgID = $_SESSION['orgID'] ?? null;
+if (!$currentOrgID) {
+    header("Location: ../login.php");
+    exit();
 }
+$org_id = $currentOrgID;
 
-$org_id = $_SESSION['orgID'];*/
-$org_id = "ORG05"; // TEST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if($_SERVER['REQUEST_METHOD']==='POST'){
     header('Content-Type: application/json');
-    $input = json_decode(file_get_contents('php://input'), true);
-    $action = trim($input['action'] ?? '');
+    $input    = json_decode(file_get_contents('php://input'), true);
+    $action   = trim($input['action']   ?? '');
     $reportID = trim($input['reportID'] ?? '');
-    $status = trim($input['status'] ?? '');
+    $status   = trim($input['status']   ?? '');
 
-    if ($action !== 'update_status') {
-        echo json_encode(['success' => false, 'message' => 'Invalid action']);
+    if($action !== 'update_status'){
+        echo json_encode(['success' => false, 'message'=> 'Invalid action']);
         exit;
     }
-
+    
     $allow = ['Pending', 'In Progress', 'Resolved'];
     if (empty($reportID) || !in_array($status, $allow)) {
         echo json_encode(['success' => false, 'message' => 'Invalid input']);
         exit;
     }
 
-    $stmt = $conn->prepare(" UPDATE report 
+    $stmt= $conn -> prepare(" UPDATE report 
                               SET Status = ? WHERE ReportID = ? AND OrgID = ?");
     $stmt->bind_param("sss", $status, $reportID, $org_id);
     $stmt->execute();
-
-    if ($stmt->affected_rows > 0) {
+ 
+    if($stmt -> affected_rows >0){
         echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'No record updated.']);
+    }else{
+         echo json_encode(['success' => false, 'message' => 'No record updated.']);
     }
     $stmt->close();
     $conn->close();
@@ -124,34 +120,34 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NGO Report</title>
+    <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/ngo_report.css">
 </head>
 
 <body>
 
-    <!-- LOGO and LOGIN -->
-    <nav class="navbar" id="navbar">
-        <div class="navbar-top">
+        <!-- LOGO and LOGIN -->
+        <nav class="navbar" id="navbar">
+        <div class ="navbar-top">
             <a href="#" class="nav-logo">
-                <img src="../image/icons/logo.png" alt="Furever Pet Home">
-                <span>Furever Pet Home</span>
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span
-                        class="notif-dot"></span></button>
-                <div class="avatar-wrapper">
-                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown(event)">OR</div>
-                    <div class="profile-dropdown" id="profileDropdown">
-                        <div class="profile-dropdown-header">
-                            <div class="avatar-sm">OR</div>
-                            <div>
-                                <div class="profile-name">Organization</div>
-                                <div class="profile-email">org@fureverpethome.com</div>
-                            </div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                            <span>NGO Account</span>
                         </div>
-                        <hr class="dropdown-divider">
-                        <a href="../logout.php" class="dropdown-item dropdown-logout">🚪 Logout</a>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -167,210 +163,212 @@ $conn->close();
             <a href="Analytics.php" class="nav-tab"> Analytics</a>
             <a href="report.php" class="nav-tab"> Report</a>
         </div>
-
-    </nav>
-
-
-    <div class="filter-box">
-        <label for="filter">Show:</label>
-
-        <select id="filter" class="select-filter" onchange="applyFilter()">
-
-            <option value="today" <?php echo ($filter == 'today') ? 'selected' : ''; ?>>
-                Today
-            </option>
-
-            <option value="yesterday" <?php echo ($filter == 'yesterday') ? 'selected' : ''; ?>>
-                Yesterday
-            </option>
-
-            <option value="this_week" <?php echo ($filter == 'this_week') ? 'selected' : ''; ?>>
-                This Week
-            </option>
-
-            <option value="this_month" <?php echo ($filter == 'this_month') ? 'selected' : ''; ?>>
-                This Month
-            </option>
-
-            <option value="this_year" <?php echo ($filter == 'this_year') ? 'selected' : ''; ?>>
-                This Year
-            </option>
-
-        </select>
-    </div>
-
-    <div class="ngo-inbox-container">
-
-        <div class="inbox-table-wrap">
-
-            <table class="inbox-table">
-
-                <thead>
-                    <tr>
-                        <th>Report ID</th>
-                        <th>Pet Name</th>
-                        <th>Location</th>
-                        <th>Date Reported</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody id="reportTbody">
-                    <?php if (empty($rows)) { ?>
-                        <tr class="empty-row">
-                            <td colspan="6">No reports found for this period.</td>
-                        </tr>
-                    <?php } else { ?>
-                        <?php foreach ($rows as $row) {
-
-                            $status = isset($row['Status']) ? $row['Status'] : 'Pending';
-
-                            if ($status == 'Resolved') {
-                                $badgeClass = 'badge_resolved';
-                            } elseif ($status == 'In Progress') {
-                                $badgeClass = 'badge_inprogress';
-                            } elseif ($status == 'Submit') {
-                                $badgeClass = 'badge_submit';
-                            } else {
-                                $badgeClass = 'badge_pending';
-                            }
-
-                            if (isset($row['DateReported'])) {
-                                $dateFormatted = date("d/m/Y H:i", strtotime($row['DateReported']));
-                            } else {
-                                $dateFormatted = '-';
-                            }
-                            ?>
-
-                            <tr id="row-<?php echo htmlspecialchars($row['ReportID']); ?>"
-                                data-id="<?php echo htmlspecialchars($row['ReportID']); ?>"
-                                data-pet="<?php echo htmlspecialchars($row['PetName']); ?>"
-                                data-loc="<?php echo htmlspecialchars($row['Location']); ?>"
-                                data-desc="<?php echo htmlspecialchars($row['Description']); ?>"
-                                data-date="<?php echo htmlspecialchars($dateFormatted); ?>"
-                                data-status="<?php echo htmlspecialchars($status); ?>"
-                                data-photo="<?php echo htmlspecialchars($row['Photo'] ?? ''); ?>">
-
-                                <td>
-                                    <?php echo htmlspecialchars($row['ReportID']); ?>
-                                </td>
-
-                                <td>
-                                    <?php echo htmlspecialchars($row['PetName']); ?>
-                                </td>
-
-                                <td>
-                                    <?php echo htmlspecialchars($row['Location']); ?>
-                                </td>
-
-                                <td>
-                                    <?php echo $dateFormatted; ?>
-                                </td>
-
-                                <td>
-                                    <span class="<?php echo $badgeClass; ?>"
-                                        id="badge-<?php echo htmlspecialchars($row['ReportID']); ?>">
-                                        <?php echo htmlspecialchars($status); ?>
-                                    </span>
-                                </td>
+               
+        </nav>
 
 
-                                <td class="action-btns">
+<div class="filter-box">
+    <label for="filter">Show:</label>
 
-                                    <?php if ($status !== 'Resolved'): ?>
-                                        <button class="btn-solve"
-                                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
-                                            Solve
-                                        </button>
+    <select id="filter" class="select-filter" onchange="applyFilter()">
 
-                                        <button class="btn-inprogress"
-                                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
-                                            In Progress
-                                        </button>
-                                    <?php endif; ?>
+        <option value="today" <?php echo ($filter=='today') ? 'selected' : ''; ?>>
+            Today
+        </option>
 
-                                    <button class="btn-view-report"
-                                        onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
-                                        View
-                                    </button>
+        <option value="yesterday" <?php echo ($filter=='yesterday') ? 'selected' : ''; ?>>
+            Yesterday
+        </option>
 
-                                </td>
-                            </tr>
+        <option value="this_week" <?php echo ($filter=='this_week') ? 'selected' : ''; ?>>
+            This Week
+        </option>
 
-                        <?php } ?>
-                    <?php } ?>
+        <option value="this_month" <?php echo ($filter=='this_month') ? 'selected' : ''; ?>>
+            This Month
+        </option>
 
-                </tbody>
+        <option value="this_year"  <?php echo ($filter == 'this_year') ? 'selected' : ''; ?>>
+            This Year
+        </option>
 
-            </table>
+    </select>
+</div>
 
-            <div class="inbox-right" id="sidePanel">
-                <div id="panel-content" class="panel-empty">
+<div class="ngo-inbox-container" >
+
+    <div class="inbox-table-wrap">
+
+        <table class="inbox-table">
+
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Pet Name</th>
+                    <th>Location</th>
+                    <th>Date Reported</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="reportTbody">
+            <?php if(empty($rows)){?>
+                <tr class="empty-row">
+                    <td colspan="6">No reports found for this period.</td>
+                </tr>
+            <?php } else {?>
+                <?php foreach($rows as $row){
+                
+               $status = isset($row['Status']) ? $row['Status'] : 'Submit';
+
+                if($status == 'Resolved') {
+                    $badgeClass    = 'badge_resolved';
+                    $displayStatus = 'Resolved';
+                } elseif($status == 'Pending') {
+                    $badgeClass    = 'badge_inprogress';   
+                    $displayStatus = 'In Progress';
+                } else {
+                    $badgeClass    = 'badge_submit';      
+                    $displayStatus = 'Submit';
+                }
+
+                if(isset($row['DateReported']))
+                {
+                    $dateFormatted = date("d/m/Y H:i", strtotime($row['DateReported']));
+                }
+                else
+                {
+                    $dateFormatted = '-';
+                }
+                ?>
+
+        <tr id="row-<?php echo htmlspecialchars($row['ReportID']); ?>"
+                    data-id="<?php echo htmlspecialchars($row['ReportID']); ?>"
+                    data-pet="<?php echo htmlspecialchars($row['PetName']); ?>"
+                    data-loc="<?php echo htmlspecialchars($row['Location']); ?>"
+                    data-desc="<?php echo htmlspecialchars($row['Description']); ?>"
+                    data-date="<?php echo htmlspecialchars($dateFormatted); ?>"
+                    data-status="<?php echo htmlspecialchars($status); ?>"
+                    data-photo="<?php echo htmlspecialchars($row['Photo'] ?? ''); ?>">
+ 
+                    <td>
+                        <?php echo htmlspecialchars($row['ReportID']); ?>
+                    </td>
+ 
+                    <td>
+                        <?php echo htmlspecialchars($row['PetName']); ?>
+                    </td>
+ 
+                    <td>
+                        <?php echo htmlspecialchars($row['Location']); ?>
+                    </td>
+ 
+                    <td>
+                        <?php echo $dateFormatted; ?>
+                    </td>
+ 
+                    <td>
+                       <span class="<?php echo $badgeClass; ?>" id="badge-<?php echo htmlspecialchars($row['ReportID']); ?>">
+                            <?php echo htmlspecialchars($displayStatus); ?>
+                        </span>
+                    </td>
+ 
+
+                  <td class="action-btns">
+
+                   <button class="btn-solve"
+                        <?php if($status === 'Resolved') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                        onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
+                        Solve
+                    </button>
+
+                  <button class="btn-inprogress"
+                    <?php if($status === 'Resolved' || $status === 'Pending') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                    onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
+                    In Progress
+                  </button>
+
+                    <button class="btn-view-report"
+                        onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
+                        View
+                    </button>
+
+                </td>
+
+                </tr>
+
+            <?php } ?>
+        <?php } ?>
+
+            </tbody>
+
+        </table>
+
+        <div class="inbox-right" id="sidePanel">
+            <div id="panel-content" class="panel-empty">
                     Click "View" on a request to see details here.
                 </div>
             </div>
 
-        </div>
-
     </div>
 
-    <div class="inbox-container">
+</div>
 
-        <div class="inbox-left">
-            <div class="inbox-table-wrap">
+<div class="inbox-container">
 
-                <table class="inbox-table">
+    <div class="inbox-left">
+        <div class="inbox-table-wrap">
+
+            <table class="inbox-table">
                 </table>
 
-            </div>
         </div>
-
     </div>
-    <footer>
-        <div class="footer-grid">
+
+</div>
+ <footer>
+            <div class="footer-grid">
             <div>
                 <div style="font-size:2rem;">🐾</div>
                 <div class="footer-brand-name">Furever Pet Home</div>
-                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in
-                    Bandar Klang, Selangor.</p>
+                <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
             </div>
             <div>
                 <p class="footer-col-title">Platform</p>
                 <ul class="footer-links-list">
-                    <li><a href="#">Find A Pet</a></li>
-                    <li><a href="#">Report Animal</a></li>
-                    <li><a href="#">Community Board</a></li>
-                    <li><a href="#">Analytics</a></li>
+                <li><a href="#">Find A Pet</a></li>
+                <li><a href="#">Report Animal</a></li>
+                <li><a href="#">Community Board</a></li>
+                <li><a href="#">Analytics</a></li>
                 </ul>
             </div>
             <div>
                 <p class="footer-col-title">Account</p>
                 <ul class="footer-links-list">
-                    <li><a href="#">My Profile</a></li>
-                    <li><a href="#">My Applications</a></li>
-                    <li><a href="#">Favourites</a></li>
-                    <li><a href="#">Inbox</a></li>
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">My Applications</a></li>
+                <li><a href="#">Favourites</a></li>
+                <li><a href="#">Inbox</a></li>
                 </ul>
             </div>
             <div>
                 <p class="footer-col-title">Contact</p>
                 <ul class="footer-links-list">
-                    <li><a href="#">41700 Bandar Klang, Selangor</a></li>
-                    <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
-                    <li><a href="#">+60 123-456-7890</a></li>
-                    <li><a href="#">Facebook · Instagram · X</a></li>
+                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                <li><a href="#">+60 123-456-7890</a></li>
+                <li><a href="#">Facebook · Instagram · X</a></li>
                 </ul>
             </div>
-        </div>
-        <div class="footer-bottom">
+            </div>
+            <div class="footer-bottom">
             <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
             <span>Made with ❤️ for Bandar Klang</span>
-        </div>
-    </footer>
-
-    <script src="../js/script.js"></script>
+            </div>
+        </footer>
+<script src="../js/script.js"></script>
+<script src="../js/ngo_report.js"></script>
 
 </body>
-
 </html>
