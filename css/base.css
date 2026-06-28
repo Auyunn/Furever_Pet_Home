@@ -511,3 +511,43 @@ body {
     border-radius: 0.25rem;
     margin-bottom: 1rem;
 }
+/* BASE FOR DROPDOWNN LOG OUT*/
+/*--------------------------------------------- PROFILE DROPDOWN ----------------------------------------------------------*/
+.profile-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: rgba(250,246,240,0.98);
+    border: 1px solid rgba(130,85,64,0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 999;
+    min-width: 180px;
+    padding: 10px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-user-info {
+    padding: 8px 10px 12px;
+    border-bottom: 1px solid rgba(130,85,64,0.15);
+    margin-bottom: 8px;
+}
+
+.dropdown-user-info strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--deep-brown);
+}
+
+.dropdown-user-info span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}

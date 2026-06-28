@@ -1,7 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION)) {
+    $_SESSION = [];
+}
 
 include '../db_connect.php';
+/** @var mysqli $conn */
+/** @var PDO $pdo */
 
 
 $is_logged_in = (!empty($_SESSION['loggedin']) && !empty($_SESSION['residentID']) && ($_SESSION['role'] ?? '') === 'user');
@@ -56,7 +61,7 @@ if(isset($_POST['submit_comment'])){
 $query_board = "SELECT pc.*, o.OrgName 
                 FROM community_board pc
                 LEFT JOIN organization o ON pc.OrgID = o.OrgID
-                ORDER BY pc.BoardID ASC";
+                ORDER BY pc.Date DESC";
 $result_board = mysqli_query($conn, $query_board);
 ?>
 
@@ -75,11 +80,23 @@ $result_board = mysqli_query($conn, $query_board);
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
         </a>
+
         <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
             
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
-                <?= htmlspecialchars($avatarInitials) ?>
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars($avatarInitials) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
+                        <span>Resident Account</span>
+                    </div>
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">🔒 Log Out</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -102,12 +119,13 @@ $result_board = mysqli_query($conn, $query_board);
         <?php while($post = mysqli_fetch_assoc($result_board)) : ?>
             <?php 
             $board_id = $post['BoardID'];
-            $query_comment = "SELECT c.CommentID, c.Content, c.Date, CONCAT(r.FirstName,' ', r.LastName) AS ResidentName
-                                FROM comment c
-                                LEFT JOIN resident r ON c.ResidentID = r.ResidentID
-                                WHERE c.BoardID = '$board_id'
-                                AND c.ReplyID IS NULL
-                                ORDER BY c.Date ASC";
+           $query_comment = "SELECT c.CommentID, c.Content, c.Date, c.ReplyID,
+                    COALESCE(CONCAT(r.FirstName,' ', r.LastName), o.OrgName) AS ResidentName
+                    FROM comment c
+                    LEFT JOIN resident r ON c.ResidentID = r.ResidentID
+                    LEFT JOIN organization o ON c.OrgID = o.OrgID
+                    WHERE c.BoardID = '$board_id'
+                    ORDER BY c.Date ASC";
             $result_comment = mysqli_query($conn, $query_comment);
             $comment_count = mysqli_num_rows($result_comment);
             ?>
@@ -127,7 +145,10 @@ $result_board = mysqli_query($conn, $query_board);
                         <div class="list">
                             <?php if($comment_count > 0): ?>
                                 <?php while($comment = mysqli_fetch_assoc($result_comment)) : ?>
-                                    <div class="comment-item">
+                                    <div class="comment-item <?= $comment['ReplyID'] ? 'comment-reply' : '' ?>">
+                                        <?php if($comment['ReplyID']): ?>
+                                            <small style="color:#aaa;">↳ reply</small>
+                                        <?php endif; ?>
                                         <div class="author">
                                             <?php echo htmlspecialchars($comment['ResidentName'] ?? 'Unknown');?>
                                         </div>

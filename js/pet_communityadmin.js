@@ -59,13 +59,11 @@ function viewPost(boardID) {
             } else {
                 comments.forEach(c => {
                     const isReply = c.ReplyID !== null && c.ReplyID !== '';
-                    const name    = c.FirstName
-                        ? `${c.ResidentID} — ${c.FirstName} ${c.LastName || ''}`
-                        : c.ResidentID;
+                   const name = c.CommenterName || c.ResidentID || c.OrgID || 'Unknown';
 
                     html += `
                         <div class="comment-item ${isReply ? 'is-reply' : ''}" id="comment-${c.CommentID}">
-                            ${isReply ? `<div class="reply-label">&#8629; Replying to comment ${c.ReplyID}</div>` : ''}
+                           ${isReply ? `<div class="reply-label">&#8629; Replying to ${c.ReplyToName || c.ReplyID}</div>` : ''}
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                                 <span style="font-size:0.78rem;font-weight:600;color:#825540;">&#128100; ${name}</span>
                                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">

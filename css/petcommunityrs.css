@@ -182,4 +182,23 @@
             background: var(--rose,#c97d7d);
             transform: scale(1.05);
         }
+.profile-dropdown {
+    position: relative;
+}
 
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;       
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 999;
+    min-width: 180px;
+    padding: 10px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}

@@ -1,23 +1,19 @@
 <?php
 session_start();
+/** @var array $_SERVER */
 
 $conn = new mysqli("localhost", "root", "", "furever_pet_home");
 if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
 
-/*if (!isset($_SESSION['orgID'])) {
-   if($_SERVER['REQUEST_METHOD']=='POST'){
-    header('Content-Type: application/json');
-    echo json_encode(['success'=> false, 'message'=> 'Unauthorized']);
-    exit;
-   }
-   header("Location:../User_Login.php");
-   exit;
+$currentOrgID = $_SESSION['orgID'] ?? null;
+if (!$currentOrgID) {
+    header("Location: ../login.php");
+    exit();
 }
+$org_id = $currentOrgID;
 
-$org_id = $_SESSION['orgID'];*/
-$org_id = "ORG05"; // TEST
 if($_SERVER['REQUEST_METHOD']==='POST'){
     header('Content-Type: application/json');
     $input    = json_decode(file_get_contents('php://input'), true);
@@ -124,6 +120,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NGO Report</title>
+    <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/ngo_report.css">
 </head>
@@ -138,8 +135,21 @@ $conn->close();
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-            <div class="avatar" title="My Profile"> OR</div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                            <span>NGO Account</span>
+                        </div>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -210,22 +220,17 @@ $conn->close();
             <?php } else {?>
                 <?php foreach($rows as $row){
                 
-                $status = isset($row['Status']) ? $row['Status'] : 'Pending';
+               $status = isset($row['Status']) ? $row['Status'] : 'Submit';
 
-                if($status == 'Resolved')
-                {
-                    $badgeClass = 'badge_resolved';
-                }
-                elseif($status == 'In Progress')
-                {
-                    $badgeClass = 'badge_inprogress';
-                }
-                elseif($status == 'Submit'){
-                    $badgeClass = 'badge_submit';
-                }
-                else
-                {
-                    $badgeClass = 'badge_pending';
+                if($status == 'Resolved') {
+                    $badgeClass    = 'badge_resolved';
+                    $displayStatus = 'Resolved';
+                } elseif($status == 'Pending') {
+                    $badgeClass    = 'badge_inprogress';   
+                    $displayStatus = 'In Progress';
+                } else {
+                    $badgeClass    = 'badge_submit';      
+                    $displayStatus = 'Submit';
                 }
 
                 if(isset($row['DateReported']))
@@ -265,29 +270,31 @@ $conn->close();
  
                     <td>
                        <span class="<?php echo $badgeClass; ?>" id="badge-<?php echo htmlspecialchars($row['ReportID']); ?>">
-                        <?php echo htmlspecialchars($status); ?>
+                            <?php echo htmlspecialchars($displayStatus); ?>
                         </span>
                     </td>
  
 
-                   <td class="action-btns">
+                  <td class="action-btns">
 
-                        <button class="btn-solve"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
-                            Solve
-                        </button>
+                   <button class="btn-solve"
+                        <?php if($status === 'Resolved') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                        onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
+                        Solve
+                    </button>
 
-                        <button class="btn-inprogress"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
-                            In Progress
-                        </button>
+                  <button class="btn-inprogress"
+                    <?php if($status === 'Resolved' || $status === 'Pending') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                    onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
+                    In Progress
+                  </button>
 
-                        <button class="btn-view-report"
-                            onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
-                            View
-                        </button>
+                    <button class="btn-view-report"
+                        onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
+                        View
+                    </button>
 
-                    </td>
+                </td>
 
                 </tr>
 
@@ -360,8 +367,8 @@ $conn->close();
             <span>Made with ❤️ for Bandar Klang</span>
             </div>
         </footer>
-
 <script src="../js/script.js"></script>
+<script src="../js/ngo_report.js"></script>
 
 </body>
 </html>

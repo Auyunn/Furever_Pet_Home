@@ -2,7 +2,7 @@
 
 session_start();
 require_once '../db_connect.php';
-require_once '../db_connect.php';
+/** @var mysqli $conn */
 
 // Pastikan dah login
 if (empty($_SESSION['residentID'])) {

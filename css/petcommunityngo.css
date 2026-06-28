@@ -233,3 +233,66 @@ body {
   background: var(--rose);
   box-shadow: 0 6px 16px rgba(201, 125, 125, 0.4);
 }
+.comment-reply {
+    margin-left: 18px;
+    border-left: 2px solid rgba(130, 85, 64, 0.2);
+    padding-left: 8px;
+}
+
+.reply-badge {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.comment-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.comment-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.comment-actions button:hover {
+    background: rgba(130, 85, 64, 0.1);
+    color: var(--deep-brown);
+}
+
+.reply-to-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.cancel-reply-btn {
+    background: none;
+    border: none;
+    color: var(--rose);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0 4px;
+}
+
+.ngo-reply-form {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(130, 85, 64, 0.15);
+}
