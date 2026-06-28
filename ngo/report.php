@@ -1,5 +1,6 @@
 <?php
 session_start();
+/** @var array $_SERVER */
 
 $conn = new mysqli("localhost", "root", "", "furever_pet_home");
 if ($conn->connect_error) {
@@ -219,22 +220,17 @@ $conn->close();
             <?php } else {?>
                 <?php foreach($rows as $row){
                 
-                $status = isset($row['Status']) ? $row['Status'] : 'Pending';
+               $status = isset($row['Status']) ? $row['Status'] : 'Submit';
 
-                if($status == 'Resolved')
-                {
-                    $badgeClass = 'badge_resolved';
-                }
-                elseif($status == 'In Progress')
-                {
-                    $badgeClass = 'badge_inprogress';
-                }
-                elseif($status == 'Submit'){
-                    $badgeClass = 'badge_submit';
-                }
-                else
-                {
-                    $badgeClass = 'badge_pending';
+                if($status == 'Resolved') {
+                    $badgeClass    = 'badge_resolved';
+                    $displayStatus = 'Resolved';
+                } elseif($status == 'Pending') {
+                    $badgeClass    = 'badge_inprogress';   
+                    $displayStatus = 'In Progress';
+                } else {
+                    $badgeClass    = 'badge_submit';      
+                    $displayStatus = 'Submit';
                 }
 
                 if(isset($row['DateReported']))
@@ -274,29 +270,31 @@ $conn->close();
  
                     <td>
                        <span class="<?php echo $badgeClass; ?>" id="badge-<?php echo htmlspecialchars($row['ReportID']); ?>">
-                        <?php echo htmlspecialchars($status); ?>
+                            <?php echo htmlspecialchars($displayStatus); ?>
                         </span>
                     </td>
  
 
-                   <td class="action-btns">
+                  <td class="action-btns">
 
-                        <button class="btn-solve"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
-                            Solve
-                        </button>
+                   <button class="btn-solve"
+                        <?php if($status === 'Resolved') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                        onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Resolved')">
+                        Solve
+                    </button>
 
-                        <button class="btn-inprogress"
-                            onclick="updateStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
-                            In Progress
-                        </button>
+                  <button class="btn-inprogress"
+                    <?php if($status === 'Resolved' || $status === 'Pending') echo 'disabled style="opacity:0.4;cursor:not-allowed"'; ?>
+                    onclick="updateReportStatus('<?php echo htmlspecialchars($row['ReportID']); ?>','Pending')">
+                    In Progress
+                  </button>
 
-                        <button class="btn-view-report"
-                            onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
-                            View
-                        </button>
+                    <button class="btn-view-report"
+                        onclick="viewReport('<?php echo htmlspecialchars($row['ReportID']); ?>')">
+                        View
+                    </button>
 
-                    </td>
+                </td>
 
                 </tr>
 
@@ -369,8 +367,8 @@ $conn->close();
             <span>Made with ❤️ for Bandar Klang</span>
             </div>
         </footer>
-
 <script src="../js/script.js"></script>
+<script src="../js/ngo_report.js"></script>
 
 </body>
 </html>

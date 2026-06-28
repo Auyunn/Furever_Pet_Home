@@ -5,6 +5,7 @@
 session_start();
 require_once("../db_connect.php");
 
+
 if (empty($_SESSION['residentID'])) {
     header('Location: ../User_Login.php');
     exit;
@@ -83,12 +84,9 @@ if (isset($_FILES['reportPhoto']) && $_FILES['reportPhoto']['error'] === UPLOAD_
     }
 }
 
-// ── GET OrgID based on location (match against OrgAddress, active orgs only) ──
+// ── GET OrgID based on location ──
 $orgID = null;
 
-// Cuba match: kawasan dalam OrgAddress wujud dalam Location yang user taip,
-// ATAU location yang user taip wujud dalam OrgAddress.
-// Hanya organisasi aktif (Status = 1) yang dipertimbangkan.
 $orgStmt = mysqli_prepare(
     $conn,
     "SELECT OrgID FROM organization
@@ -104,11 +102,9 @@ mysqli_stmt_close($orgStmt);
 if ($orgResult) {
     $orgID = $orgResult['OrgID'];
 } else {
-    // Takde match terus — cuba match per-perkataan kawasan dalam Location
-    // (cth: user taip "Bandar Botanic" je, tanpa alamat penuh)
     $locationWords = preg_split('/[\s,]+/', $reportLocation, -1, PREG_SPLIT_NO_EMPTY);
     foreach ($locationWords as $word) {
-        if (mb_strlen($word) < 4) continue; // skip perkataan terlalu pendek (cth: "no", "41200")
+        if (mb_strlen($word) < 4) continue;
         $wordStmt = mysqli_prepare(
             $conn,
             "SELECT OrgID FROM organization WHERE Status = 1 AND OrgAddress LIKE CONCAT('%', ?, '%') LIMIT 1"
@@ -124,15 +120,13 @@ if ($orgResult) {
     }
 }
 
-// Kalau masih takde match, fallback: organisasi aktif pertama
+// Fallback: organisasi aktif pertama
 if ($orgID === null) {
     $orgQuery = mysqli_query($conn, "SELECT OrgID FROM organization WHERE Status = 1 LIMIT 1");
     $orgRow   = $orgQuery ? mysqli_fetch_assoc($orgQuery) : null;
     $orgID    = $orgRow['OrgID'] ?? null;
 }
 
-// Kalau betul-betul takde organisasi aktif langsung, jangan crash —
-// bagi error jelas kat user supaya admin boleh tambah/aktifkan organization.
 if ($orgID === null) {
     $_SESSION['report_errors'] = [
         'Unable to submit report: no active organization is registered in the system yet. Please contact the administrator.'
@@ -143,9 +137,9 @@ if ($orgID === null) {
     exit;
 }
 
-$status = 'Pending';
+$status = 'Submit';
 
-// ── INSERT INTO DATABASE ──
+// ── INSERT INTO report ──
 $query = "INSERT INTO report (ReportID, ResidentID, OrgID, PetName, Location, Description, Status, Photo)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($conn, $query);
@@ -158,10 +152,36 @@ $success = mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 
 if ($success) {
+
+    // ── AUTO-GENERATE InboxID ──
+    $inboxResult  = mysqli_query($conn, "SELECT InboxID FROM inbox ORDER BY CAST(SUBSTRING(InboxID, 4) AS UNSIGNED) DESC LIMIT 1");
+    $inboxLastRow = mysqli_fetch_assoc($inboxResult);
+    if ($inboxLastRow && preg_match('/INB(\d+)/', $inboxLastRow['InboxID'], $inboxMatches)) {
+        $inboxNextNum = (int) $inboxMatches[1] + 1;
+    } else {
+        $inboxNextNum = 1;
+    }
+    $inboxID = 'INB' . str_pad($inboxNextNum, 2, '0', STR_PAD_LEFT);
+
+    // ── AUTO INSERT INTO inbox ──
+    $inboxTitle  = $reportName . " Report";
+    $inboxMsg    = "Report received. Awaiting action from NGO.";
+    $inboxType   = "Pet Report";
+    $inboxStatus = "Submit";
+
+    $stmtInbox = mysqli_prepare($conn,
+        "INSERT INTO inbox (InboxID, ReportID, AdoptionID, Title, Message, DateTime, Type, Status)
+         VALUES (?, ?, NULL, ?, ?, NOW(), ?, ?)"
+    );
+    mysqli_stmt_bind_param($stmtInbox, 'ssssss', $inboxID, $reportID, $inboxTitle, $inboxMsg, $inboxType, $inboxStatus);
+    mysqli_stmt_execute($stmtInbox);
+    mysqli_stmt_close($stmtInbox);
+
     $_SESSION['report_success'] = "Your report ($reportID) has been submitted successfully!";
     mysqli_close($conn);
     header('Location: Report.php');
     exit;
+
 } else {
     $_SESSION['report_errors'] = ['Something went wrong while saving your report. Please try again.'];
     $_SESSION['report_old']    = $_POST;

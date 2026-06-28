@@ -335,65 +335,6 @@ window.updateRowBadge = function(id, newStatus) {
 }
 window.updateInboxRowBadge = window.updateRowBadge;
 
-//====REPORT NGO====
-window.viewReport = function(reportID) {
-    const row = document.getElementById('row-' + reportID);
-    if (!row) return;
-
-    const pet    = row.dataset.pet;
-    const loc    = row.dataset.loc;
-    const desc   = row.dataset.desc;
-    const date   = row.dataset.date;
-    const status = row.dataset.status;
-    const photo  = row.dataset.photo;
-
-    let photoHTML = '';
-    if (photo) {
-        photoHTML = `<div>
-            <p class="panel-label">Photo</p>
-                <img src="../image/report/${photo}" alt="Report Photo"
-                style="width:100%;border-radius:14px;margin-top:0.4rem;object-fit:cover;max-height:180px;">
-        </div>`;
-    }
-
-    const panel = document.getElementById('panel-content');
-    panel.innerHTML = `
-        <div class="panel-card">
-            <div style="display:flex; justify-content:flex-end;">
-                <button onclick="closePanel()" class="close-btn">✕</button>
-            </div>
-            <div class="panel-title">${pet}</div>
-            <div style="font-size:0.85rem;color:var(--text-muted);">Report ID: ${reportID}</div>
-            <hr class="panel-divider">
-            <div>
-                <p class="panel-label">Location</p>
-                <p class="panel-value">📍 ${loc}</p>
-            </div>
-            <div>
-                <p class="panel-label">Date Reported</p>
-                <p class="panel-value">${date}</p>
-            </div>
-            <div>
-                <p class="panel-label">Status</p>
-                <p class="panel-value"><span class="${getBadgeClass(status)}">${status}</span></p>
-            </div>
-            <hr class="panel-divider">
-            <div>
-                <p class="panel-label">Description</p>
-                <p class="panel-value">${desc}</p>
-            </div>
-            ${photoHTML}
-        </div>`;
-
-    panel.scrollTop = 0;
-    panel.dataset.currentId = reportID;
-}
-
-function getBadgeClass(status) {
-    if (status === 'Resolved')    return 'badge_resolved';
-    if (status === 'In Progress') return 'badge_inprogress';
-    return 'badge_pending';
-}
 //=========== NGO PET COMMUNITY=================
 function toggleComments(boardID) {
     const panel = document.getElementById('panel-' + boardID);
