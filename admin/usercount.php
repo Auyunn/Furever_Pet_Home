@@ -208,8 +208,33 @@ $pendingForms = [];
       <img src="../image/icons/logo.png" alt="Furever Pet Home">
       <span>Furever Pet Home</span>
     </a>
-    <div class="nav-right">
-      <div class="avatar" title="My Profile">A</div>
+    <<div class="nav-right">
+      <div class="profile-dropdown">
+
+        <div class="avatar"
+            title="My Profile"
+            onclick="toggleProfileDropdown()"
+            style="cursor:pointer;">
+          A
+        </div>
+
+        <div class="dropdown-menu" id="profileDropdown">
+
+          <div class="dropdown-user-info">
+            <strong>
+              <?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Admin'); ?>
+            </strong>
+            <span>Admin Account</span>
+          </div>
+
+          <form method="post" action="../logout.php" style="margin:0;">
+            <button type="submit" class="logout-btn">
+              &#128274; Log Out
+            </button>
+          </form>
+
+        </div>
+      </div>
     </div>
   </div>
   <div class="nav-links">
@@ -440,7 +465,7 @@ $pendingForms = [];
 </footer>
 
 <?php foreach ($pendingForms as $formHtml) { echo $formHtml; } ?>
-
+<script src="../js/script.js"></script>
 <script src="../js/usercount.js"></script>
 </body>
 </html>

@@ -102,12 +102,37 @@ while($row = $result_boards->fetch_assoc()){
             <span>Furever Pet Home</span>
             </a>
             <div class="nav-right">
-            <div class="avatar" title="My Profile">A</div>
+                <div class="profile-dropdown">
+
+                    <div class="avatar"
+                        title="My Profile"
+                        onclick="toggleProfileDropdown()"
+                        style="cursor:pointer;">
+                    A
+                    </div>
+
+                    <div class="dropdown-menu" id="profileDropdown">
+
+                    <div class="dropdown-user-info">
+                        <strong>
+                        <?php echo htmlspecialchars($_SESSION['admin_name'] ?? 'Admin'); ?>
+                        </strong>
+                        <span>Admin Account</span>
+                    </div>
+
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">
+                        &#128274; Log Out
+                        </button>
+                    </form>
+
+                    </div>
+                </div>
             </div>
         </div>
         <div class="nav-links">
             <a href="dashboard.php" class="nav-tab"> Dashboard</a>
-            <a href="usercount.php" class="nav-tab"> Residents/NGOs</a>
+            <a href="usercount.php" class="nav-tab"> Users/NGOs</a>
             <a href="Add_Report.php" class="nav-tab"> Report</a>
             <a href="analytics_admin.php" class="nav-tab"> Analytics</a>
             <a href="pet_communityadmin.php" class="nav-tab"> Pet Community</a>
@@ -178,7 +203,7 @@ while($row = $result_boards->fetch_assoc()){
             </div>
         </div>
     </div>
-
+    <script src="../js/script.js"></script>
     <script src="../js/pet_communityadmin.js?v=<?php echo time(); ?>"></script>
 
     <footer>
