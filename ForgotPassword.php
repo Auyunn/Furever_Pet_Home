@@ -195,7 +195,7 @@ mysqli_close($conn);
       </p>
  
       <div class="fp-btn-wrap">
-        <a href="login.php" class="fp-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+        <a href="User_Login.php" class="fp-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
           Go to Login
         </a>
       </div>
