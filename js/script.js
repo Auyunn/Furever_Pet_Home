@@ -3,24 +3,24 @@ let currentSlide = 0;
 
 function showSlide(n) {
     let slides = document.querySelectorAll(".slides");
-    if (slides.length === 0) return; 
+    if (slides.length === 0) return;
     slides.forEach(s => s.style.display = "none");
     slides[n].style.display = "block";
 }
 
-window.prevSlide = function() {
+window.prevSlide = function () {
     let slides = document.querySelectorAll(".slides");
     currentSlide = (currentSlide - 1 + slides.length) % slides.length;
     showSlide(currentSlide);
 }
 
-window.nextSlide = function() {
+window.nextSlide = function () {
     let slides = document.querySelectorAll(".slides");
     currentSlide = (currentSlide + 1) % slides.length;
     showSlide(currentSlide);
 }
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
     showSlide(currentSlide);
 });
 
@@ -86,11 +86,11 @@ function openNotif(event, index, group) {
 
 //====== PET COMMUNITY ===============
 function toggleComment(boardId) {
-    var panel = document.getElementById('panel-'+ boardId);
-    if(panel.style.display == 'none' || panel.style.display == ''){
-        panel.style.display='block';
-    }else{
-        panel.style.display='none';
+    var panel = document.getElementById('panel-' + boardId);
+    if (panel.style.display == 'none' || panel.style.display == '') {
+        panel.style.display = 'block';
+    } else {
+        panel.style.display = 'none';
     }
 }
 
@@ -100,49 +100,49 @@ if (typeof triggerAlert !== 'undefined' && triggerAlert === true) {
 }
 
 //== RESIDENT REPORT=====
- function deleteReport(reportID, btn) {
+function deleteReport(reportID, btn) {
 
-            if (!confirm("Are you sure you want to delete this report?")) {
-                return;
+    if (!confirm("Are you sure you want to delete this report?")) {
+        return;
+    }
+
+    fetch("Report.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "delete_report=1&reportID=" + encodeURIComponent(reportID)
+    })
+        .then(response => response.text())
+        .then(data => {
+
+            if (data.trim() === "success") {
+
+                const card = btn.closest(".report-card");
+                card.remove();
+
+                alert("Report deleted successfully!");
+
+            } else {
+                alert("Failed to delete report.");
             }
 
-            fetch("Report.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: "delete_report=1&reportID=" + encodeURIComponent(reportID)
-            })
-            .then(response => response.text())
-            .then(data => {
-
-                if (data.trim() === "success") {
-
-                    const card = btn.closest(".report-card");
-                    card.remove();
-
-                    alert("Report deleted successfully!");
-
-                } else {
-                    alert("Failed to delete report.");
-                }
-
-            })
-            .catch(error => {
-                console.error(error);
-                alert("Error occurred.");
-            });
-        }
+        })
+        .catch(error => {
+            console.error(error);
+            alert("Error occurred.");
+        });
+}
 //====|NGO|====
 //====INBOX NGOS====
-window.applyFilter = function() {
+window.applyFilter = function () {
     const filter = document.getElementById('filter').value;
     const url = new URL(window.location.href);
     url.searchParams.set('filter', filter);
     window.location.href = url.toString();
 }
 
-window.viewApp = function(adoptionID) {
+window.viewApp = function (adoptionID) {
     fetch('getApplicant.php?id=' + encodeURIComponent(adoptionID))
         .then(r => r.text())
         .then(html => {
@@ -157,78 +157,78 @@ window.viewApp = function(adoptionID) {
         });
 }
 
-window.closePanel = function() {
+window.closePanel = function () {
     const panel = document.getElementById('panel-content');
     if (!panel) return;
     panel.innerHTML = '<div class="panel-empty">Click "View" on a request to see details here.</div>';
     panel.dataset.currentId = '';
 }
 
-window.rejectWithReason = function(adoptionID) {
+window.rejectWithReason = function (adoptionID) {
     let reason = prompt("Please enter a reason for rejection:");
     if (reason !== null && reason.trim() !== "") {
         window.updateStatus(adoptionID, 'Rejected', reason.trim());
     }
 }
 
-window.updateStatus = function(id, statusOrAction, reason = null) {
+window.updateStatus = function (id, statusOrAction, reason = null) {
     if (String(id).startsWith('ADOP')) {
         fetch('updateStatus.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id, status: statusOrAction, reason: reason })
         })
-        .then(r => {
-            if (!r.ok) throw new Error('Network response not ok');
-            return r.json();
-        })
-        .then(data => {
-            if (!data.ok) {
-                alert('Update failed: ' + (data.error || 'unknown'));
-                return;
-            }
-            window.updateRowBadge(id, statusOrAction);
-            const panel = document.getElementById('panel-content');
-            if (panel && panel.dataset.currentId === String(id)) {
-                window.viewApp(id);
-            }
-        })
-        .catch(e => {
-            console.error(e);
-            alert('Network error');
-        });
-    } 
+            .then(r => {
+                if (!r.ok) throw new Error('Network response not ok');
+                return r.json();
+            })
+            .then(data => {
+                if (!data.ok) {
+                    alert('Update failed: ' + (data.error || 'unknown'));
+                    return;
+                }
+                window.updateRowBadge(id, statusOrAction);
+                const panel = document.getElementById('panel-content');
+                if (panel && panel.dataset.currentId === String(id)) {
+                    window.viewApp(id);
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                alert('Network error');
+            });
+    }
     else if (String(id).startsWith('REP')) {
         fetch('report.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'update_status', reportID: id, status: statusOrAction })
         })
-        .then(r => {
-            if (!r.ok) throw new Error('Network response not ok');
-            return r.json();
-        })
-        .then(data => {
-            if (!data.success) {
-                alert('Update failed: ' + (data.message || 'unknown'));
-                return;
-            }
-            window.updateRowBadge(id, statusOrAction);
-            const panel = document.getElementById('panel-content');
-            if (panel && panel.dataset.currentId === String(id)) {
-                window.viewReport(id);
-            }
-        })
-        .catch(e => {
-            console.error(e);
-            alert('Network error');
-        });
+            .then(r => {
+                if (!r.ok) throw new Error('Network response not ok');
+                return r.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    alert('Update failed: ' + (data.message || 'unknown'));
+                    return;
+                }
+                window.updateRowBadge(id, statusOrAction);
+                const panel = document.getElementById('panel-content');
+                if (panel && panel.dataset.currentId === String(id)) {
+                    window.viewReport(id);
+                }
+            })
+            .catch(e => {
+                console.error(e);
+                alert('Network error');
+            });
     }
 }
 
 window.updateInboxStatus = window.updateStatus;
 
-window.updateRowBadge = function(id, newStatus) {
+window.updateRowBadge = function (id, newStatus) {
     if (String(id).startsWith('ADOP')) {
         const row = document.getElementById('row-' + id);
         if (!row) return;
@@ -238,16 +238,16 @@ window.updateRowBadge = function(id, newStatus) {
         if (badge) {
             badge.textContent = newStatus;
             badge.className = newStatus === 'Approved' ? 'badge_approved'
-                            : newStatus === 'Rejected'  ? 'badge_rejected'
-                            : 'badge_pending';
+                : newStatus === 'Rejected' ? 'badge_rejected'
+                    : 'badge_pending';
         }
 
         const actionTd = row.querySelector('.action-btns');
         if (!actionTd) return;
 
         const approveBtn = actionTd.querySelector('.btn-approve, .btn-undo');
-        const rejectBtn  = actionTd.querySelector('.btn-reject');
-        const viewBtn    = actionTd.querySelector('.btn-view');
+        const rejectBtn = actionTd.querySelector('.btn-reject');
+        const viewBtn = actionTd.querySelector('.btn-view');
 
         // View button sentiasa enabled
         if (viewBtn) {
@@ -268,15 +268,15 @@ window.updateRowBadge = function(id, newStatus) {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ petID })
                     })
-                    .then(r => r.json())
-                    .then(res => {
-                        if (res.ok) {
-                            window.updateRowBadge(id, 'Pending');
-                        } else {
-                            alert('Undo failed: ' + (res.error || 'unknown'));
-                        }
-                    })
-                    .catch(err => alert('Network error during undo'));
+                        .then(r => r.json())
+                        .then(res => {
+                            if (res.ok) {
+                                window.updateRowBadge(id, 'Pending');
+                            } else {
+                                alert('Undo failed: ' + (res.error || 'unknown'));
+                            }
+                        })
+                        .catch(err => alert('Network error during undo'));
                 };
             }
             // Reject kekal boleh guna
@@ -319,7 +319,7 @@ window.updateRowBadge = function(id, newStatus) {
             }
         }
 
-    } 
+    }
     else if (String(id).startsWith('REP')) {
         const row = document.getElementById('row-' + id);
         if (!row) return;
@@ -327,84 +327,93 @@ window.updateRowBadge = function(id, newStatus) {
         const badge = document.getElementById('badge-' + id);
         if (badge) {
             badge.textContent = newStatus;
-            badge.className   = (newStatus === 'Resolved') ? 'badge_resolved'
-                                : (newStatus === 'In Progress') ? 'badge_inprogress'
-                                : 'badge_pending';
+            badge.className = (newStatus === 'Resolved') ? 'badge_resolved'
+                : (newStatus === 'In Progress') ? 'badge_inprogress'
+                    : 'badge_pending';
         }
     }
 }
 window.updateInboxRowBadge = window.updateRowBadge;
 
-//=========== NGO PET COMMUNITY=================
-function toggleComments(boardID) {
-    const panel = document.getElementById('panel-' + boardID);
-    panel.classList.toggle('open');
-}
+//====REPORT NGO====
+window.viewReport = function (reportID) {
+    const row = document.getElementById('row-' + reportID);
+    if (!row) return;
 
-function toggleEdit(boardID) {
-    const viewEl = document.querySelector('.view-mode[data-board="' + boardID + '"]');
-    const editEl = document.querySelector('.edit-mode[data-board="' + boardID + '"]');
+    const pet = row.dataset.pet;
+    const loc = row.dataset.loc;
+    const desc = row.dataset.desc;
+    const date = row.dataset.date;
+    const status = row.dataset.status;
+    const photo = row.dataset.photo;
 
-    if (editEl.style.display === 'none') {
-        viewEl.style.display = 'none';
-        editEl.style.display = 'block';
-    } else {
-        viewEl.style.display = 'block';
-        editEl.style.display = 'none';
+    let photoHTML = '';
+    if (photo) {
+        photoHTML = `<div>
+            <p class="panel-label">Photo</p>
+                <img src="../image/report/${photo}" alt="Report Photo"
+                style="width:100%;border-radius:14px;margin-top:0.4rem;object-fit:cover;max-height:180px;">
+        </div>`;
     }
+
+    const panel = document.getElementById('panel-content');
+    panel.innerHTML = `
+        <div class="panel-card">
+            <div style="display:flex; justify-content:flex-end;">
+                <button onclick="closePanel()" class="close-btn">✕</button>
+            </div>
+            <div class="panel-title">${pet}</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);">Report ID: ${reportID}</div>
+            <hr class="panel-divider">
+            <div>
+                <p class="panel-label">Location</p>
+                <p class="panel-value">📍 ${loc}</p>
+            </div>
+            <div>
+                <p class="panel-label">Date Reported</p>
+                <p class="panel-value">${date}</p>
+            </div>
+            <div>
+                <p class="panel-label">Status</p>
+                <p class="panel-value"><span class="${getBadgeClass(status)}">${status}</span></p>
+            </div>
+            <hr class="panel-divider">
+            <div>
+                <p class="panel-label">Description</p>
+                <p class="panel-value">${desc}</p>
+            </div>
+            ${photoHTML}
+        </div>`;
+
+    panel.scrollTop = 0;
+    panel.dataset.currentId = reportID;
 }
 
-function openNgoReply(boardID, commentID, authorName) {
-    document.getElementById('ngo-reply-id-' + boardID).value = commentID;
-    document.getElementById('ngo-reply-label-' + boardID).textContent = '↳ Replying to ' + authorName + ':';
-    document.getElementById('ngo-reply-form-' + boardID).style.display = 'block';
-    document.getElementById('ngo-reply-input-' + boardID).focus();
-
-    const panel = document.getElementById('panel-' + boardID);
-    if (panel && !panel.classList.contains('open')) {
-        panel.classList.add('open');
-    }
+function getBadgeClass(status) {
+    if (status === 'Resolved') return 'badge_resolved';
+    if (status === 'In Progress') return 'badge_inprogress';
+    return 'badge_pending';
 }
 
-function cancelNgoReply(boardID) {
-    document.getElementById('ngo-reply-form-' + boardID).style.display = 'none';
-    document.getElementById('ngo-reply-id-' + boardID).value = '';
-    document.getElementById('ngo-reply-label-' + boardID).textContent = '';
-}
-//====|ADMIN|====
-//====PROFILE DROPDOWN====
-function toggleProfileDropdown() {
-      event.stopPropagation();
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('show');
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.profile-dropdown')) {
-        const dropdown = document.getElementById('profileDropdown');
-        if (dropdown) dropdown.classList.remove('show');
-    }
-});
 
 //====ADMIN DASHBOARD====
-function switchTab(tabName,button){
-    document.querySelectorAll('.panel').forEach(function(panel){
+function switchTab(tabName, button) {
+    document.querySelectorAll('.panel').forEach(function (panel) {
         panel.classList.remove('active');
     });
-    document.querySelectorAll('.tab').forEach(function(tab){
+    document.querySelectorAll('.tab').forEach(function (tab) {
         tab.classList.remove('active');
     });
     document.getElementById('panel-' + tabName).classList.add('active');
     button.classList.add('active');
-    document.getElementById('breadcrumb').style.display ='none';
+    document.getElementById('breadcrumb').style.display = 'none';
     document.getElementById('tabs').style.display = 'flex';
 }
 
-function viewGuideline(data){
-    updateBreadcrumb('Guideline',data.Title);
+function viewGuideline(data) {
+    updateBreadcrumb('Guideline', data.Title);
     var Information = '';
-    if(data.Budget || data.PetType || data.OrgName){
+    if (data.Budget || data.PetType || data.OrgName) {
         Information = `
         <div class="meta-grid" style="margin-top: 16px;">
             <div class="meta-item">
@@ -417,18 +426,18 @@ function viewGuideline(data){
             </div>
              <div class="meta-item">
                 <div class="meta-label">Budget</div>
-                <div class="meta-value">${data.Budget? 'RM ' + parseFloat(data.Budget).toFixed(2) : 'N/A'}</div>
+                <div class="meta-value">${data.Budget ? 'RM ' + parseFloat(data.Budget).toFixed(2) : 'N/A'}</div>
             </div>
         </div>`;
     }
 
-    document.getElementById('view-content').innerHTML=`
+    document.getElementById('view-content').innerHTML = `
         <div class="view-header">
             <div class="view-header-left">
                 <div>
                     <div class="view-title">${escapeHTML(data.Title)}</div>
                     <div class="view-meta">
-                        ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrgName)|| 'Unknown'}
+                        ${escapeHTML(data.PetType)} &nbsp;.&nbsp; ${escapeHTML(data.OrgName) || 'Unknown'}
                     </div>
                 </div>
             </div>
@@ -442,8 +451,8 @@ function viewGuideline(data){
     showDetailPanel();
 }
 
-function viewFaq(data){
-    updateBreadcrumb('FAQ',data.Question);
+function viewFaq(data) {
+    updateBreadcrumb('FAQ', data.Question);
     document.getElementById('view-content').innerHTML = `
         <div class="view-header">
         <div class="view-header-left">
@@ -464,7 +473,7 @@ function viewFaq(data){
     showDetailPanel();
 }
 
-function goBack(){
+function goBack() {
     document.getElementById('breadcrumb').style.display = 'none';
     document.getElementById('panel-view').classList.remove('active');
     document.getElementById('tabs').style.display = 'flex';
@@ -473,26 +482,75 @@ function goBack(){
     document.getElementById('panel-' + tabName).classList.add('active');
 }
 
-function updateBreadcrumb(tabName,itemName){
+function updateBreadcrumb(tabName, itemName) {
     document.getElementById('breadcrumb').style.display = 'flex';
     document.getElementById('breadcrumb-tab').textContent = tabName;
     document.getElementById('breadcrumb-title').textContent = itemName;
 }
 
-function showDetailPanel(){
-     document.getElementById('tabs').style.display = 'none';
-     document.querySelectorAll('.panel').forEach(function(panel){
+function showDetailPanel() {
+    document.getElementById('tabs').style.display = 'none';
+    document.querySelectorAll('.panel').forEach(function (panel) {
         panel.classList.remove('active');
-     });
-     document.getElementById('panel-view').classList.add('active');
+    });
+    document.getElementById('panel-view').classList.add('active');
 }
 
-function escapeHTML(text){
+function escapeHTML(text) {
     if (!text) return '';
     return String(text)
-        .replace(/&/g,  '&amp;')
-        .replace(/</g,  '&lt;')
-        .replace(/>/g,  '&gt;')
-        .replace(/"/g,  '&quot;')
-        .replace(/'/g,  '&#039;');
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
+
+
+function toggleProfileDropdown(event) {
+    if (event) event.stopPropagation();
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown) dropdown.classList.toggle('show');
+}
+
+document.addEventListener('click', function (e) {
+    const wrapper = document.querySelector('.avatar-wrapper');
+    const dropdown = document.getElementById('profileDropdown');
+    if (wrapper && dropdown && !wrapper.contains(e.target)) {
+        dropdown.classList.remove('show');
+    }
+});
+
+function updateStatus(reportID, status) {
+    fetch('report.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update_status', reportID: reportID, status: status })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Update the badge
+                const badge = document.getElementById('badge-' + reportID);
+                if (badge) {
+                    badge.className = status === 'Resolved' ? 'badge_resolved'
+                        : status === 'In Progress' ? 'badge_inprogress'
+                            : 'badge_pending';
+                    badge.textContent = status;
+                }
+
+                // If Resolved, hide Solve + In Progress buttons
+                const row = document.getElementById('row-' + reportID);
+                if (row && status === 'Resolved') {
+                    const solveBtn = row.querySelector('.btn-solve');
+                    const progressBtn = row.querySelector('.btn-inprogress');
+                    if (solveBtn) solveBtn.style.display = 'none';
+                    if (progressBtn) progressBtn.style.display = 'none';
+                }
+            } else {
+                alert('Update failed: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(() => alert('Request failed.'));
+}
+
