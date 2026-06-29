@@ -80,7 +80,7 @@
                             <strong><?php echo htmlspecialchars($firstName . ' ' . $lastName); ?></strong>
                             <span><?php echo htmlspecialchars($residentID); ?></span>
                         </div>
-                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">Logout</button>
+                        <button class="logout-btn" onclick="window.location.href='../Logout.php'">&#128274; Logout</button>
                     </div>
                 </div>
             </div>
