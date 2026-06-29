@@ -2,10 +2,11 @@
 session_start();
 require_once "../db_connect.php"; 
 
-if (!isset($_SESSION['org_id'])) {
-    $_SESSION['org_id'] = "ORG01"; 
+if (!isset($_SESSION['orgID'])) {
+    header("Location: ../login.php");
+    exit();
 }
-$currentOrgID = $_SESSION['org_id'];
+$currentOrgID = $_SESSION['orgID'];
 
 $errors = [];
 
@@ -34,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
             $photoFilename = 'board_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
-
             $uploadPath = "../image/pet_community/" . $photoFilename;
-
             if (!move_uploaded_file($fileTmpPath, $uploadPath)) {
                 $errors[] = "Failed to save the uploaded image.";
                 $photoFilename = null;
@@ -45,11 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-
-        $result_max = $conn->query("SELECT MAX(CAST(SUBSTRING(BoardID, 6) AS UNSIGNED)) AS maxNum FROM community_board");
+        $result_max = $conn->query("SELECT MAX(CAST(SUBSTRING(BoardID, 4) AS UNSIGNED)) AS maxNum FROM community_board");
         $row_max    = $result_max->fetch_assoc();
         $nextNum    = ($row_max['maxNum'] !== NULL) ? $row_max['maxNum'] + 1 : 1;
-        $boardID    = "BOARD" . str_pad($nextNum, 2, "0", STR_PAD_LEFT);
+        $boardID    = "BRD" . str_pad($nextNum, 2, "0", STR_PAD_LEFT);
 
         $stmt = $conn->prepare("INSERT INTO community_board (BoardID, OrgID, Title, Content, Photo, Date) VALUES (?, ?, ?, ?, ?, NOW())");
         $stmt->bind_param("sssss", $boardID, $currentOrgID, $title, $content, $photoFilename);
@@ -72,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Add Post | Furever Pet Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/addboard.css">
 </head>
 <body>
@@ -79,26 +78,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="navbar" id="navbar">
     <div class="navbar-top">
         <a href="#" class="nav-logo">
-        <img src="../image/icons/logo.png" alt="Furever Pet Home">
-        <span>Furever Pet Home</span>
+            <img src="../image/icons/logo.png" alt="Furever Pet Home">
+            <span>Furever Pet Home</span>
         </a>
         <div class="nav-right">
-        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-        <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
-            <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
-        </div>
+            <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+            <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                        <span>NGO Account</span>
+                    </div>
+                    <button class="logout-btn" onclick="window.location.href='../Logout.php'">🔒 Log Out</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!---navigation bar-->
     <div class="nav-links">
-            <a href="Pet_listing.php" class="nav-tab"> Home</a>
-            <a href="inbox.php" class="nav-tab"> Inbox</a>
-            <a href="findapet.html" class="nav-tab"> Find A Pet</a>
-            <a href="pet_community.html" class="nav-tab"> Pet Community</a>
-            <a href="helpcenter_ngo.php" class="nav-tab"> Help Center</a>
-            <a href="Analytics.html" class="nav-tab"> Analytics</a>
-            <a href="report..php" class="nav-tab"> Report</a>
+        <a href="Pet_listing.php" class="nav-tab">Home</a>
+        <a href="inbox.php" class="nav-tab">Inbox</a>
+        <a href="findapet.php" class="nav-tab">Find A Pet</a>
+        <a href="petcommunity.php" class="nav-tab">Pet Community</a>
+        <a href="helpcenter_ngo.php" class="nav-tab">Help Center</a>
+        <a href="Analytics.php" class="nav-tab">Analytics</a>
+        <a href="report.php" class="nav-tab">Report</a>
     </div>
     </nav>
 
@@ -139,9 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
     </div>
-    </div><!--/wrapper-->
+    </div>
 
-    <!--footer-->
     <footer>
         <div class="footer-grid">
         <div>
@@ -183,6 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
+<script src="../js/script.js"></script>
 <script src="../js/addboardngo.js"></script>
 </body>
 </html>
