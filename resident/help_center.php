@@ -128,7 +128,7 @@
                 }
             } else {
                 echo "<li class='faq-item' style='border-left: 4px solid var(--rose);'>";
-                echo "<p class='faq-answer'>No Information FOund.</p>";
+                echo "<p class='faq-answer'>No Information Found.</p>";
                 echo "</li>";
             }
             ?>
