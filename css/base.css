@@ -53,7 +53,7 @@ body {
     align-items: center;
     gap: 0.6rem;
     font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
+    font-size: 20px;
     font-weight: 700;
     color: var(--deep-brown);
     text-decoration: none;
