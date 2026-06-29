@@ -261,29 +261,25 @@ $totalAvailablePets = $availableNow;
           <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
         </div>
         <div>
-          <p class="footer-col-title">Platform</p>
-          <ul class="footer-links-list">
-            <li><a href="User/findapet.php">Find A Pet</a></li>
-            <li><a href="User/pet_community.php">Community Board</a></li>
-            <li><a href="User/Analytics.php">Analytics</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-col-title">Account</p>
-          <ul class="footer-links-list">
-            <li><a href="User_Login.php">Login</a></li>
-            <li><a href="User_Register.php">Register</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer-col-title">Contact</p>
-          <ul class="footer-links-list">
-            <li><a href="#">41700 Bandar Klang, Selangor</a></li>
-            <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
-            <li><a href="#">+60 123-456-7890</a></li>
-            <li><a href="#">Facebook · Instagram · X</a></li>
-          </ul>
-        </div>
+            <p class="footer-col-title">Platform</p>
+            <ul class="footer-links-list">
+              <li><a href="inbox.php">Inbox</a></li>
+              <li><a href="findapet.php">Find A Pet</a></li>
+              <li><a href="pet_community.php">Community Board</a></li>
+              <li><a href="guidelines.php">Help Center</a></li>
+              <li><a href="Analytics.php">Analytics</a></li>
+              <li><a href="Report.php">Report Animal</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer-col-title">Contact</p>
+            <ul class="footer-links-list">
+              <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+              <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+              <li><a href="#">+60 123-456-7890</a></li>
+              <li><a href="#">Facebook · Instagram · X</a></li>
+            </ul>
+          </div>
       </div>
       <div class="footer-bottom">
         <span>© 2026 Furever Pet Home — Urban Pet Adoption & Community Management</span>
