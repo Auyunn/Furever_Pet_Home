@@ -160,9 +160,19 @@ const REPORT_PHOTO_DIR = '../image/report/';
                     <img src="../image/icons/logo.png" alt="Furever Pet Home">
                     <span>Furever Pet Home</span>
                 </a>
-                <div class="nav-right">
-                    <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-                     <div class="avatar" title="My Profile"><?php echo htmlspecialchars($avatarInitials); ?></div>
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?php echo htmlspecialchars($avatarInitials); ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
+                            <span>Resident Account</span>
+                        </div>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
