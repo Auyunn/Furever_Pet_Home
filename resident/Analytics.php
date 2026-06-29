@@ -174,14 +174,21 @@
             <img src="../image/icons/logo.png" alt="Furever Pet Home">
             <span>Furever Pet Home</span>
             </a>
-            <div class="nav-right">
-            <button class="notif-btn" title="Notifications" onclick="window.location.href='resident/inbox.php';">🔔<span class="notif-dot"></span></button>
-            
-            <div class="avatar" title="My Profile" onclick="window.location.href='User Profile.php';">
-                <?= htmlspecialchars($avatarInitials) ?>
+           <div class="profile-dropdown">
+                <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                    <?= htmlspecialchars($avatarInitials) ?>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <div class="dropdown-user-info">
+                        <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
+                        <span>Resident Account</span>
+                    </div>
+                    <form method="post" action="../logout.php" style="margin:0;">
+                        <button type="submit" class="logout-btn">🔒 Log Out</button>
+                    </form>
+                </div>
             </div>
             
-            </div>
         </div>
 
         <div class="nav-links">
@@ -276,7 +283,7 @@
         <span>Made with ❤️ for Bandar Klang</span>
         </div>
     </footer>
-
+    <script src="../js/script.js"></script>
     <script>
         const ctx = document.getElementById('adoptionRateChart').getContext('2d');
         new Chart(ctx, {

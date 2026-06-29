@@ -157,10 +157,18 @@ $photoFolder = "../image/pets/";
                     <img src="../image/icons/logo.png" alt="Furever Pet Home">
                     <span>Furever Pet Home</span>
                 </a>
-                <div class="nav-right">
-                    <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-                    <div class="avatar" title="My Profile" onclick="window.location.href='../User Login.html';">
+               <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
                         <?= isset($_SESSION['username']) ? htmlspecialchars(strtoupper(substr($_SESSION['username'], 0, 2))) : 'AT' ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($_SESSION['username'] ?? 'User') ?></strong>
+                            <span>Resident Account</span>
+                        </div>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -300,5 +308,6 @@ $photoFolder = "../image/pets/";
                 </div>
             </footer>
         </div>
+        <script src="../js/script.js"></script>
     </body>
 </html>

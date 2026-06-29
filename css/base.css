@@ -305,16 +305,16 @@ body {
     color: var(--deep-brown);
 }
 .logout-btn {
-    display: inline-block;
-    margin-top: 0.75rem;
-    padding: 0.4rem 1.25rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #fff;
-    background: var(--deep-brown);
-    border-radius: 1.5rem;
-    text-decoration: none;
-    transition: background 0.2s;
+    width: 100%;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: #c0392b;
+    border: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.2s;
 }
 .logout-btn:hover {
     background: var(--rose);

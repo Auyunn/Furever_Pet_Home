@@ -159,7 +159,7 @@ body {
     color: var(--text-muted);
   }
 /* ── LOGOUT ── */
-  .logout-btn {
+ .logout-btn {
     width: 100%;
     padding: 0.4rem 0;
     background: transparent;
@@ -170,7 +170,7 @@ body {
     cursor: pointer;
     text-align: left;
     transition: color 0.2s;
-  }
+}
 
   .logout-btn:hover {
     color: #e74c3c;
