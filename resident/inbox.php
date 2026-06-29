@@ -56,10 +56,10 @@ $sql = "
 SELECT 
     i.InboxID, 
     i.Title, 
-    i.Message, 
-    i.Status, 
+    i.Message,
     i.Type,
-    i.DateTime
+    i.DateTime,
+    COALESCE(r.Status, a.Status, i.Status) AS Status
 FROM inbox i
 LEFT JOIN adopt_application a ON i.AdoptionID = a.AdoptionID
 LEFT JOIN report r ON i.ReportID = r.ReportID
