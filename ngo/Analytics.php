@@ -248,31 +248,26 @@
                 <div class="footer-brand-name">Furever Pet Home</div>
                 <p class="footer-tagline">A compassionate digital hub for stray pet adoption and community care in Bandar Klang, Selangor.</p>
             </div>
-            <div>
+             <div>
                 <p class="footer-col-title">Platform</p>
                 <ul class="footer-links-list">
-                <li><a href="#">Find A Pet</a></li>
-                <li><a href="#">Report Animal</a></li>
-                <li><a href="#">Community Board</a></li>
-                <li><a href="#">Analytics</a></li>
+                    <li><a href="Pet_listing.php">Home</a></li>
+                    <li><a href="inbox.php">Inbox</a></li>
+                    <li><a href="findapet.php">Find A Pet</a></li>
+                    <li><a href="petcommunity.php">Pet Community</a></li>
+                    <li><a href="helpcenter_ngo.php">Help Center</a></li>
+                    <li><a href="Report.php">Report Animal</a></li>
+                </ul>
                 </ul>
             </div>
-            <div>
-                <p class="footer-col-title">Account</p>
-                <ul class="footer-links-list">
-                <li><a href="#">My Profile</a></li>
-                <li><a href="#">My Applications</a></li>
-                <li><a href="#">Favourites</a></li>
-                <li><a href="#">Inbox</a></li>
-                </ul>
-            </div>
+
             <div>
                 <p class="footer-col-title">Contact</p>
                 <ul class="footer-links-list">
-                <li><a href="#">41700 Bandar Klang, Selangor</a></li>
-                <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
-                <li><a href="#">+60 123-456-7890</a></li>
-                <li><a href="#">Facebook · Instagram · X</a></li>
+                    <li><a href="#">41700 Bandar Klang, Selangor</a></li>
+                    <li><a href="mailto:info@fureverpethome.com">info@fureverpethome.com</a></li>
+                    <li><a href="#">+60 123-456-7890</a></li>
+                    <li><a href="#">Facebook · Instagram · X</a></li>
                 </ul>
             </div>
             </div>
