@@ -39,13 +39,13 @@ $residentRow = $stmtAvatar->get_result()->fetch_assoc();
 $stmtAvatar->close();
 
 $firstName = $residentRow['FirstName'] ?? '';
-$lastName  = $residentRow['LastName'] ?? '';
+$lastName = $residentRow['LastName'] ?? '';
 $avatarInitials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
 
 
 // Pastikan user dah login, kalau tak ada session, redirect ke login page
 if (!isset($_SESSION['residentID'])) {
-    header("Location: ../User_Login.php"); 
+    header("Location: ../User_Login.php");
     exit();
 }
 
@@ -78,7 +78,7 @@ $sql = "
 
 try {
     $stmt = $conn->prepare($sql);
-    
+
     $stmt->bind_param('s', $residentID);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -154,24 +154,29 @@ const REPORT_PHOTO_DIR = '../image/report/';
 
     <div class="wrapper">
 
-        <nav class="navbar scrolled" id="navbar"> 
+        <nav class="navbar scrolled" id="navbar">
             <div class="navbar-top">
                 <a href="#" class="nav-logo">
                     <img src="../image/icons/logo.png" alt="Furever Pet Home">
                     <span>Furever Pet Home</span>
                 </a>
-                <div class="profile-dropdown">
-                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
-                        <?php echo htmlspecialchars($avatarInitials); ?>
-                    </div>
-                    <div class="dropdown-menu" id="profileDropdown">
-                        <div class="dropdown-user-info">
-                            <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
-                            <span>Resident Account</span>
+                <div class="nav-right">
+                    <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span
+                            class="notif-dot"></span></button>
+                    <div class="profile-dropdown">
+                        <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()"
+                            style="cursor:pointer;">
+                            <?= htmlspecialchars($avatarInitials) ?>
                         </div>
-                        <form method="post" action="../logout.php" style="margin:0;">
-                            <button type="submit" class="logout-btn">🔒 Log Out</button>
-                        </form>
+                        <div class="dropdown-menu" id="profileDropdown">
+                            <div class="dropdown-user-info">
+                                <strong><?= htmlspecialchars($firstName . ' ' . $lastName) ?></strong>
+                                <span>Resident Account</span>
+                            </div>
+                            <form method="post" action="../logout.php" style="margin:0;">
+                                <button type="submit" class="logout-btn">🔒 Log Out</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -246,14 +251,16 @@ const REPORT_PHOTO_DIR = '../image/report/';
                                     <button class="btn-action btn-view"
                                         onclick="openModal(<?= jsStr($status) ?>, <?= jsStr($row['PetName']) ?>, <?= jsStr($modalDesc) ?>, <?= jsStr($row['Location']) ?>, <?= jsStr($dateFiled) ?>, <?= jsStr($row['ReportID']) ?>)">View
                                         Details</button>
-                                    <button class="btn-action btn-remove" onclick="deleteReport('<?= $row['ReportID'] ?>', this)">Remove</button>
+                                    <button class="btn-action btn-remove"
+                                        onclick="deleteReport('<?= $row['ReportID'] ?>', this)">Remove</button>
                                 </div>
                             </div>
                         </div>
                     </article>
                 <?php endforeach; ?>
 
-            </div><div class="empty-state" id="emptyState" style="<?= empty($reports) ? '' : 'display:none;' ?>">
+            </div>
+            <div class="empty-state" id="emptyState" style="<?= empty($reports) ? '' : 'display:none;' ?>">
                 <span class="empty-icon">📋</span>
                 <p>ADD A REPORT NOW!</p>
             </div>
@@ -279,7 +286,7 @@ const REPORT_PHOTO_DIR = '../image/report/';
                 <div class="modal-timeline" id="modalTimeline"></div>
             </div>
         </div>
-  
+
         <footer>
             <div class="footer-grid">
                 <div>
@@ -291,19 +298,12 @@ const REPORT_PHOTO_DIR = '../image/report/';
                 <div>
                     <p class="footer-col-title">Platform</p>
                     <ul class="footer-links-list">
-                        <li><a href="#">Find A Pet</a></li>
-                        <li><a href="#">Report Animal</a></li>
-                        <li><a href="#">Community Board</a></li>
-                        <li><a href="#">Analytics</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <p class="footer-col-title">Account</p>
-                    <ul class="footer-links-list">
-                        <li><a href="#">My Profile</a></li>
-                        <li><a href="#">My Applications</a></li>
-                        <li><a href="#">Favourites</a></li>
-                        <li><a href="#">Inbox</a></li>
+                        <li><a href="HomePage(registed).php">Home</a></li>
+                        <li><a href="inbox.php">Inbox</a></li>
+                        <li><a href="findapet.php">Find A Pet</a></li>
+                        <li><a href="pet_community.php">Community Board</a></li>
+                        <li><a href="help_center.php">Help Center</a></li>
+                        <li><a href="Analytics.php">Analytics</a></li>
                     </ul>
                 </div>
                 <div>
@@ -321,9 +321,10 @@ const REPORT_PHOTO_DIR = '../image/report/';
                 <span>Made with ❤️ for Bandar Klang</span>
             </div>
         </footer>
-        
+
     </div>
-<script src="../js/script.js?v=<?= time(); ?>"></script>
+    <script src="../js/script.js?v=<?= time(); ?>"></script>
 </body>
+
 </html>
 <?php $conn->close(); ?>
