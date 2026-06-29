@@ -20,29 +20,45 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $action   = trim($input['action']   ?? '');
     $reportID = trim($input['reportID'] ?? '');
     $status   = trim($input['status']   ?? '');
-
     if($action !== 'update_status'){
         echo json_encode(['success' => false, 'message'=> 'Invalid action']);
         exit;
     }
-    
+
     $allow = ['Pending', 'In Progress', 'Resolved'];
     if (empty($reportID) || !in_array($status, $allow)) {
         echo json_encode(['success' => false, 'message' => 'Invalid input']);
         exit;
     }
 
-    $stmt= $conn -> prepare(" UPDATE report 
-                              SET Status = ? WHERE ReportID = ? AND OrgID = ?");
+    // Map status untuk inbox
+    $inboxStatus = match($status) {
+        'Resolved'    => 'Resolved',
+        'In Progress' => 'Pending',
+        'Pending'     => 'Pending',
+        default       => 'Pending'
+    };
+
+    // Update report table
+    $stmt = $conn->prepare("UPDATE report SET Status = ? WHERE ReportID = ? AND OrgID = ?");
     $stmt->bind_param("sss", $status, $reportID, $org_id);
     $stmt->execute();
- 
-    if($stmt -> affected_rows >0){
+
+    if($stmt->affected_rows > 0) {
+        $stmt->close();
+        
+        // Update inbox table sekali
+        $stmt2 = $conn->prepare("UPDATE inbox SET Status = ? WHERE ReportID = ? AND Type = 'Pet Report'");
+        $stmt2->bind_param("ss", $inboxStatus, $reportID);
+        $stmt2->execute();
+        $stmt2->close();
+        
         echo json_encode(['success' => true]);
-    }else{
-         echo json_encode(['success' => false, 'message' => 'No record updated.']);
+    } else {
+        $stmt->close();
+        echo json_encode(['success' => false, 'message' => 'No record updated.']);
     }
-    $stmt->close();
+
     $conn->close();
     exit;
 }
