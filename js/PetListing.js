@@ -1,9 +1,4 @@
-/**
- * Furever Pet Home — PetListing.js
- * Menguruskan paparan kad haiwan dinamik, tapisan kategori, serta modal tambah & edit.
- */
 
-// 1. JALANKAN PAPARAN SEBAIK SAHAJA HALAMAN BERJAYA DIMUAT NAIK
 document.addEventListener("DOMContentLoaded", () => {
     // Semak jika data array dari PHP wujud
     if (typeof senaraiPet !== 'undefined') {
@@ -13,15 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Emoji ikut jenis haiwan — dipaparkan jika foto tiada/gagal dimuatkan
+
 const EMOJI_PET = {
     cat: "🐱",
     dog: "🐶"
 };
 
-/**
- * Helper: escape HTML supaya data daripada DB selamat disuntik ke dalam template
- */
+
 function escapeHtml(str) {
     if (str === null || str === undefined) return '';
     return String(str)
@@ -32,11 +25,7 @@ function escapeHtml(str) {
         .replace(/'/g, "&#039;");
 }
 
-/**
- * 2. FUNGSI PAPARKAN REKOD HAIWAN (RENDER CARDS)
- * Membina elemen kad haiwan secara dinamik mengikut data yang ditarik dari pangkalan data,
- * menggunakan struktur & class yang sepadan dengan Pet_Listing.css (.kad-pet, .gambar-pet, .info-pet, .aksi-pet)
- */
+
 function paparkanPet(data) {
     const kontena = document.getElementById("senarai-pet");
     if (!kontena) return;
@@ -87,7 +76,7 @@ function paparkanPet(data) {
                         <h3>${namaSelamat}</h3>
                         <p>${bakaSelamat}</p>
                     </hgroup>
-                    <strong>${parseInt(pet.Age) || 0} bulan</strong>
+                    <strong>${parseInt(pet.Age) || 0} months</strong>
                 </header>
 
                 <ul>

@@ -100,18 +100,18 @@ if (empty($_SESSION['residentID'])) {
             <legend></legend>
             <div>
               <label for="reportName">Name</label>
-              <input type="text" id="reportName" name="reportName" placeholder="Masukkan nama"
+              <input type="text" id="reportName" name="reportName" placeholder="Enter name"
                 value="<?php echo htmlspecialchars($old['reportName'] ?? ''); ?>" required>
             </div>
 
             <div>
               <label for="reportDesc">Description</label>
-              <textarea id="reportDesc" name="reportDesc" placeholder="Masukkan penerangan..." required><?php echo htmlspecialchars($old['reportDesc'] ?? ''); ?></textarea>
+              <textarea id="reportDesc" name="reportDesc" placeholder="Enter description..." required><?php echo htmlspecialchars($old['reportDesc'] ?? ''); ?></textarea>
             </div>
 
             <div>
               <label for="reportLocation">Location</label>
-              <input type="text" id="reportLocation" name="reportLocation" placeholder="Masukkan lokasi"
+              <input type="text" id="reportLocation" name="reportLocation" placeholder="Enter location"
                 value="<?php echo htmlspecialchars($old['reportLocation'] ?? ''); ?>" required>
             </div>
           </fieldset>
