@@ -5,6 +5,8 @@ $conn = new mysqli("localhost", "root", "", "furever_pet_home");//connect databa
 if ($conn->connect_error) {
     die("connection failed: " . $conn->connect_error);
 }
+mysqli_set_charset($conn, 'utf8mb4');
+date_default_timezone_set('Asia/Kuala_Lumpur'); 
 
 //ngo id
     if (isset($_SESSION['orgID'])) {
@@ -103,7 +105,7 @@ $result = $stmt->get_result();
                 </div>
                 <div id="profileDropdown" class="dropdown-menu">
                     <div class="dropdown-user-info">
-              <strong><?php echo htmlspecialchars($org_id); ?></strong>
+                    <strong><?php echo htmlspecialchars($org_id); ?></strong>
                 <span>NGO Account</span>
                 </div>
                 <form method="post" action="../logout.php" style="margin:0;">
