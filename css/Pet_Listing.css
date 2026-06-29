@@ -657,11 +657,11 @@ footer {
 .dropdown-user-info span {
   display: block;
   font-size: 13px;
-  color: #888;
+  color: #8175ba;
 }
 .dropdown-user-info strong {
   font-size: 14px;
-  color: #333;
+  color: #825540;
 }
 .dropdown-menu a, .dropdown-menu button {
   display: flex;
