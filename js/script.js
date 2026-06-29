@@ -40,11 +40,21 @@ function getStatusInfo(status) {
         return { label: '', cls: '' };
     }
     const map = {
-        'Approve': { label: 'Diluluskan', cls: 'approve', dot: '●' },
-        'Reject': { label: 'Ditolak', cls: 'reject', dot: '●' },
-        'Pending': { label: 'Dalam Semakan', cls: 'pending', dot: '●' },
-        'In Progress': { label: 'Sedang Diurus', cls: 'in-progress', dot: '●' },
-        'Resolve': { label: 'Selesai', cls: 'resolve', dot: '●' }
+        
+        'Approve':       { label: 'Approved',     cls: 'approve',     dot: '●' },
+        'Approved':      { label: 'Approved',     cls: 'approve',     dot: '●' },
+        'Reject':        { label: 'Rejected',     cls: 'reject',      dot: '●' },
+        'Rejected':      { label: 'Rejected',     cls: 'reject',      dot: '●' },
+        'Pending':       { label: 'Pending',      cls: 'pending',     dot: '●' },
+        'In Progress':   { label: 'In Progress',  cls: 'in-progress', dot: '●' },
+        'Resolve':       { label: 'Resolved',     cls: 'resolve',     dot: '●' },
+        'Resolved':      { label: 'Resolved',     cls: 'resolve',     dot: '●' },
+        'Submit':        { label: 'Submitted',    cls: 'pending',     dot: '●' },
+        'Belum Selesai': { label: 'Pending',      cls: 'pending',     dot: '●' },
+        'Dalam Proses':  { label: 'In Progress',  cls: 'in-progress', dot: '●' },
+        'Selesai':       { label: 'Resolved',     cls: 'resolve',     dot: '●' },
+        'Ditolak':       { label: 'Rejected',     cls: 'reject',      dot: '●' },
+        'Diluluskan':    { label: 'Approved',     cls: 'approve',     dot: '●' },
     };
     return map[status] || { label: status, cls: 'pending', dot: '●' };
 }
@@ -52,7 +62,7 @@ function getStatusInfo(status) {
 function formatDateTime(dtStr) {
     if (!dtStr) return '';
     const d = new Date(dtStr);
-    return d.toLocaleString('ms-MY', {
+    return d.toLocaleString('en-GB', {
         day: '2-digit',
         month: 'long',
         year: 'numeric',
@@ -69,6 +79,7 @@ function openNotif(event, index, group) {
     }
     const notif = window.notifData[group][index];
     if (!notif) return;
+    console.log('Notif data:', notif); // DEBUG — boleh buang lepas confirm
 
     const status = getStatusInfo(notif.Status);
     const panel = document.getElementById('notif-content');
@@ -83,6 +94,7 @@ function openNotif(event, index, group) {
         </div>
     `;
 }
+
 
 //====== PET COMMUNITY ===============
 function toggleComment(boardId) {
