@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2026 at 08:17 AM
+-- Generation Time: Jun 29, 2026 at 08:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`AdminID`, `FirstName`, `LastName`, `Email`, `NumberPhone`, `Password`) VALUES
-('ADM01', 'Super', 'Admin', 'super@furever.com', '0120001111', 'adminpass'),
+('ADM01', 'Super', 'Admin', 'super@furever.com', '0120001111', 'superpass'),
 ('ADM02', 'Farhan', 'Hakim', 'farhan@furever.com', '0120002222', 'adminpass'),
 ('ADM03', 'Linda', 'Chew', 'linda@furever.com', '0120003333', 'adminpass'),
 ('ADM04', 'Muthu', 'Arasan', 'muthu@furever.com', '0120004444', 'adminpass'),
@@ -56,8 +56,9 @@ INSERT INTO `admin` (`AdminID`, `FirstName`, `LastName`, `Email`, `NumberPhone`,
 ('ADM13', 'Zidan', 'Fikri', 'zidan@furever.com', '0120004040', 'adminpass'),
 ('ADM14', 'Janice', 'Tan', 'janice@furever.com', '0120005050', 'adminpass'),
 ('ADM15', 'Rahmat', 'Said', 'rahmat@furever.com', '0120006060', 'adminpass'),
-('ADM16', 'ain', 'ahmad', 'ain@furever.com', '01123456789', 'adminpass'),
-('ADM17', 'Johan', 'Razak', 'Johan@furever.com', '0134567289', 'adminpass');
+('ADM16', 'ain', 'ahmad', 'ain@furever.com', '0112345678', 'adminpass'),
+('ADM17', 'Johan', 'Razak', 'Johan@furever.com', '0134567289', 'adminpass'),
+('ADM18', 'cat', 'meow', 'cat@furever.com', '0115581191', 'adminpass');
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,8 @@ INSERT INTO `adopt_application` (`AdoptionID`, `ResidentID`, `PetID`, `Status`, 
 ('ADOP14', 'R0014', 'PET14', 'Approved', 'I have leftover wire mesh at home, I will donate it.', '2026-05-19 16:00:00'),
 ('ADOP15', 'R0015', 'PET15', 'Pending', 'This cat looks familiar, maybe neighbor\'s cat.', '2026-05-22 18:00:00'),
 ('ADOP16', 'R0003', 'PET27', 'Pending', NULL, '2026-06-22 08:35:46'),
-('ADOP17', 'R0002', 'PET07', 'Pending', NULL, '2026-06-22 11:59:03');
+('ADOP17', 'R0002', 'PET07', 'Pending', NULL, '2026-06-22 11:59:03'),
+('ADOP18', 'R0001', 'PET04', 'Approved', NULL, '2026-06-29 09:46:17');
 
 -- --------------------------------------------------------
 
@@ -119,7 +121,6 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`CommentID`, `ResidentID`, `BoardID`, `Content`, `Date`, `ReplyID`, `OrgID`) VALUES
 ('COM01', 'R0001', 'BRD01', 'I want to register 2 cats this Saturday boss.', '2026-05-01', NULL, NULL),
-('COM02', 'R0002', 'BRD01', 'Alhamdulillah, best program in Klang area!', '2026-05-01', NULL, NULL),
 ('COM03', 'R0003', 'BRD02', 'What time does the adoption counter open?', '2026-05-03', NULL, NULL),
 ('COM04', 'R0006', 'BRD02', 'It opens at 10 AM sir Ravin.', '2026-05-03', 'COM03', NULL),
 ('COM05', 'R0004', 'BRD03', 'I can bring tools and paint myself later.', '2026-05-05', NULL, NULL),
@@ -134,7 +135,12 @@ INSERT INTO `comment` (`CommentID`, `ResidentID`, `BoardID`, `Content`, `Date`, 
 ('COM14', 'R0014', 'BRD10', 'I have leftover wire mesh at home, I will donate it.', '2026-05-18', NULL, NULL),
 ('COM15', 'R0015', 'BRD11', 'This cat looks familiar, maybe neighbor\'s cat.', '2026-05-19', NULL, NULL),
 ('COM16', 'R0002', 'BRD01', 'Hi, I would to ask if I can bring my dog there?', '2026-06-22', NULL, NULL),
-('COM17', 'R0016', 'BRD14', 'Is this program open to the public?', '2026-06-27', NULL, NULL);
+('COM17', NULL, 'BRD11', 'Contact Me!', '2026-06-28', 'COM15', 'ORG06'),
+('COM18', 'R0001', 'BRD14', 'Amazing!', '2026-06-29', NULL, NULL),
+('COM19', NULL, 'BRD06', 'Thanks!', '2026-06-29', 'COM10', 'ORG03'),
+('COM20', NULL, 'BRD06', 'Omg', '2026-06-29', 'COM19', 'ORG03'),
+('COM21', NULL, 'BRD10', 'Thank you Michelle!', '2026-06-29', 'COM14', 'ORG04'),
+('COM22', NULL, 'BRD01', 'Sure', '2026-06-29', 'COM16', 'ORG01');
 
 -- --------------------------------------------------------
 
@@ -268,7 +274,7 @@ INSERT INTO `inbox` (`InboxID`, `ReportID`, `AdoptionID`, `Title`, `Message`, `D
 ('INB02', 'REP01', NULL, 'Bukit Tinggi Dog Case Resolved', 'Our rescue team has taken the dog for neutering treatment.', '2026-05-11 15:00:00', 'Pet Report', 'Resolve'),
 ('INB03', NULL, 'ADOP02', 'Application Approved for Luna', 'Please visit Andalas Pet Haven shelter for Luna handover session.', '2026-05-13 10:30:00', 'Pet Adoption Application', 'Approve'),
 ('INB04', 'REP02', NULL, 'Cat on Tree Status', 'The cat was successfully rescued with the help of the fire department this afternoon.', '2026-05-04 17:00:00', 'Pet Report', 'Resolve'),
-('INB05', NULL, 'ADOP04', 'Application Rejected for Bella', 'We regret to inform you that your application was rejected due to time constraints.', '2026-05-13 11:00:00', 'Pet Adoption Application', 'Reject'),
+('INB05', NULL, 'ADOP04', 'Application Rejected for Bella', 'We regret to inform you that your application was rejected due to time constraints.', '2026-05-13 11:00:00', 'Pet Adoption Application', ''),
 ('INB06', 'REP03', NULL, 'Pandamaran Stray Dog Report', 'Report received. Monitoring team is on the way to the location.', '2026-05-05 21:00:00', 'Pet Report', 'In Progress'),
 ('INB07', NULL, 'ADOP06', 'Application Approved for Max', 'Application approved. Please bring a dog collar during collection day.', '2026-05-16 14:00:00', 'Pet Adoption Application', 'Approve'),
 ('INB08', NULL, 'ADOP03', 'Simba Cat Application Under Review', 'Official message: Your application is currently being reviewed by the Botanic committee.', '2026-05-21 09:00:00', 'Pet Adoption Application', ''),
@@ -279,7 +285,8 @@ INSERT INTO `inbox` (`InboxID`, `ReportID`, `AdoptionID`, `Title`, `Message`, `D
 ('INB13', 'REP14', NULL, 'Malnourished Dog Case Resolved', 'Mother dog and puppies have been safely moved to a shelter.', '2026-05-18 13:00:00', 'Pet Report', 'Resolve'),
 ('INB14', NULL, 'ADOP14', 'Application Approved for Comel', 'Your application has been approved by Kampung Delek Cat Shelter.', '2026-05-21 15:30:00', 'Pet Adoption Application', 'Approve'),
 ('INB15', 'REP17', NULL, 'Cat Neck Trap Case Resolved', 'The wire around the cat\'s neck has been safely removed.', '2026-05-23 18:30:00', 'Pet Report', 'Resolve'),
-('INB16', NULL, 'ADOP16', 'Application Submitted', 'Your pet adoption application has been submitted and is pending review.', '2026-06-22 08:35:46', 'Pet Adoption Application', 'Pending');
+('INB16', NULL, 'ADOP16', 'Application Submitted', 'Your pet adoption application has been submitted and is pending review.', '2026-06-22 08:35:46', 'Pet Adoption Application', 'Pending'),
+('INB17', NULL, 'ADOP18', 'Application Submitted', 'Your pet adoption application has been submitted and is pending review.', '2026-06-29 09:46:17', 'Pet Adoption Application', '');
 
 -- --------------------------------------------------------
 
@@ -303,9 +310,9 @@ CREATE TABLE `organization` (
 --
 
 INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`, `Status`) VALUES
-('ORG01', 'Klang Stray Rescue', '0123456789', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 0),
-('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', '', 1),
-('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 0),
+('ORG01', 'Klang Stray Rescue', '0123456789', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 1),
+('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass1', '', 1),
+('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 1),
 ('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', '', 1),
 ('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', '', 1),
 ('ORG06', 'Andalas Pet Haven', '0137778888', 'No 22, Jalan Taman Sri Andalas, 41200 Klang', 'andalashaven@ngo.com', 'orgpass', '', 1),
@@ -362,7 +369,7 @@ INSERT INTO `pet` (`PetID`, `OrgID`, `PetType`, `Breed`, `Age`, `Location`, `Neu
 ('PET15', 'ORG15', 'Dog', 'Retriever Mix', 25, 'Bandar Bukit Raja', 1, 'None', '1781972201_BuddyORG15.jpg', 'Male', 'Buddy', 1),
 ('PET16', 'ORG05', 'Dog', 'Dog', 32, 'Kawasan Perindustrian Pandamaran, 42000 Klang', 1, 'Allergy to human male', '1781956237_Lokey.jpg', 'Male', 'Lokey', 1),
 ('PET17', 'ORG02', 'Cat', 'Maine Coon', 26, 'Bandar Botanic', 1, 'None', '1781967661_LucyORG2.jpg', 'Female', 'Lucy', 1),
-('PET18', 'ORG02', 'Cat', 'Maine Coon', 9, 'Bandar Botanic', 1, 'None', '1781967683_CymbaORG2.jpg', 'Male', 'Cymba', 1),
+('PET18', 'ORG02', 'Cat', 'Maine Coon', 9, 'Bandar Botanic', 1, 'None', '1781967683_CymbaORG2.jpg', 'Male', 'Cymba Rila', 1),
 ('PET19', 'ORG02', 'Dog', 'Golden Retriever', 24, 'Kawasan Perindustrian Pandamaran, 42000 Klang', 1, 'Allergy to butterflies', '1781967700_RockyORG2.jpg', 'Male', 'Rocky', 1),
 ('PET20', 'ORG01', 'Cat', 'Local Mixed', 22, 'Bandar Botanic', 1, 'Allergy to cucumber', '1781968351_MinieORG1.jpg', 'Male', 'Minie', 1),
 ('PET21', 'ORG03', 'Dog', 'Maltipoos', 5, 'Bandar Botanic', 1, 'None', '1781968709_FinnORG3.png', 'Male', 'Finn', 1),
@@ -377,7 +384,8 @@ INSERT INTO `pet` (`PetID`, `OrgID`, `PetType`, `Breed`, `Age`, `Location`, `Neu
 ('PET30', 'ORG14', 'Dog', 'Sphered', 17, 'Jalan Raja Muda Musa', 0, 'None', '1781971948_SunnyORG14.webp', 'Male', 'Sunny', 1),
 ('PET31', 'ORG15', 'Dog', 'Bulldog', 30, 'Bandar Bukti Raja', 1, 'Need flees oinment', '1781972059_GoofyORG15.webp', 'Male', 'Goofy', 1),
 ('PET32', 'ORG15', 'Cat', 'British Short Hair', 23, 'Bandar Bukti Raja', 0, 'None', '1781972122_GrumpyORG15.jpg', 'Female', 'Grumpy', 1),
-('PET33', 'ORG02', 'Cat', 'Persian', 1, 'Bandar Klang', 1, 'None', '1782101241_reo04.jpg', 'Male', 'Leo', 1);
+('PET33', 'ORG02', 'Cat', 'Persian', 1, 'Bandar Klang', 1, 'None', '1782101241_reo04.jpg', 'Male', 'Leo', 1),
+('PET34', 'ORG10', 'Cat', 'Persian', 6, 'Pusat Bandar Klang', 0, 'Allergy to cucumber', '1782698379_rep11.jpg', 'Male', 'Minie', 1);
 
 -- --------------------------------------------------------
 
@@ -441,8 +449,8 @@ CREATE TABLE `resident` (
 --
 
 INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `Email`, `Password`, `Address`, `Status`, `Salary`) VALUES
-('R0001', 'Ahmad', 'Faizal', '0123456789', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1, 0.00),
-('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'siti1234', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1, 0.00),
+('R0001', 'Ahmad', 'Faizal', '0123456763', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1, 0.00),
+('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'user1234', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1, 0.00),
 ('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 1, 0.00),
 ('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 1, 0.00),
 ('R0005', 'Muhammad', 'Amir', '0112223334', 'amir.res@gmail.com', 'pass123', 'No 7, Jalan Haji Sirat, Kampung Delek Kanan, 41050 Klang', 1, 0.00),
@@ -450,13 +458,12 @@ INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `E
 ('R0007', 'Fatima', 'Zahra', '0145556667', 'fatima.z@gmail.com', 'pass123', 'No 23, Jalan Teluk Pulai, 41100 Klang', 1, 0.00),
 ('R0008', 'Suresh', 'Maniam', '0129998887', 'suresh.m@gmail.com', 'pass123', 'No 4, Jalan Melawis, Taman Melawis, 41100 Klang', 1, 0.00),
 ('R0009', 'Nurul', 'Huda', '0134443332', 'nurul.huda@gmail.com', 'pass123', 'No 19, Jalan Sungai Udang, Kampung Sungai Udang, 41000 Klang', 1, 0.00),
-('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'pass123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 1, 0.00),
+('R0010', 'Kevin', 'Tan', '0187776665', 'kevin.tan@gmail.com', 'kevin123', 'No 102, Jalan Raja Muda Musa, 41100 Klang', 1, 0.00),
 ('R0011', 'Zulkifli', 'Rahman', '0115554443', 'zul.rahman@gmail.com', 'pass123', 'No 33, Jalan Meru, Taman Meru, 41050 Klang', 1, 0.00),
 ('R0012', 'Grace', 'Anand', '0162229991', 'grace.a@gmail.com', 'pass123', 'No 56, Jalan Langat, Bandar Puteri, 41200 Klang', 1, 0.00),
 ('R0013', 'Asraf', 'Ghani', '0173338882', 'asraf.g@gmail.com', 'pass123', 'No 14, Jalan Kapar, Pekan Kapar, 42200 Klang', 1, 0.00),
 ('R0014', 'Michelle', 'Wong', '0124441119', 'michelle.w@gmail.com', 'pass123', 'No 8, Jalan Zapin 2, Bandar Bukit Raja, 41050 Klang', 1, 0.00),
-('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 1, 0.00),
-('R0016', 'Nrulain', 'Ain', '0123456789', 'ainnrl@gmail.com', 'pass123', 'Kuala Lumpur', 1, 0.00);
+('R0015', 'Khairul', 'Anwar', '0196662221', 'khairul.a@gmail.com', 'pass123', 'No 51, Jalan Kampung Kuantan, 41050 Klang', 1, 0.00);
 
 --
 -- Indexes for dumped tables
@@ -549,13 +556,13 @@ ALTER TABLE `resident`
 -- AUTO_INCREMENT for table `faq`
 --
 ALTER TABLE `faq`
-  MODIFY `FaqID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `FaqID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `guidelines`
 --
 ALTER TABLE `guidelines`
-  MODIFY `GuidelineID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `GuidelineID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
