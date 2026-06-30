@@ -83,11 +83,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <span>Furever Pet Home</span>
         </a>
         <div class="nav-right">
-        <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
-        <div class="avatar" title="My Profile" onclick="window.location.href='profile.php';">
-            <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
-        </div>
-        </div>
+                <button class="notif-btn" title="Notifications" onclick="window.location.href='inbox.php';">🔔<span class="notif-dot"></span></button>
+                <div class="profile-dropdown">
+                    <div class="avatar" title="My Profile" onclick="toggleProfileDropdown()" style="cursor:pointer;">
+                        <?= htmlspecialchars(strtoupper(substr($currentOrgID, 0, 2))) ?>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <div class="dropdown-user-info">
+                            <strong><?= htmlspecialchars($currentOrgID) ?></strong>
+                            <span>NGO Account</span>
+                        </div>
+                        <form method="post" action="../logout.php" style="margin:0;">
+                            <button type="submit" class="logout-btn">🔒 Log Out</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
     </div>
 
     <!---navigation bar-->
@@ -179,5 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
 <script src="../js/addboardngo.js"></script>
+ <script src="../js/script.js"></script>
 </body>
 </html>
