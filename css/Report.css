@@ -74,7 +74,7 @@ main {
   background: rgba(208,132,198,0.05);
 }
 .image-upload::before {
-  content: '🖼️';
+  content: '🖼️'; /* icon gambar guna pseudo element, tak payah <img> */
   font-size: 2.8rem;
   line-height: 1;
 }
