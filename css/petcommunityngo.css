@@ -3,7 +3,7 @@ html, body {
   min-height: 100%;
   margin: 0;
 }
-
+/* body */
 body {
   display: flex;
   flex-direction: column;
