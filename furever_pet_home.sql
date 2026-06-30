@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2026 at 08:08 AM
+-- Generation Time: Jun 30, 2026 at 05:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -80,7 +80,7 @@ CREATE TABLE `adopt_application` (
 --
 
 INSERT INTO `adopt_application` (`AdoptionID`, `ResidentID`, `PetID`, `Status`, `Reason`, `RequestDate`) VALUES
-('ADOP01', 'R0001', 'PET01', 'Approved', 'I want to register 2 cats this Saturday boss.', '2026-05-10 10:00:00'),
+('ADOP01', 'R0001', 'PET01', 'Rejected', 'Not meet the requirement', '2026-05-10 10:00:00'),
 ('ADOP02', 'R0002', 'PET02', 'Approved', 'Alhamdulillah, best program in Klang area!', '2026-05-11 11:30:00'),
 ('ADOP03', 'R0003', 'PET03', 'Approved', NULL, '2026-05-20 09:15:00'),
 ('ADOP04', 'R0004', 'PET04', 'Rejected', 'It opens at 10 AM sir Ravin.', '2026-05-12 14:00:00'),
@@ -140,7 +140,8 @@ INSERT INTO `comment` (`CommentID`, `ResidentID`, `BoardID`, `Content`, `Date`, 
 ('COM19', NULL, 'BRD06', 'Thanks!', '2026-06-29', 'COM10', 'ORG03'),
 ('COM20', NULL, 'BRD06', 'Omg', '2026-06-29', 'COM19', 'ORG03'),
 ('COM21', NULL, 'BRD10', 'Thank you Michelle!', '2026-06-29', 'COM14', 'ORG04'),
-('COM22', NULL, 'BRD01', 'Sure', '2026-06-29', 'COM16', 'ORG01');
+('COM22', NULL, 'BRD01', 'Sure', '2026-06-29', 'COM16', 'ORG01'),
+('COM23', 'R0004', 'BRD14', 'Nice event!', '2026-06-30', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -270,7 +271,7 @@ CREATE TABLE `inbox` (
 --
 
 INSERT INTO `inbox` (`InboxID`, `ReportID`, `AdoptionID`, `Title`, `Message`, `DateTime`, `Type`, `Status`) VALUES
-('INB01', NULL, 'ADOP01', 'Application Approved for Rocky', 'Congratulations! Your application to adopt Rocky has been approved.', '2026-05-12 09:00:00', 'Pet Adoption Application', 'Approve'),
+('INB01', NULL, 'ADOP01', 'Application Approved for Rocky', 'Congratulations! Your application to adopt Rocky has been approved.', '2026-05-12 09:00:00', 'Pet Adoption Application', ''),
 ('INB02', 'REP01', NULL, 'Bukit Tinggi Dog Case Resolved', 'Our rescue team has taken the dog for neutering treatment.', '2026-05-11 15:00:00', 'Pet Report', 'Resolve'),
 ('INB03', NULL, 'ADOP02', 'Application Approved for Luna', 'Please visit Andalas Pet Haven shelter for Luna handover session.', '2026-05-13 10:30:00', 'Pet Adoption Application', 'Approve'),
 ('INB04', 'REP02', NULL, 'Cat on Tree Status', 'The cat was successfully rescued with the help of the fire department this afternoon.', '2026-05-04 17:00:00', 'Pet Report', 'Resolve'),
@@ -311,7 +312,7 @@ CREATE TABLE `organization` (
 
 INSERT INTO `organization` (`OrgID`, `OrgName`, `NumberPhone`, `OrgAddress`, `Email`, `Password`, `Description`, `Status`) VALUES
 ('ORG01', 'Klang Stray Rescue', '0123456789', 'No 2, Jalan Istana, 41000 Klang', 'contact@klangstray.ngo.com', 'orgpass', '', 1),
-('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass1', '', 1),
+('ORG02', 'Bandar Botanic Animal Shelter', '0333221122', 'No 14, Jalan Jasmin, Bandar Botanic, 41200 Klang', 'botanic.pets@ngo.com', 'orgpass', '', 1),
 ('ORG03', 'Paws and Claws Klang NGO', '0129994444', 'Lot 451, Jalan Telok Gong, 42000 Klang', 'pawsclaws@ngo.com', 'orgpass', '', 1),
 ('ORG04', 'Klang Valley Cat Rescue', '0165551212', 'No 8, Jalan Meru Utama, 41050 Klang', 'kvcat@ngo.com', 'orgpass', '', 1),
 ('ORG05', 'Pandamaran Dog Hope Sanctuary', '0331687777', 'Kawasan Perindustrian Pandamaran, 42000 Klang', 'pandamarandogs@ngo.com', 'orgpass', '', 1),
@@ -353,7 +354,7 @@ CREATE TABLE `pet` (
 
 INSERT INTO `pet` (`PetID`, `OrgID`, `PetType`, `Breed`, `Age`, `Location`, `Neutered`, `Allergies`, `Photo`, `Gender`, `PetName`, `IsAvailable`) VALUES
 ('PET01', 'ORG01', 'Dog', 'Local Mixed', 26, 'Pusat Bandar Klang', 1, 'None', '1781968283_RockyORG1.jpg', 'Male', 'Rocky', 1),
-('PET02', 'ORG01', 'Cat', 'Domestic Short Hair', 28, 'Taman Sri Andalas', 1, 'Sensitive Stomach', '1781968304_LunaORG1.jpg', 'Female', 'Luna', 1),
+('PET02', 'ORG01', 'Cat', 'Domestic Short Hair', 28, 'Taman Sri Andalas', 1, 'Sensitive Stomach', '1781968304_LunaORG1.jpg', 'Female', 'Luna Ly', 1),
 ('PET03', 'ORG02', 'Cat', 'Persian Mix', 3, 'Bandar Botanic', 1, 'None', '1781967640_SimbaORG2.jpg', 'Male', 'Simba', 0),
 ('PET04', 'ORG03', 'Dog', 'Stray Mongrel', 3, 'Telok Gong', 0, 'Skin Allergy', '1781968575_BellaORG3.webp', 'Female', 'Bella', 1),
 ('PET05', 'ORG04', 'Cat', 'Siamese Mix', 30, 'Taman Meru', 1, 'None', '1781969146_MiloORG4.webp', 'Male', 'Milo', 1),
@@ -449,7 +450,7 @@ CREATE TABLE `resident` (
 --
 
 INSERT INTO `resident` (`ResidentID`, `FirstName`, `LastName`, `NumberPhone`, `Email`, `Password`, `Address`, `Status`, `Salary`) VALUES
-('R0001', 'Ahmad', 'Faizal', '0123456763', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 1, 0.00),
+('R0001', 'Ahmad', 'Faizal', '0123456763', 'ahmad.faizal@gmail.com', 'pass123', 'No 12, Jalan Batu Unjur 1, Taman Bayu Perdana, 41200 Klang', 0, 0.00),
 ('R0002', 'Siti', 'Aishah', '0139876543', 'siti.aishah@gmail.com', 'user1234', 'No 45, Jalan Sri Damai, Taman Sri Andalas, 41200 Klang', 1, 0.00),
 ('R0003', 'Ravin', 'Kumar', '0171112223', 'ravin.kumar@gmail.com', 'pass123', 'B-3-5, Flat Bukit Tinggi, Bandar Bukit Tinggi, 41200 Klang', 1, 0.00),
 ('R0004', 'Mei', 'Ling', '0164445556', 'mei.ling@gmail.com', 'pass123', 'No 88, Jalan Kim Chuan, Pandamaran, 42000 Klang', 1, 0.00),
