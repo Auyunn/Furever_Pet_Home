@@ -44,7 +44,7 @@ body {
 
 .table-wrapper {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* kalau table panjang sangat boleh scroll side, elak pecah layout */
 }
 
 .admin-table {
