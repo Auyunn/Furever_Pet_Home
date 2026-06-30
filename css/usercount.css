@@ -23,7 +23,7 @@ body {
   background: #fff;
   color: #333;
   font-size: 1rem;
-  cursor: pointer;
+  cursor: pointer; /* boleh klik */
   transition: background 0.2s;
 }
 
