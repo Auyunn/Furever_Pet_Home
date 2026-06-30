@@ -16,7 +16,7 @@ body {
   z-index: 1; /* pastikan tab ni atas elemen lain */
 }
 
-.tab-btn {
+.tab-btn { /* style untuk setiap button tab (Resident/NGO) */
   flex: 1;
   padding: 10px 30px;
   border: none;
