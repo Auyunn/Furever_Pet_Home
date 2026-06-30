@@ -114,5 +114,5 @@ body {
 }
 
 .save-btn:hover {
-  background: #45a049;
+  background: #45a049; /* hijau gelap sikit bila hover */
 }
