@@ -109,7 +109,7 @@ body {
 }
 
 .save-btn {
-  background: #4CAF50;
+  background: #4CAF50; /* butang save warna hijau, standard signal save */
   color: white;
 }
 
