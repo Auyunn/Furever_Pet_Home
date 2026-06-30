@@ -293,5 +293,5 @@ footer {
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.visible { opacity: 1; transform: translateY(0); } /* bila kena trigger (biasanya via JS intersection observer), fade in naik */
 
